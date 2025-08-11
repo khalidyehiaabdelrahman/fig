@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'package:fig/features/home/domain/category_model.dart';
-import 'package:fig/features/home/presentation/cubit/categories_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/categories_state.dart';
-import 'package:fig/features/home/presentation/cubit/products_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/products_state.dart';
+import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
+import 'package:fig/features/home/presentation/cubit/home_state.dart';
 import 'package:fig/features/home/presentation/pages/Category_Products_Page_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -48,8 +46,8 @@ class _HomePageState extends State<HomePage> {
     });
 
     // تحميل البيانات
-    context.read<CategoriesCubit>().fetchCategories();
-    context.read<ProductsCubit>().fetchProducts();
+    context.read<HomeCubit>().fetchCategories();
+    context.read<HomeCubit>().fetchProducts();
   }
 
   void _startAutoSlide() {
@@ -142,35 +140,29 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(height: 16),
 
               // ✅ Categories from Cubit
-              BlocBuilder<CategoriesCubit, CategoriesState>(
+              BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
-                  if (state is CategoriesLoading) {
-                    return _buildCategoryShimmer();
-                  } else if (state is CategoriesLoaded) {
+                  // && state.categories.isEmpty
+                  if (state.isLoading) {
+                    return _buildCategoryShimmer(); // أو shimmer بناءً على الحالة
+                  } else if (state.errorMessage != null) {
+                    return Center(child: Text(state.errorMessage!));
+                  } else {
                     final categories = state.categories;
                     return _buildCategoryList(categories);
-                  } else if (state is CategoriesError) {
-                    return Center(child: Text(state.message));
-                  } else {
-                    return const SizedBox();
                   }
                 },
               ),
-
-              const SizedBox(height: 16),
-
-              // ✅ Products from Cubit
-              BlocBuilder<ProductsCubit, ProductsState>(
+              BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
-                  if (state is ProductsLoading) {
+                  //&& state.filteredProducts.isEmpty
+                  if (state.isLoading) {
                     return _buildProductShimmer();
-                  } else if (state is ProductsLoaded) {
+                  } else if (state.errorMessage != null) {
+                    return Center(child: Text(state.errorMessage!));
+                  } else {
                     final filteredProducts = state.filteredProducts;
                     return _buildProductList(filteredProducts);
-                  } else if (state is ProductsError) {
-                    return Center(child: Text(state.message));
-                  } else {
-                    return const SizedBox();
                   }
                 },
               ),

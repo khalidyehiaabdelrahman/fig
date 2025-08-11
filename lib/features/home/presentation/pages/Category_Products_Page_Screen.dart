@@ -1,8 +1,10 @@
+import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
+import 'package:fig/features/home/presentation/cubit/home_state.dart';
+import 'package:fig/features/home/widget/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/features/home/domain/category_model.dart';
-import 'package:fig/features/home/presentation/cubit/products_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/products_state.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CategoryProductsScreen extends StatefulWidget {
@@ -16,13 +18,25 @@ class CategoryProductsScreen extends StatefulWidget {
 
 class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   bool isGrid = true;
+  bool showShimmer = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 2), () {
+      setState(() {
+        showShimmer = false;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    final allProducts =
-        (context.read<ProductsCubit>().state as ProductsLoaded).allProducts;
+    final state = context.read<HomeCubit>().state;
     final filtered =
-        allProducts.where((p) => p.categoryId == widget.category.id).toList();
+        state.filteredProducts
+            .where((p) => p.categoryId == widget.category.id)
+            .toList();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -90,29 +104,53 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           // 🛒 Products view
           Expanded(
             child:
-                isGrid
-                    ? GridView.builder(
-                      padding: const EdgeInsets.all(5),
-                      itemCount: filtered.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 1,
-                            mainAxisSpacing: 6,
-                            childAspectRatio: 0.5,
-                          ),
-                      itemBuilder: (context, index) {
-                        final product = filtered[index];
-                        return _buildGridProduct(product);
-                      },
-                    )
-                    : ListView.separated(
-                      padding: const EdgeInsets.all(6),
-                      itemCount: filtered.length,
-                      separatorBuilder: (_, __) => const SizedBox(height: 12),
-                      itemBuilder: (context, index) {
-                        final product = filtered[index];
-                        return _buildListProduct(product);
+                showShimmer
+                    ? (isGrid
+                        ? _buildGridShimmer()
+                        : _buildListShimmer()) // لو showShimmer true عرض الشيمر
+                    : BlocBuilder<HomeCubit, HomeState>(
+                      builder: (context, state) {
+                        if (state.errorMessage != null) {
+                          return Center(child: Text(state.errorMessage!));
+                        } else {
+                          final filtered =
+                              state.filteredProducts
+                                  .where(
+                                    (p) => p.categoryId == widget.category.id,
+                                  )
+                                  .toList();
+
+                          if (filtered.isEmpty) {
+                            return Center(child: Text('No products found'));
+                          }
+
+                          return isGrid
+                              ? GridView.builder(
+                                padding: const EdgeInsets.all(5),
+                                itemCount: filtered.length,
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 1,
+                                      mainAxisSpacing: 6,
+                                      childAspectRatio: 0.5,
+                                    ),
+                                itemBuilder: (context, index) {
+                                  final product = filtered[index];
+                                  return _buildGridProduct(product);
+                                },
+                              )
+                              : ListView.separated(
+                                padding: const EdgeInsets.all(6),
+                                itemCount: filtered.length,
+                                separatorBuilder:
+                                    (_, __) => const SizedBox(height: 12),
+                                itemBuilder: (context, index) {
+                                  final product = filtered[index];
+                                  return _buildListProduct(product);
+                                },
+                              );
+                        }
                       },
                     ),
           ),
@@ -122,152 +160,11 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   }
 
   Widget _buildGridProduct(ProductModel product) {
-    final pageController = PageController();
-
-    return Card(
-      color: Colors.white,
-      elevation: 1,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // 🔁 PageView داخل Container دائري
-          Container(
-            height: 300,
-            decoration: BoxDecoration(color: Colors.white),
-            clipBehavior: Clip.antiAlias,
-            child: PageView.builder(
-              controller: pageController,
-              itemCount: product.imageUrls.length,
-              itemBuilder: (context, index) {
-                return Image.asset(
-                  product.imageUrls[index],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                );
-              },
-            ),
-          ),
-
-          const SizedBox(height: 4),
-
-          // ⬤ SmoothPageIndicator
-          SmoothPageIndicator(
-            controller: pageController,
-            count: product.imageUrls.length,
-            effect: WormEffect(
-              dotHeight: 5,
-              dotWidth: 15,
-              activeDotColor: Colors.red[900]!,
-              dotColor: Colors.grey.shade300,
-            ),
-          ),
-
-          const SizedBox(height: 6),
-
-          // 📝 اسم المنتج
-          Text(
-            product.title,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
-
-          const SizedBox(height: 4),
-
-          // 💰 السعر
-          Text(
-            '${product.price.toStringAsFixed(2)} EGP',
-            style: const TextStyle(
-              fontSize: 13,
-              color: Colors.black,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ],
-      ),
-    );
+    return GridProductView(product: product);
   }
 
   Widget _buildListProduct(ProductModel product) {
-    final pageController = PageController();
-
-    return Card(
-      color: Colors.white,
-      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero, // 🔥 بدون انحناءات
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // 🔁 الصور في PageView
-          SizedBox(
-            height: 450,
-            child: PageView.builder(
-              controller: pageController,
-              itemCount: product.imageUrls.length,
-              itemBuilder: (context, index) {
-                return Image.asset(
-                  product.imageUrls[index],
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                );
-              },
-            ),
-          ),
-
-          const SizedBox(height: 8),
-
-          // ⬤ SmoothPageIndicator
-          Center(
-            child: SmoothPageIndicator(
-              controller: pageController,
-              count: product.imageUrls.length,
-              effect: WormEffect(
-                dotHeight: 5,
-                dotWidth: 12,
-                activeDotColor: Colors.red[900]!,
-                dotColor: Colors.grey.shade300,
-              ),
-            ),
-          ),
-
-          const SizedBox(height: 8),
-
-          // 📝 اسم المنتج
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              product.title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.start,
-            ),
-          ),
-
-          const SizedBox(height: 4),
-
-          // 💰 السعر
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Text(
-              '${product.price.toStringAsFixed(2)} EGP',
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-                color: Colors.black87,
-              ),
-              textAlign: TextAlign.start,
-            ),
-          ),
-
-          const SizedBox(height: 12),
-        ],
-      ),
-    );
+    return ListProductView(product: product);
   }
 }
 
@@ -278,9 +175,10 @@ void _showSortBottomSheet(BuildContext context) {
       borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
     ),
     builder: (context) {
-      String selected = 'Recommended Sorting';
-      return StatefulBuilder(
-        builder: (context, setState) {
+      return BlocBuilder<HomeCubit, HomeState>(
+        builder: (context, state) {
+          final selected = state.currentSortOption;
+
           return Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -289,9 +187,12 @@ void _showSortBottomSheet(BuildContext context) {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Cancel',
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                     Row(
                       children: const [
@@ -310,7 +211,7 @@ void _showSortBottomSheet(BuildContext context) {
                       child: Text(
                         'Apply',
                         style: TextStyle(
-                          color: Colors.red[900],
+                          color: Colors.red[600],
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -318,12 +219,12 @@ void _showSortBottomSheet(BuildContext context) {
                   ],
                 ),
                 const SizedBox(height: 16),
-                Divider(),
-                _buildSortOption('Recommended Sorting', selected, setState),
-                Divider(),
-                _buildSortOption('Lowest Price', selected, setState),
-                Divider(),
-                _buildSortOption('Highest Price', selected, setState),
+                const Divider(),
+                _buildSortOption(context, 'Recommended Sorting', selected),
+                const Divider(),
+                _buildSortOption(context, 'Lowest Price', selected),
+                const Divider(),
+                _buildSortOption(context, 'Highest Price', selected),
               ],
             ),
           );
@@ -333,19 +234,88 @@ void _showSortBottomSheet(BuildContext context) {
   );
 }
 
-Widget _buildSortOption(
-  String title,
-  String selected,
-  void Function(void Function()) setState,
-) {
+Widget _buildSortOption(BuildContext context, String title, String selected) {
   return ListTile(
     title: Text(title),
     trailing:
         selected == title ? const Icon(Icons.check, color: Colors.green) : null,
     onTap: () {
-      setState(() {
-        selected = title;
-      });
+      context.read<HomeCubit>().sortProducts(title);
+      Navigator.pop(context);
+    },
+  );
+}
+
+Widget _buildGridShimmer() {
+  return GridView.builder(
+    padding: const EdgeInsets.all(5),
+    itemCount: 16,
+    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: 1,
+      mainAxisSpacing: 6,
+      childAspectRatio: 0.5,
+    ),
+    itemBuilder: (context, index) {
+      return Card(
+        color: Colors.white,
+        elevation: 0,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        child: Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Container(height: 300, color: Colors.white),
+              ),
+              const SizedBox(height: 8),
+              Container(width: 140, height: 20, color: Colors.white),
+              const SizedBox(height: 6),
+              Container(width: 120, height: 16, color: Colors.white),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildListShimmer() {
+  return ListView.separated(
+    padding: const EdgeInsets.all(6),
+    itemCount: 4,
+    separatorBuilder: (_, __) => const SizedBox(height: 12),
+    itemBuilder: (context, index) {
+      return Card(
+        margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+        child: Shimmer.fromColors(
+          baseColor: Colors.grey.shade300,
+          highlightColor: Colors.grey.shade100,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(height: 450, color: Colors.white),
+              const SizedBox(height: 8),
+              Container(
+                height: 12,
+                margin: const EdgeInsets.symmetric(horizontal: 120),
+                color: Colors.white,
+              ),
+              const SizedBox(height: 8),
+              Container(
+                height: 12,
+                margin: const EdgeInsets.symmetric(horizontal: 120),
+                color: Colors.white,
+              ),
+              const SizedBox(height: 12),
+            ],
+          ),
+        ),
+      );
     },
   );
 }
