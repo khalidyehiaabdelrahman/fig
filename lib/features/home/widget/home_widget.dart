@@ -1,5 +1,7 @@
 import 'package:fig/features/home/domain/category_model.dart';
+import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 abstract class ProductView extends StatefulWidget {
@@ -9,7 +11,6 @@ abstract class ProductView extends StatefulWidget {
 
 abstract class ProductViewState<T extends ProductView> extends State<T> {
   late final PageController pageController;
-  bool isFavorite = false;
 
   @override
   void initState() {
@@ -23,8 +24,13 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
     super.dispose();
   }
 
-  // دالة تبني صورة مع أيقونات favorites وشراء فوقها
-  Widget buildImageWithIcons(String imageUrl) {
+  Widget buildImageWithIcons(
+    BuildContext context,
+    String imageUrl, {
+    bool showSecondIcon = true,
+  }) {
+    final isFavorite = context.watch<HomeCubit>().isFavorite(widget.product);
+
     return Stack(
       fit: StackFit.expand,
       children: [
@@ -43,21 +49,18 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
                   size: 30,
                 ),
                 onPressed: () {
-                  setState(() {
-                    isFavorite = !isFavorite;
-                  });
+                  context.read<HomeCubit>().toggleFavorite(widget.product);
                 },
               ),
-              IconButton(
-                icon: const Icon(
-                  Icons.shopping_bag,
-                  color: Colors.white,
-                  size: 25,
+              if (showSecondIcon)
+                IconButton(
+                  icon: const Icon(
+                    Icons.shopping_bag,
+                    color: Colors.white,
+                    size: 25,
+                  ),
+                  onPressed: () {},
                 ),
-                onPressed: () {
-                  // هنا كود الإضافة للسلة أو الشراء
-                },
-              ),
             ],
           ),
         ),
@@ -71,14 +74,13 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      elevation: 1,
-      child: Column(
-        children: [
-          buildImages(),
-          const SizedBox(height: 4),
-          SmoothPageIndicator(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        buildImages(),
+        const SizedBox(height: 4),
+        Center(
+          child: SmoothPageIndicator(
             controller: pageController,
             count: widget.product.imageUrls.length,
             effect: WormEffect(
@@ -88,16 +90,22 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
               dotColor: Colors.grey.shade300,
             ),
           ),
-          const SizedBox(height: 6),
-          buildProductInfo(),
-        ],
-      ),
+        ),
+        const SizedBox(height: 6),
+        buildProductInfo(),
+      ],
     );
   }
 }
 
 class GridProductView extends ProductView {
-  const GridProductView({Key? key, required super.product}) : super(key: key);
+  final bool showSecondIcon;
+
+  const GridProductView({
+    Key? key,
+    required super.product,
+    this.showSecondIcon = true,
+  }) : super(key: key);
 
   @override
   State<GridProductView> createState() => _GridProductViewState();
@@ -107,9 +115,9 @@ class _GridProductViewState extends ProductViewState<GridProductView> {
   @override
   Widget buildImages() {
     return Container(
-      height: 300,
+      height: 255,
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(color: Colors.white),
+      decoration: const BoxDecoration(color: Colors.white),
       child: PageView.builder(
         controller: pageController,
         itemCount: widget.product.imageUrls.length,
@@ -121,7 +129,11 @@ class _GridProductViewState extends ProductViewState<GridProductView> {
           }
         },
         itemBuilder: (context, index) {
-          return buildImageWithIcons(widget.product.imageUrls[index]);
+          return buildImageWithIcons(
+            context,
+            widget.product.imageUrls[index],
+            showSecondIcon: widget.showSecondIcon,
+          );
         },
       ),
     );
@@ -168,7 +180,7 @@ class _ListProductViewState extends ProductViewState<ListProductView> {
         controller: pageController,
         itemCount: widget.product.imageUrls.length,
         itemBuilder: (context, index) {
-          return buildImageWithIcons(widget.product.imageUrls[index]);
+          return buildImageWithIcons(context, widget.product.imageUrls[index]);
         },
       ),
     );

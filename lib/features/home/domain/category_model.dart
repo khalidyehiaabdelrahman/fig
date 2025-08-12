@@ -27,3 +27,19 @@ class ProductModel {
     required this.price,
   });
 }
+
+class CartItem {
+  final String id;
+  final ProductModel product;
+  final int quantity;
+
+  CartItem({required this.id, required this.product, required this.quantity});
+
+  CartItem copyWith({int? quantity}) {
+    return CartItem(
+      id: id,
+      product: product,
+      quantity: quantity ?? this.quantity,
+    );
+  }
+}

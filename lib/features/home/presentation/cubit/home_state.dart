@@ -1,41 +1,57 @@
 import 'package:fig/features/home/domain/category_model.dart';
 
 class HomeState {
-  final bool isLoading;
+  final bool isLoadingCategories;
+  final bool isLoadingProducts;
+  final String? categoriesError;
+  final String? productsError;
   final List<CategoryModel> categories;
-  final String? selectedCategoryId;
   final List<ProductModel> allProducts;
   final List<ProductModel> filteredProducts;
-  final String currentSortOption;
-  final String? errorMessage;
+  final List<ProductModel> favorites;
+  final String? selectedCategoryId;
+  final String? currentSortOption;
+  final List<CartItem> cart; // هنا استخدمنا List<CartItem>
 
   const HomeState({
-    this.isLoading = false,
+    this.isLoadingCategories = false,
+    this.isLoadingProducts = false,
+    this.categoriesError,
+    this.productsError,
     this.categories = const [],
-    this.selectedCategoryId,
     this.allProducts = const [],
     this.filteredProducts = const [],
-    this.currentSortOption = 'Recommended Sorting',
-    this.errorMessage,
+    this.favorites = const [],
+    this.selectedCategoryId,
+    this.currentSortOption,
+    this.cart = const [],
   });
 
-  copyWith({
-    bool? isLoading,
+  HomeState copyWith({
+    bool? isLoadingCategories,
+    bool? isLoadingProducts,
+    String? categoriesError,
+    String? productsError,
     List<CategoryModel>? categories,
-    String? selectedCategoryId,
     List<ProductModel>? allProducts,
     List<ProductModel>? filteredProducts,
+    List<ProductModel>? favorites,
+    String? selectedCategoryId,
     String? currentSortOption,
-    String? errorMessage,
+    List<CartItem>? cart,
   }) {
     return HomeState(
-      isLoading: isLoading ?? this.isLoading,
+      isLoadingCategories: isLoadingCategories ?? this.isLoadingCategories,
+      isLoadingProducts: isLoadingProducts ?? this.isLoadingProducts,
+      categoriesError: categoriesError ?? this.categoriesError,
+      productsError: productsError ?? this.productsError,
       categories: categories ?? this.categories,
-      selectedCategoryId: selectedCategoryId ?? this.selectedCategoryId,
       allProducts: allProducts ?? this.allProducts,
       filteredProducts: filteredProducts ?? this.filteredProducts,
+      favorites: favorites ?? this.favorites,
+      selectedCategoryId: selectedCategoryId ?? this.selectedCategoryId,
       currentSortOption: currentSortOption ?? this.currentSortOption,
-      errorMessage: errorMessage,
+      cart: cart ?? this.cart,
     );
   }
 }

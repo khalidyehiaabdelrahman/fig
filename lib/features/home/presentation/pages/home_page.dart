@@ -1,11 +1,13 @@
 import 'dart:async';
-import 'package:fig/features/home/domain/category_model.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
-import 'package:fig/features/home/presentation/pages/Category_Products_Page_Screen.dart';
+import 'package:fig/features/home/widget/carousel_widget.dart';
+import 'package:fig/features/home/widget/category_list_widget.dart';
+import 'package:fig/features/home/widget/category_shimmer_widget.dart';
+import 'package:fig/features/home/widget/product_list_widget.dart';
+import 'package:fig/features/home/widget/product_shimmer_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,13 +21,6 @@ class _HomePageState extends State<HomePage> {
   int _currentPage = 0;
   Timer? _timer;
   Timer? _textTimer;
-
-  final List<String> carouselImages = [
-    'assets/images/2.jpg',
-    'assets/images/3.jpg',
-    'assets/images/4.jpg',
-    'assets/images/5.jpg',
-  ];
 
   final List<String> introTexts = [
     'Start your journey with us now!',
@@ -134,35 +129,40 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 24),
 
-              // Carousel
-              _buildCarousel(),
+              CarouselWidget(
+                pageController: _pageController,
+                images: carouselImages,
+                currentPage: _currentPage,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                },
+              ),
 
               const SizedBox(height: 16),
 
-              // ✅ Categories from Cubit
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   // && state.categories.isEmpty
-                  if (state.isLoading) {
-                    return _buildCategoryShimmer(); // أو shimmer بناءً على الحالة
-                  } else if (state.errorMessage != null) {
-                    return Center(child: Text(state.errorMessage!));
+                  if (state.isLoadingCategories) {
+                    return const CategoryShimmerWidget();
+                  } else if (state.categoriesError != null) {
+                    return Center(child: Text(state.categoriesError!));
                   } else {
-                    final categories = state.categories;
-                    return _buildCategoryList(categories);
+                    return CategoryListWidget(categories: state.categories);
                   }
                 },
               ),
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   //&& state.filteredProducts.isEmpty
-                  if (state.isLoading) {
-                    return _buildProductShimmer();
-                  } else if (state.errorMessage != null) {
-                    return Center(child: Text(state.errorMessage!));
+                  if (state.isLoadingProducts) {
+                    return const ProductShimmerWidget();
+                  } else if (state.productsError != null) {
+                    return Center(child: Text(state.productsError!));
                   } else {
-                    final filteredProducts = state.filteredProducts;
-                    return _buildProductList(filteredProducts);
+                    return ProductListWidget(products: state.filteredProducts);
                   }
                 },
               ),
@@ -192,209 +192,6 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCarousel() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 6.0),
-      child: Stack(
-        children: [
-          SizedBox(
-            height: 180,
-            child: PageView.builder(
-              controller: _pageController,
-              itemCount: carouselImages.length,
-              onPageChanged: (index) {
-                setState(() {
-                  _currentPage = index;
-                });
-              },
-              itemBuilder: (context, index) {
-                return ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.asset(
-                    carouselImages[index],
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                  ),
-                );
-              },
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(
-                carouselImages.length,
-                (index) => AnimatedContainer(
-                  duration: const Duration(milliseconds: 300),
-                  margin: const EdgeInsets.symmetric(horizontal: 4),
-                  width: 12,
-                  height: 12,
-                  decoration: BoxDecoration(
-                    color:
-                        _currentPage == index
-                            ? Colors.red[600]
-                            : Colors.red[200],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildCategoryList(List<CategoryModel> categories) {
-    return SizedBox(
-      height: 100,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          final category = categories[index];
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder:
-                      (context) => CategoryProductsScreen(category: category),
-                ),
-              );
-            },
-            child: Column(
-              children: [
-                ClipOval(
-                  child: Image.asset(
-                    category.imageUrl,
-                    width: 50,
-                    height: 50,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Text(category.name, style: const TextStyle(fontSize: 12)),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildProductList(List<ProductModel> products) {
-    return SizedBox(
-      height: 100,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
-        itemCount: products.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
-        itemBuilder: (context, index) {
-          final product = products[index];
-          return Column(
-            children: [
-              ClipOval(
-                child: Image.asset(
-                  product.imageUrls[0],
-                  width: 50,
-                  height: 50,
-                  fit: BoxFit.cover,
-                ),
-              ),
-              const SizedBox(height: 6),
-              Text(product.title, style: const TextStyle(fontSize: 12)),
-            ],
-          );
-        },
-      ),
-    );
-  }
-
-  Widget _buildCategoryShimmer() {
-    return SizedBox(
-      height: 100,
-      child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          itemCount: 6,
-          separatorBuilder: (_, __) => const SizedBox(width: 12),
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  width: 60,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProductShimmer() {
-    return SizedBox(
-      height: 100,
-      child: Shimmer.fromColors(
-        baseColor: Colors.grey.shade300,
-        highlightColor: Colors.grey.shade100,
-        child: ListView.separated(
-          scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          itemCount: 6,
-          separatorBuilder: (_, __) => const SizedBox(width: 12),
-          itemBuilder: (context, index) {
-            return Column(
-              children: [
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  width: 60,
-                  height: 10,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                ),
-              ],
-            );
-          },
         ),
       ),
     );

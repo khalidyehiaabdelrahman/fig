@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/features/home/domain/category_model.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class CategoryProductsScreen extends StatefulWidget {
   final CategoryModel category;
@@ -32,9 +31,11 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final state = context.read<HomeCubit>().state;
     final filtered =
-        state.filteredProducts
+        context
+            .watch<HomeCubit>()
+            .state
+            .filteredProducts
             .where((p) => p.categoryId == widget.category.id)
             .toList();
 
@@ -105,13 +106,11 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
           Expanded(
             child:
                 showShimmer
-                    ? (isGrid
-                        ? _buildGridShimmer()
-                        : _buildListShimmer()) // لو showShimmer true عرض الشيمر
+                    ? (isGrid ? _buildGridShimmer() : _buildListShimmer())
                     : BlocBuilder<HomeCubit, HomeState>(
                       builder: (context, state) {
-                        if (state.errorMessage != null) {
-                          return Center(child: Text(state.errorMessage!));
+                        if (state.productsError != null) {
+                          return Center(child: Text(state.productsError!));
                         } else {
                           final filtered =
                               state.filteredProducts
@@ -131,7 +130,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
                                 gridDelegate:
                                     const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
-                                      crossAxisSpacing: 1,
+                                      crossAxisSpacing: 15,
                                       mainAxisSpacing: 6,
                                       childAspectRatio: 0.5,
                                     ),
@@ -234,7 +233,7 @@ void _showSortBottomSheet(BuildContext context) {
   );
 }
 
-Widget _buildSortOption(BuildContext context, String title, String selected) {
+Widget _buildSortOption(BuildContext context, String title, String? selected) {
   return ListTile(
     title: Text(title),
     trailing:
