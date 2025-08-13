@@ -11,7 +11,7 @@ class HomeState {
   final List<ProductModel> favorites;
   final String? selectedCategoryId;
   final String? currentSortOption;
-  final List<CartItem> cart; // هنا استخدمنا List<CartItem>
+  final List<CartItem> cart;
 
   const HomeState({
     this.isLoadingCategories = false,

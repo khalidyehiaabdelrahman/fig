@@ -1,3 +1,4 @@
+import 'package:fig/features/home/domain/category_model_adapter.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/auth_tab_cubit.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
+  await initHive();
 
   runApp(
     EasyLocalization(
