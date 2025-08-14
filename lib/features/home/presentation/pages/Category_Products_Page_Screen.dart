@@ -1,9 +1,9 @@
+import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
 import 'package:fig/features/home/widget/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fig/features/home/domain/category_model.dart';
 import 'package:shimmer/shimmer.dart';
 
 class CategoryProductsScreen extends StatefulWidget {

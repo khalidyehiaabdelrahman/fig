@@ -1,5 +1,5 @@
+import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fig/features/home/domain/category_model.dart';
 import 'package:fig/features/home/presentation/pages/Category_Products_Page_Screen.dart';
 
 class CategoryListWidget extends StatelessWidget {

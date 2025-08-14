@@ -1,5 +1,6 @@
-import 'package:fig/features/home/domain/category_model.dart';
+import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
+import 'package:fig/features/home/presentation/pages/Product_Page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -74,26 +75,36 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        buildImages(),
-        const SizedBox(height: 4),
-        Center(
-          child: SmoothPageIndicator(
-            controller: pageController,
-            count: widget.product.imageUrls.length,
-            effect: WormEffect(
-              dotHeight: 5,
-              dotWidth: 15,
-              activeDotColor: Colors.red[900]!,
-              dotColor: Colors.grey.shade300,
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailsScreen(product: widget.product),
+          ),
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          buildImages(),
+          const SizedBox(height: 4),
+          Center(
+            child: SmoothPageIndicator(
+              controller: pageController,
+              count: widget.product.imageUrls.length,
+              effect: WormEffect(
+                dotHeight: 5,
+                dotWidth: 15,
+                activeDotColor: Colors.red[900]!,
+                dotColor: Colors.grey.shade300,
+              ),
             ),
           ),
-        ),
-        const SizedBox(height: 6),
-        buildProductInfo(),
-      ],
+          const SizedBox(height: 6),
+          buildProductInfo(),
+        ],
+      ),
     );
   }
 }

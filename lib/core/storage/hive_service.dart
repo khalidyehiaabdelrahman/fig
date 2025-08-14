@@ -1,4 +1,4 @@
-import 'package:fig/features/home/domain/category_model.dart';
+import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:hive/hive.dart';
 
 // لازم تسجل الـ adapters قبل استخدام Hive

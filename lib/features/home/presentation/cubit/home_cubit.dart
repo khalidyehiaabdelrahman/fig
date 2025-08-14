@@ -1,6 +1,6 @@
 import 'package:fig/features/home/data/category_data.dart';
 import 'package:fig/features/home/data/products_data.dart';
-import 'package:fig/features/home/domain/category_model.dart';
+import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
 import 'package:hive/hive.dart';
@@ -106,31 +106,38 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> loadInitialData() async {
     final cartBox = Hive.box<CartItem>('cart');
     final favoritesBox = Hive.box<ProductModel>('favorites');
+    final productsBox = Hive.box<ProductModel>('products');
 
-    List<ProductModel> allProds =
-        Hive.box<ProductModel>('products').values.toList();
+    // كل المنتجات
+    List<ProductModel> allProducts = productsBox.values.toList();
 
+    // استرجاع الاعدادات السابقة
     final prefs = await SharedPreferences.getInstance();
     String? savedSortOption = prefs.getString('currentSortOption');
     String? savedCategoryId = prefs.getString('selectedCategoryId');
 
-    List<ProductModel> filtered =
+    // تصفية حسب الفئة لو موجودة
+    List<ProductModel> filteredProducts =
         savedCategoryId == null
-            ? List.from(allProds)
-            : allProds.where((p) => p.categoryId == savedCategoryId).toList();
+            ? List.from(allProducts)
+            : allProducts
+                .where((p) => p.categoryId == savedCategoryId)
+                .toList();
 
+    // ترتيب المنتجات
     if (savedSortOption == 'Lowest Price') {
-      filtered.sort((a, b) => a.price.compareTo(b.price));
+      filteredProducts.sort((a, b) => a.price.compareTo(b.price));
     } else if (savedSortOption == 'Highest Price') {
-      filtered.sort((a, b) => b.price.compareTo(a.price));
+      filteredProducts.sort((a, b) => b.price.compareTo(a.price));
     }
 
+    // تحديث الـ state
     emit(
       state.copyWith(
         cart: cartBox.values.toList(),
         favorites: favoritesBox.values.toList(),
-        allProducts: allProds,
-        filteredProducts: filtered,
+        allProducts: allProducts,
+        filteredProducts: filteredProducts,
         currentSortOption: savedSortOption,
         selectedCategoryId: savedCategoryId,
       ),
