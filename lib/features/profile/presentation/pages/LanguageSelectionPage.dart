@@ -1,5 +1,5 @@
-import 'package:fig/core/constants/components.dart';
 import 'package:fig/core/utils/responsive.dart';
+import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

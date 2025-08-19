@@ -1,10 +1,10 @@
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
-import 'package:fig/features/home/widget/home_widget.dart';
+import 'package:fig/features/home/widgets/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:fig/core/widgets/shimmer_skeletons.dart';
 
 class CategoryProductsScreen extends StatefulWidget {
   final CategoryModel category;
@@ -17,15 +17,17 @@ class CategoryProductsScreen extends StatefulWidget {
 
 class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   bool isGrid = true;
-  bool showShimmer = true;
+  bool forceShowShimmer = true;
 
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      setState(() {
-        showShimmer = false;
-      });
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          forceShowShimmer = false;
+        });
+      }
     });
   }
 
@@ -102,56 +104,55 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
             ),
           ),
           Divider(),
-          // 🛒 Products view
           Expanded(
-            child:
-                showShimmer
-                    ? (isGrid ? _buildGridShimmer() : _buildListShimmer())
-                    : BlocBuilder<HomeCubit, HomeState>(
-                      builder: (context, state) {
-                        if (state.productsError != null) {
-                          return Center(child: Text(state.productsError!));
-                        } else {
-                          final filtered =
-                              state.filteredProducts
-                                  .where(
-                                    (p) => p.categoryId == widget.category.id,
-                                  )
-                                  .toList();
+            child: BlocBuilder<HomeCubit, HomeState>(
+              builder: (context, state) {
+                if (state.productsError != null) {
+                  return Center(child: Text(state.productsError!));
+                }
 
-                          if (filtered.isEmpty) {
-                            return Center(child: Text('No products found'));
-                          }
+                if (forceShowShimmer || state.isLoadingProducts) {
+                  return isGrid
+                      ? const ProductGridShimmer()
+                      : const ProductListShimmer();
+                }
 
-                          return isGrid
-                              ? GridView.builder(
-                                padding: const EdgeInsets.all(5),
-                                itemCount: filtered.length,
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2,
-                                      crossAxisSpacing: 15,
-                                      mainAxisSpacing: 6,
-                                      childAspectRatio: 0.5,
-                                    ),
-                                itemBuilder: (context, index) {
-                                  final product = filtered[index];
-                                  return _buildGridProduct(product);
-                                },
-                              )
-                              : ListView.separated(
-                                padding: const EdgeInsets.all(6),
-                                itemCount: filtered.length,
-                                separatorBuilder:
-                                    (_, __) => const SizedBox(height: 12),
-                                itemBuilder: (context, index) {
-                                  final product = filtered[index];
-                                  return _buildListProduct(product);
-                                },
-                              );
-                        }
+                final filtered =
+                    state.filteredProducts
+                        .where((p) => p.categoryId == widget.category.id)
+                        .toList();
+
+                if (filtered.isEmpty) {
+                  return const Center(child: Text('No products found'));
+                }
+
+                return isGrid
+                    ? GridView.builder(
+                      padding: const EdgeInsets.all(5),
+                      itemCount: filtered.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 15,
+                            mainAxisSpacing: 6,
+                            childAspectRatio: 0.5,
+                          ),
+                      itemBuilder: (context, index) {
+                        final product = filtered[index];
+                        return _buildGridProduct(product);
                       },
-                    ),
+                    )
+                    : ListView.separated(
+                      padding: const EdgeInsets.all(6),
+                      itemCount: filtered.length,
+                      separatorBuilder: (_, __) => const SizedBox(height: 12),
+                      itemBuilder: (context, index) {
+                        final product = filtered[index];
+                        return _buildListProduct(product);
+                      },
+                    );
+              },
+            ),
           ),
         ],
       ),
@@ -241,80 +242,6 @@ Widget _buildSortOption(BuildContext context, String title, String? selected) {
     onTap: () {
       context.read<HomeCubit>().sortProducts(title);
       Navigator.pop(context);
-    },
-  );
-}
-
-Widget _buildGridShimmer() {
-  return GridView.builder(
-    padding: const EdgeInsets.all(5),
-    itemCount: 16,
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2,
-      crossAxisSpacing: 1,
-      mainAxisSpacing: 6,
-      childAspectRatio: 0.5,
-    ),
-    itemBuilder: (context, index) {
-      return Card(
-        color: Colors.white,
-        elevation: 0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Container(height: 300, color: Colors.white),
-              ),
-              const SizedBox(height: 8),
-              Container(width: 140, height: 20, color: Colors.white),
-              const SizedBox(height: 6),
-              Container(width: 120, height: 16, color: Colors.white),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget _buildListShimmer() {
-  return ListView.separated(
-    padding: const EdgeInsets.all(6),
-    itemCount: 4,
-    separatorBuilder: (_, __) => const SizedBox(height: 12),
-    itemBuilder: (context, index) {
-      return Card(
-        margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
-        child: Shimmer.fromColors(
-          baseColor: Colors.grey.shade300,
-          highlightColor: Colors.grey.shade100,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(height: 450, color: Colors.white),
-              const SizedBox(height: 8),
-              Container(
-                height: 12,
-                margin: const EdgeInsets.symmetric(horizontal: 120),
-                color: Colors.white,
-              ),
-              const SizedBox(height: 8),
-              Container(
-                height: 12,
-                margin: const EdgeInsets.symmetric(horizontal: 120),
-                color: Colors.white,
-              ),
-              const SizedBox(height: 12),
-            ],
-          ),
-        ),
-      );
     },
   );
 }

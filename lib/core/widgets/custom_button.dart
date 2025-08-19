@@ -206,7 +206,7 @@ class TransparentTextButton extends StatelessWidget {
         overflow: TextOverflow.ellipsis, // لمنع overflow
         softWrap: false, // منع النزول للسطر إذا أردت
         style: TextStyle(
-          color: colorScheme.onBackground.withOpacity(0.6),
+          color: colorScheme.onSurface.withOpacity(0.6),
           fontSize: 14,
         ),
       ),

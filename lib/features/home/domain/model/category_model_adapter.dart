@@ -37,6 +37,7 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
       price: reader.readDouble(),
       availableColors: reader.readList().cast<String>(),
       availableSizes: reader.readList().cast<int>(),
+      lapel: reader.readBool() ? reader.readString() : null,
     );
   }
 
@@ -50,6 +51,12 @@ class ProductModelAdapter extends TypeAdapter<ProductModel> {
     writer.writeDouble(obj.price);
     writer.writeList(obj.availableColors);
     writer.writeList(obj.availableSizes);
+    if (obj.lapel != null) {
+      writer.writeBool(true);
+      writer.writeString(obj.lapel!);
+    } else {
+      writer.writeBool(false);
+    }
   }
 }
 
@@ -93,6 +100,7 @@ class FavoritesAdapter extends TypeAdapter<ProductModel> {
       price: reader.readDouble(),
       availableColors: reader.readList().cast<String>(),
       availableSizes: reader.readList().cast<int>(),
+      lapel: reader.readBool() ? reader.readString() : null,
     );
   }
 
@@ -106,6 +114,12 @@ class FavoritesAdapter extends TypeAdapter<ProductModel> {
     writer.writeDouble(obj.price);
     writer.writeList(obj.availableColors);
     writer.writeList(obj.availableSizes);
+    if (obj.lapel != null) {
+      writer.writeBool(true);
+      writer.writeString(obj.lapel!);
+    } else {
+      writer.writeBool(false);
+    }
   }
 }
 

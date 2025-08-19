@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fig/core/constants/components.dart';
 import 'package:fig/core/utils/responsive.dart';
+import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/features/profile/presentation/cubit/auth_tab_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:fig/features/Basket/Basket_screen.dart';
-import 'package:fig/features/Favorites/presentation/pages/Favorites_Screen.dart';
-import 'package:fig/features/Navigation/presentation/pages/navigation_cubit.dart';
+import 'package:fig/features/Basket/basket_screen.dart';
+import 'package:fig/features/Favorites/presentation/pages/favorites_Screen.dart';
+import 'package:fig/features/Navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:fig/features/home/presentation/pages/home_page.dart';
 import 'package:fig/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';

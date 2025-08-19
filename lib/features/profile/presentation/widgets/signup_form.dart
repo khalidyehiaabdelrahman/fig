@@ -80,10 +80,12 @@ class SignUpForm extends StatelessWidget {
                             .toggleConfirmPasswordVisibility(),
                 prefixIcon: Icons.lock_outline,
                 validator: (value) {
-                  if (value == null || value.isEmpty)
+                  if (value == null || value.isEmpty) {
                     return 'confirm_password_required'.tr();
-                  if (value != passwordController.text)
+                  }
+                  if (value != passwordController.text) {
                     return 'passwords_do_not_match'.tr();
+                  }
                   return null;
                 },
               );

@@ -24,8 +24,9 @@ class LoginForm extends StatelessWidget {
               hint: 'email_hint'.tr(),
               controller: emailController,
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return 'email_required'.tr();
+                }
                 if (!value.contains('@')) return 'email_invalid'.tr();
                 return null;
               },
@@ -40,8 +41,9 @@ class LoginForm extends StatelessWidget {
                   hint: 'password_hint'.tr(),
                   controller: passwordController,
                   validator: (value) {
-                    if (value == null || value.isEmpty)
+                    if (value == null || value.isEmpty) {
                       return 'password_required'.tr();
+                    }
 
                     return null;
                   },

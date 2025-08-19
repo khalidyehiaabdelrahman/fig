@@ -1,11 +1,10 @@
 import 'dart:async';
+import 'package:fig/core/widgets/shimmer_skeletons.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
-import 'package:fig/features/home/widget/carousel_widget.dart';
-import 'package:fig/features/home/widget/category_list_widget.dart';
-import 'package:fig/features/home/widget/category_shimmer_widget.dart';
-import 'package:fig/features/home/widget/product_list_widget.dart';
-import 'package:fig/features/home/widget/product_shimmer_widget.dart';
+import 'package:fig/features/home/widgets/carousel_widget.dart';
+import 'package:fig/features/home/widgets/category_list_widget.dart';
+import 'package:fig/features/home/widgets/product_list_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -146,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, state) {
                   // && state.categories.isEmpty
                   if (state.isLoadingCategories) {
-                    return const CategoryShimmerWidget();
+                    return const CategoryRowShimmer();
                   } else if (state.categoriesError != null) {
                     return Center(child: Text(state.categoriesError!));
                   } else {
@@ -154,11 +153,13 @@ class _HomePageState extends State<HomePage> {
                   }
                 },
               ),
+              const SizedBox(height: 16),
+
               BlocBuilder<HomeCubit, HomeState>(
                 builder: (context, state) {
                   //&& state.filteredProducts.isEmpty
                   if (state.isLoadingProducts) {
-                    return const ProductShimmerWidget();
+                    return const CategoryRowShimmer();
                   } else if (state.productsError != null) {
                     return Center(child: Text(state.productsError!));
                   } else {

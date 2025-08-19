@@ -19,6 +19,7 @@ class ProductModel {
   final double price;
   final List<String> availableColors;
   final List<int> availableSizes;
+  final String? lapel;
 
   const ProductModel({
     required this.id,
@@ -29,6 +30,7 @@ class ProductModel {
     required this.price,
     this.availableColors = const [],
     this.availableSizes = const [],
+    this.lapel,
   });
 }
 
