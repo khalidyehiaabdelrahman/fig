@@ -22,7 +22,6 @@ Color parseColor(String color) {
   }
 }
 
-
 class ColorsSelector extends StatelessWidget {
   final List<String> colors;
   final String? selectedColor;

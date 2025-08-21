@@ -7,7 +7,7 @@ import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 class AddToCartButton extends StatelessWidget {
   final ProductModel product;
   final bool isEnabled;
-  final bool popAfterAdd; // للتحكم إذا تقفل الصفحة ولا تفضل مفتوحة
+  final bool popAfterAdd; 
 
   const AddToCartButton({
     super.key,

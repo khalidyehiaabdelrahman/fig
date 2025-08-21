@@ -21,6 +21,13 @@ class _HomePageState extends State<HomePage> {
   Timer? _timer;
   Timer? _textTimer;
 
+  final List<String> carouselImages = [
+    'assets/images/2.jpg',
+    'assets/images/3.jpg',
+    'assets/images/4.jpg',
+    'assets/images/5.jpg',
+  ];
+
   final List<String> introTexts = [
     'Start your journey with us now!',
     'How Can I Help You?',
@@ -128,15 +135,25 @@ class _HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 24),
 
-              CarouselWidget(
-                pageController: _pageController,
-                images: carouselImages,
-                currentPage: _currentPage,
-                onPageChanged: (index) {
-                  setState(() {
-                    _currentPage = index;
-                  });
-                },
+              Stack(
+                children: [
+                  CarouselWidget(
+                    pageController: _pageController,
+                    images: carouselImages,
+                    scrollDirection: Axis.horizontal,
+
+                    onPageChanged: (i) => setState(() => _currentPage = i),
+                  ),
+                  Positioned(
+                    bottom: 8,
+                    left: 0,
+                    right: 0,
+                    child: CarouselIndicator(
+                      itemCount: carouselImages.length,
+                      currentPage: _currentPage,
+                    ),
+                  ),
+                ],
               ),
 
               const SizedBox(height: 16),

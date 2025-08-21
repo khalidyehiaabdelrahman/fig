@@ -202,3 +202,54 @@ class ProductListShimmer extends StatelessWidget {
     );
   }
 }
+
+class ProductOrCategoryCardShimmer extends StatelessWidget {
+  final int itemCount;
+  const ProductOrCategoryCardShimmer({super.key, this.itemCount = 8});
+
+  @override
+  Widget build(BuildContext context) {
+    return AppShimmer(
+      child: ListView.separated(
+        padding: const EdgeInsets.all(16),
+        itemCount: itemCount,
+        separatorBuilder: (_, __) => const SizedBox(height: 16),
+
+        itemBuilder: (_, __) {
+          return Container(
+            height: 100,
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
+
+            child: Padding(
+              padding: const EdgeInsets.all(12.0), // padding داخلي للكارت
+              child: Row(
+                children: [
+                  // صورة شيمر
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: _ShimmerBox(
+                      height: 80,
+                      width: 100,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+
+                  const SizedBox(width: 16),
+
+                  // نص شيمر
+                  Expanded(
+                    child: _ShimmerBox(
+                      height: 16,
+                      width: double.infinity,
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

@@ -1,3 +1,4 @@
+import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/colors_selector.dart';
 import 'package:fig/features/home/widgets/sizes_selector.dart';
@@ -20,48 +21,61 @@ class _ProductQuickReviewSheetState extends State<ProductQuickReviewSheet> {
 
   @override
   Widget build(BuildContext context) {
-
-    return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-        left: 16,
-        right: 16,
-        top: 16,
-      ),
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _buildHeader(context),
-            const SizedBox(height: 12),
-            _buildProductInfo(),
-            const SizedBox(height: 20),
-            SizesSelector(
-              sizes: widget.product.availableSizes,
-              selectedSize: selectedSize,
-              onSizeSelected: (size) {
-                setState(() => selectedSize = size);
-              },
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Container(
+            color: Colors.grey.shade300,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: _buildHeader(context),
             ),
-            const SizedBox(height: 20),
-            ColorsSelector(
-              colors: widget.product.availableColors,
-              selectedColor: selectedColor,
-              onColorSelected: (color) {
-                setState(() => selectedColor = color);
-              },
-            ),
-            const SizedBox(height: 30),
-            _buildGoToDetails(context),
-            const SizedBox(height: 16),
-            AddToCartButton(
-              product: widget.product,
-              isEnabled: selectedColor != null && selectedSize != null,
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              SizedBox(height: 5),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _buildProductInfo(),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: SizesSelector(
+                  sizes: widget.product.availableSizes,
+                  selectedSize: selectedSize,
+                  onSizeSelected: (size) {
+                    setState(() => selectedSize = size);
+                  },
+                ),
+              ),
+              const SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15),
+                child: ColorsSelector(
+                  colors: widget.product.availableColors,
+                  selectedColor: selectedColor,
+                  onColorSelected: (color) {
+                    setState(() => selectedColor = color);
+                  },
+                ),
+              ),
+              const SizedBox(height: 30),
+              _buildGoToDetails(context),
+              const SizedBox(height: 16),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: AddToCartButton(
+                  product: widget.product,
+                  isEnabled: selectedColor != null && selectedSize != null,
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -87,7 +101,7 @@ class _ProductQuickReviewSheetState extends State<ProductQuickReviewSheet> {
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       ClipRRect(
-        borderRadius: BorderRadius.circular(12), 
+        borderRadius: BorderRadius.circular(12),
         child: Image.asset(
           widget.product.imageUrls.first,
           height: 120,

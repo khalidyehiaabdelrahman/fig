@@ -1,9 +1,8 @@
-import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
-import 'package:fig/features/home/widgets/colors_selector.dart';
-import 'package:fig/features/home/widgets/sizes_selector.dart';
+import 'package:fig/features/home/widgets/carousel_widget.dart';
+import 'package:fig/features/home/widgets/product_info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
@@ -18,6 +17,8 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  late PageController _pageController;
+
   int _selectedImage = 0;
   String? _selectedColor;
   int? _selectedSize;
@@ -31,6 +32,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    _pageController = PageController(initialPage: _selectedImage);
     _draggableController = DraggableScrollableController();
     colors = widget.product.availableColors;
     sizes = widget.product.availableSizes;
@@ -70,20 +72,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         children: [
           Stack(
             children: [
-              SizedBox(
+              CarouselWidget(
+                pageController: _pageController,
+                images: widget.product.imageUrls,
                 height: 400,
-                width: double.infinity,
-                child: PageView.builder(
-                  itemCount: widget.product.imageUrls.length,
-                  onPageChanged:
-                      (index) => setState(() => _selectedImage = index),
-                  itemBuilder: (context, index) {
-                    return Image.asset(
-                      widget.product.imageUrls[index],
-                      fit: BoxFit.cover,
-                    );
-                  },
-                ),
+                scrollDirection: Axis.vertical,
+                onPageChanged:
+                    (index) => setState(() => _selectedImage = index),
               ),
 
               Positioned(
@@ -93,25 +88,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     Directionality.of(context) == TextDirection.ltr ? 8 : null,
                 top: 0,
                 bottom: 0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    widget.product.imageUrls.length,
-                    (index) => Container(
-                      margin: const EdgeInsets.symmetric(vertical: 4),
-                      height: _selectedImage == index ? 12 : 8,
-                      width: 8,
-                      decoration: BoxDecoration(
-                        color:
-                            _selectedImage == index ? Colors.red : Colors.grey,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
-                    ),
-                  ),
+                child: CarouselIndicator(
+                  itemCount: widget.product.imageUrls.length,
+                  currentPage: _selectedImage,
+                  direction: Axis.vertical,
+                  size: 8,
+                  spacing: 4,
+                  activeColor: Colors.red,
+                  inactiveColor: Colors.grey,
                 ),
               ),
             ],
           ),
+
           DraggableScrollableSheet(
             controller: _draggableController,
             initialChildSize: 0.42,
@@ -141,95 +130,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         horizontal: 16,
                         vertical: 12,
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  widget.product.title,
-                                  style: const TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                              Text(
-                                '${widget.product.price} EGP',
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 6),
-
-                          Text(
-                            widget.product.lapel ?? '',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          buildReusableDivider(),
-                          const SizedBox(height: 20),
-                          SizesSelector(
-                            sizes: sizes,
-                            selectedSize: _selectedSize,
-                            onSizeSelected: (size) {
-                              setState(() => _selectedSize = size);
-                            },
-                          ),
-
-                          const SizedBox(height: 20),
-                          ColorsSelector(
-                            colors: colors,
-                            selectedColor: _selectedColor,
-                            onColorSelected: (color) {
-                              setState(() => _selectedColor = color);
-                            },
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          const Text(
-                            "Product Short Description",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            '',
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black87,
-                              height: 1.4,
-                            ),
-                          ),
-
-                          const Text(
-                            "Product Full Description",
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Text(
-                            widget.product.description,
-                            style: const TextStyle(
-                              fontSize: 16,
-                              color: Colors.black87,
-                              height: 1.4,
-                            ),
-                          ),
-                        ],
+                      child: ProductInfoSection(
+                        sizes: sizes,
+                        colors: colors,
+                        selectedSize: _selectedSize,
+                        selectedColor: _selectedColor,
+                        onSizeSelected:
+                            (size) => setState(() => _selectedSize = size),
+                        onColorSelected:
+                            (color) => setState(() => _selectedColor = color),
+                        shortDescription: '',
+                        fullDescription: widget.product.description,
+                        title: widget.product.title,
+                        price: widget.product.price.toString(),
+                        lapel: widget.product.lapel ?? '',
                       ),
                     ),
                   ),

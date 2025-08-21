@@ -1,3 +1,4 @@
+import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
@@ -103,7 +104,7 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
               ],
             ),
           ),
-          Divider(),
+          buildReusableDivider(),
           Expanded(
             child: BlocBuilder<HomeCubit, HomeState>(
               builder: (context, state) {

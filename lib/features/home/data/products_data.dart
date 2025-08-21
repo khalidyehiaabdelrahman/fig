@@ -207,7 +207,7 @@ final List<ProductModel> allProducts = [
     categoryId: '3',
     title: 'Black Bodysuit',
     imageUrls: [
-      'assets/images/6.jpg',
+      'assets/images/9.jpg',
       'assets/images/7.jpg',
       'assets/images/8.jpg',
     ],
@@ -346,14 +346,15 @@ final List<ProductModel> allProducts = [
     availableSizes: [36, 38, 40, 42],
     lapel: 'Casual lapel with buttoned closure',
   ),
+
   ProductModel(
     id: '22',
     categoryId: '4',
     title: 'Oversized Cardigan',
     imageUrls: [
-      'assets/images/33.jpg',
-      'assets/images/34.jpg',
-      'assets/images/35.jpg',
+      'assets/images/1.jpg',
+      'assets/images/2.jpg',
+      'assets/images/3.jpg',
     ],
     description:
         'Oversized fit cardigan. Modern style. Great for layering in cold weather.',
@@ -367,9 +368,9 @@ final List<ProductModel> allProducts = [
     categoryId: '4',
     title: 'Striped Cardigan',
     imageUrls: [
-      'assets/images/36.jpg',
-      'assets/images/37.jpg',
-      'assets/images/38.jpg',
+      'assets/images/4.jpg',
+      'assets/images/5.jpg',
+      'assets/images/6.jpg',
     ],
     description:
         'Trendy striped pattern. Comfortable fit. Perfect for casual outings.',
@@ -383,9 +384,9 @@ final List<ProductModel> allProducts = [
     categoryId: '4',
     title: 'Cropped Cardigan',
     imageUrls: [
-      'assets/images/39.jpg',
-      'assets/images/40.jpg',
-      'assets/images/41.jpg',
+      'assets/images/7.jpg',
+      'assets/images/8.jpg',
+      'assets/images/9.jpg',
     ],
     description:
         'Short cropped design. Stylish and chic. Great for high-waist outfits.',
@@ -400,9 +401,9 @@ final List<ProductModel> allProducts = [
     categoryId: '5',
     title: 'Wool Coat',
     imageUrls: [
-      'assets/images/42.jpg',
-      'assets/images/43.jpg',
-      'assets/images/44.jpg',
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+      'assets/images/12.jpg',
     ],
     description:
         'Classic wool coat. Warm and durable. Perfect for cold winter days.',
@@ -416,9 +417,9 @@ final List<ProductModel> allProducts = [
     categoryId: '5',
     title: 'Trench Coat',
     imageUrls: [
-      'assets/images/45.jpg',
-      'assets/images/46.jpg',
-      'assets/images/47.jpg',
+      'assets/images/13.jpg',
+      'assets/images/14.jpg',
+      'assets/images/15.jpg',
     ],
     description:
         'Stylish trench coat. Lightweight and elegant. Great for mid-season wear.',
@@ -432,9 +433,9 @@ final List<ProductModel> allProducts = [
     categoryId: '5',
     title: 'Double-Breasted Coat',
     imageUrls: [
-      'assets/images/48.jpg',
-      'assets/images/49.jpg',
-      'assets/images/50.jpg',
+      'assets/images/16.jpg',
+      'assets/images/17.jpg',
+      'assets/images/18.jpg',
     ],
     description:
         'Formal double-breasted coat. Perfect for business or evening wear.',
@@ -448,9 +449,9 @@ final List<ProductModel> allProducts = [
     categoryId: '5',
     title: 'Cape Coat',
     imageUrls: [
-      'assets/images/51.jpg',
-      'assets/images/52.jpg',
-      'assets/images/53.jpg',
+      'assets/images/19.jpg',
+      'assets/images/20.jpg',
+      'assets/images/23.jpg',
     ],
     description:
         'Unique cape design. Modern and chic. Perfect for a statement look.',
@@ -464,9 +465,9 @@ final List<ProductModel> allProducts = [
     categoryId: '5',
     title: 'Puffer Coat',
     imageUrls: [
-      'assets/images/54.jpg',
-      'assets/images/55.jpg',
-      'assets/images/56.jpg',
+      'assets/images/24.jpg',
+      'assets/images/25.jpg',
+      'assets/images/26.jpg',
     ],
     description:
         'Cozy padded puffer coat. Lightweight and very warm. Ideal for winter.',
@@ -480,9 +481,9 @@ final List<ProductModel> allProducts = [
     categoryId: '5',
     title: 'Belted Coat',
     imageUrls: [
-      'assets/images/57.jpg',
-      'assets/images/58.jpg',
-      'assets/images/59.jpg',
+      'assets/images/27.jpg',
+      'assets/images/28.jpg',
+      'assets/images/29.jpg',
     ],
     description:
         'Stylish belted design. Elegant and feminine. Great for formal occasions.',
@@ -497,9 +498,9 @@ final List<ProductModel> allProducts = [
     categoryId: '6',
     title: 'Evening Dress',
     imageUrls: [
-      'assets/images/60.jpg',
-      'assets/images/61.jpg',
-      'assets/images/62.jpg',
+      'assets/images/30.jpg',
+      'assets/images/31.jpg',
+      'assets/images/32.jpg',
     ],
     description:
         'Elegant evening dress. Perfect for parties or special occasions. Flowy and feminine.',
@@ -513,9 +514,9 @@ final List<ProductModel> allProducts = [
     categoryId: '6',
     title: 'Casual Summer Dress',
     imageUrls: [
-      'assets/images/63.jpg',
-      'assets/images/64.jpg',
-      'assets/images/65.jpg',
+      'assets/images/1.jpg',
+      'assets/images/2.jpg',
+      'assets/images/3.jpg',
     ],
     description:
         'Lightweight summer dress. Comfortable and colorful. Great for casual outings.',
@@ -529,9 +530,9 @@ final List<ProductModel> allProducts = [
     categoryId: '6',
     title: 'Bodycon Dress',
     imageUrls: [
-      'assets/images/66.jpg',
-      'assets/images/67.jpg',
-      'assets/images/68.jpg',
+      'assets/images/4.jpg',
+      'assets/images/5.jpg',
+      'assets/images/6.jpg',
     ],
     description:
         'Fitted bodycon style. Perfect for night out or special events.',
@@ -545,9 +546,9 @@ final List<ProductModel> allProducts = [
     categoryId: '6',
     title: 'Maxi Dress',
     imageUrls: [
-      'assets/images/69.jpg',
-      'assets/images/70.jpg',
-      'assets/images/71.jpg',
+      'assets/images/7.jpg',
+      'assets/images/8.jpg',
+      'assets/images/9.jpg',
     ],
     description:
         'Flowy maxi dress. Elegant and comfortable. Perfect for beach or summer evenings.',
@@ -561,9 +562,9 @@ final List<ProductModel> allProducts = [
     categoryId: '6',
     title: 'Shirt Dress',
     imageUrls: [
-      'assets/images/72.jpg',
-      'assets/images/73.jpg',
-      'assets/images/74.jpg',
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+      'assets/images/12.jpg',
     ],
     description:
         'Casual shirt-inspired dress. Comfortable and practical. Perfect for daily wear.',
@@ -577,9 +578,9 @@ final List<ProductModel> allProducts = [
     categoryId: '6',
     title: 'Wrap Dress',
     imageUrls: [
-      'assets/images/75.jpg',
-      'assets/images/76.jpg',
-      'assets/images/77.jpg',
+      'assets/images/13.jpg',
+      'assets/images/14.jpg',
+      'assets/images/15.jpg',
     ],
     description:
         'Flattering wrap design. Feminine and chic. Suitable for casual or formal wear.',
@@ -594,9 +595,9 @@ final List<ProductModel> allProducts = [
     categoryId: '7',
     title: 'Denim Jacket',
     imageUrls: [
-      'assets/images/78.jpg',
-      'assets/images/79.jpg',
-      'assets/images/80.jpg',
+      'assets/images/16.jpg',
+      'assets/images/17.jpg',
+      'assets/images/18.jpg',
     ],
     description:
         'Classic denim jacket. Casual and timeless. Perfect for everyday wear.',
@@ -610,9 +611,9 @@ final List<ProductModel> allProducts = [
     categoryId: '7',
     title: 'Leather Jacket',
     imageUrls: [
-      'assets/images/81.jpg',
-      'assets/images/82.jpg',
-      'assets/images/83.jpg',
+      'assets/images/19.jpg',
+      'assets/images/20.jpg',
+      'assets/images/21.jpg',
     ],
     description:
         'Trendy leather jacket. Bold and stylish. Perfect for night outings.',
@@ -626,9 +627,9 @@ final List<ProductModel> allProducts = [
     categoryId: '7',
     title: 'Bomber Jacket',
     imageUrls: [
-      'assets/images/84.jpg',
-      'assets/images/85.jpg',
-      'assets/images/86.jpg',
+      'assets/images/22.jpg',
+      'assets/images/23.jpg',
+      'assets/images/24.jpg',
     ],
     description:
         'Sporty bomber style. Comfortable and versatile. Great for casual outfits.',
@@ -642,9 +643,9 @@ final List<ProductModel> allProducts = [
     categoryId: '7',
     title: 'Cropped Jacket',
     imageUrls: [
-      'assets/images/87.jpg',
-      'assets/images/88.jpg',
-      'assets/images/89.jpg',
+      'assets/images/25.jpg',
+      'assets/images/26.jpg',
+      'assets/images/27.jpg',
     ],
     description:
         'Trendy cropped jacket. Modern and chic. Perfect for high-waist looks.',
@@ -658,9 +659,9 @@ final List<ProductModel> allProducts = [
     categoryId: '7',
     title: 'Puffer Jacket',
     imageUrls: [
-      'assets/images/90.jpg',
-      'assets/images/91.jpg',
-      'assets/images/92.jpg',
+      'assets/images/28.jpg',
+      'assets/images/29.jpg',
+      'assets/images/30.jpg',
     ],
     description:
         'Warm puffer jacket. Lightweight and protective. Ideal for cold weather.',
@@ -674,9 +675,9 @@ final List<ProductModel> allProducts = [
     categoryId: '7',
     title: 'Blazer Jacket',
     imageUrls: [
-      'assets/images/93.jpg',
-      'assets/images/94.jpg',
-      'assets/images/95.jpg',
+      'assets/images/31.jpg',
+      'assets/images/32.jpg',
+      'assets/images/1.jpg',
     ],
     description:
         'Stylish blazer-inspired jacket. Semi-formal look. Great for office or outings.',
