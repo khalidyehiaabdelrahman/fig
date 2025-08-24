@@ -1,4 +1,3 @@
-import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/colors_selector.dart';
 import 'package:fig/features/home/widgets/sizes_selector.dart';

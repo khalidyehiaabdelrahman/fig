@@ -1,10 +1,10 @@
 import 'package:fig/core/utils/responsive.dart';
 import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/core/widgets/custom_button.dart';
+import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
-import '../cubit/language_cubit.dart';
 
 class LanguageSelectionPage extends StatelessWidget {
   const LanguageSelectionPage({super.key});

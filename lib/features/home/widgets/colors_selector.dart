@@ -1,4 +1,3 @@
-import 'package:fig/features/home/presentation/pages/Product_detials_Page.dart';
 import 'package:flutter/material.dart';
 
 Color parseColor(String color) {
@@ -52,7 +51,7 @@ class ColorsSelector extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: BoxDecoration(
-                      color: parseColor(color), // استدعاء من utils
+                      color: parseColor(color),
                       shape: BoxShape.circle,
                       border:
                           isSelected

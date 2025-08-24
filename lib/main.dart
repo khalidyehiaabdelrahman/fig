@@ -1,7 +1,6 @@
 import 'package:fig/features/Navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:fig/features/home/domain/model/category_model_adapter.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
-import 'package:fig/features/profile/presentation/cubit/auth_tab_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';

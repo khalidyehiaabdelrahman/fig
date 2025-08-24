@@ -28,5 +28,11 @@
     "home": "Home",
     "categories": "Categories",
     "basket": "MY Basket",
-    "favorites": "Favorites"
+    "favorites": "Favorites",
+    "login_success": "You have successfully logged in",
+    "logout_success": "You have logged out successfully",
+    "signup_success": "Your account has been created successfully",
+    "error_email_password": "Email or password is incorrect",
+    "error_password_mismatch": "The password and confirmation do not match.",
+    "error_email_not_allowed": "Email is not allowed"
 }

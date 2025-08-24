@@ -1,27 +1,91 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
   ProfileCubit() : super(ProfileState.initial());
 
-  void login({required String username, required String email}) {
-    emit(
-      state.copyWith(
-        status: ProfileStatus.loggedIn,
-        username: username,
-        email: email,
-      ),
-    );
+  Future<void> login({
+    required String username,
+    required String email,
+    required String password,
+  }) async {
+    emit(state.copyWith(isLoading: true, errorMessage: null));
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (email == "test@test.com" && password == "123456") {
+      emit(
+        state.copyWith(
+          status: ProfileStatus.loggedIn,
+          username: username,
+          email: email,
+          isLoading: false,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: "error_email_password".tr(),
+        ),
+      );
+    }
   }
 
-  void logout() {
-    emit(ProfileState.initial());
+  Future<void> signUp({
+    required String username,
+    required String email,
+    required String password,
+    required String confirmPassword,
+  }) async {
+    emit(state.copyWith(isLoading: true, errorMessage: null));
+    await Future.delayed(const Duration(seconds: 2));
+
+    if (password != confirmPassword) {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: "error_password_mismatch".tr(),
+        ),
+      );
+      return;
+    }
+
+    if (email.endsWith("@test.com")) {
+      emit(
+        state.copyWith(
+          status: ProfileStatus.signedUp,
+          username: username,
+          email: email,
+          isLoading: false,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: "error_email_not_allowed".tr(),
+        ),
+      );
+    }
   }
+
+  void logout() => emit(ProfileState.initial());
+}
+
+class AuthTabCubit extends Cubit<int> {
+  AuthTabCubit() : super(0);
+  void changeTab(int index) => emit(index);
+}
+
+class LocaleCubit extends Cubit<Locale> {
+  LocaleCubit() : super(const Locale('en'));
+  void changeLocale(Locale locale) => emit(locale);
 }
 
 class LoginVisibilityCubit extends Cubit<bool> {
-  LoginVisibilityCubit() : super(false); // false = password hidden
-
+  LoginVisibilityCubit() : super(false);
   void toggleVisibility() => emit(!state);
 }
 
@@ -63,5 +127,13 @@ class SignUpVisibilityState {
       isConfirmPasswordVisible:
           isConfirmPasswordVisible ?? this.isConfirmPasswordVisible,
     );
+  }
+}
+
+class LanguageCubit extends Cubit<String> {
+  LanguageCubit(super.initialLang);
+
+  void selectLanguage(String languageCode) {
+    emit(languageCode);
   }
 }

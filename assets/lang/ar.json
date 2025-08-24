@@ -28,5 +28,11 @@
     "home": "الرئيسية",
     "categories": "الفئات",
     "basket": "سلتي",
-    "favorites": "المفضلة"
+    "favorites": "المفضلة",
+    "login_success": "تم تسجيل الدخول بنجاح ",
+    "logout_success": "تم تسجيل الخروج ",
+    "signup_success": "تم إنشاء الحساب بنجاح ",
+    "error_email_password": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
+    "error_password_mismatch": "كلمة المرور وتأكيدها غير متطابقين",
+    "error_email_not_allowed": "البريد الإلكتروني غير مسموح"
 }
