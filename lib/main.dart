@@ -1,4 +1,6 @@
+import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:fig/features/Navigation/presentation/cubit/navigation_cubit.dart';
+import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:fig/features/home/domain/model/category_model_adapter.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,9 @@ class MyApp extends StatelessWidget {
                     ..fetchCategories()
                     ..fetchProducts(),
         ),
+
+        BlocProvider(create: (_) => CartCubit()),
+        BlocProvider(create: (_) => FavoritesCubit()),
       ],
       child: Builder(
         builder: (context) {

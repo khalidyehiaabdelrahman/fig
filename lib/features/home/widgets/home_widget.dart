@@ -1,5 +1,5 @@
+import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/pages/Product_detials_Page.dart';
 import 'package:fig/features/home/widgets/product_quick_review_sheet.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +31,9 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
     String imageUrl, {
     bool showSecondIcon = true,
   }) {
-    final isFavorite = context.watch<HomeCubit>().isFavorite(widget.product);
+    final isFavorite = context.watch<FavoritesCubit>().isFavorite(
+      widget.product,
+    );
 
     return Stack(
       fit: StackFit.expand,
@@ -51,7 +53,7 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
                   size: 30,
                 ),
                 onPressed: () {
-                  context.read<HomeCubit>().toggleFavorite(widget.product);
+                  context.read<FavoritesCubit>().toggleFavorite(widget.product);
                 },
               ),
               if (showSecondIcon)
@@ -140,7 +142,7 @@ class _GridProductViewState extends ProductViewState<GridProductView> {
   @override
   Widget buildImages() {
     return Container(
-      height: 255,
+      height: 240,
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.white),
       child: PageView.builder(

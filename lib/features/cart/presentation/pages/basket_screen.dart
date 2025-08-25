@@ -1,21 +1,16 @@
 import 'package:fig/features/Navigation/presentation/cubit/navigation_cubit.dart';
+import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final homeCubit = context.watch<HomeCubit>();
-    final cart = homeCubit.state.cart;
-
-    double grandTotal = 0;
-    for (var cartItem in cart) {
-      final qty = cartItem.quantity;
-      grandTotal += cartItem.product.price * qty;
-    }
+    final cartState = context.watch<CartCubit>().state;
+    final cart = cartState.cart;
+    final grandTotal = cartState.total;
 
     return Scaffold(
       appBar: AppBar(
@@ -66,7 +61,7 @@ class CartScreen extends StatelessWidget {
                             children: [
                               SizedBox(
                                 width: 80,
-                                height: 120, // ارتفاع الصورة اللي انت عايزه
+                                height: 120,
                                 child: Image.asset(
                                   product.imageUrls.first,
                                   fit: BoxFit.cover,
@@ -87,8 +82,12 @@ class CartScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 6),
                                     Text(product.id),
-                                    Text('Size: 28'),
-                                    Text('Color: Anthracite'),
+                                    Text(
+                                      'Size: ${cartItem.selectedSize ?? "-"}',
+                                    ),
+                                    Text(
+                                      'Color: ${cartItem.selectedColor ?? "-"}',
+                                    ),
                                     const SizedBox(height: 10),
                                     Text(
                                       'EGP ${product.price.toStringAsFixed(0)}',
@@ -111,9 +110,9 @@ class CartScreen extends StatelessWidget {
                                       size: 28,
                                     ),
                                     onPressed: () {
-                                      context
-                                          .read<HomeCubit>()
-                                          .removeFromCartById(cartItem.id);
+                                      context.read<CartCubit>().removeFromCart(
+                                        cartItem.id,
+                                      );
                                     },
                                   ),
                                   DropdownButton<int>(
@@ -135,10 +134,12 @@ class CartScreen extends StatelessWidget {
                                         }).toList(),
                                     onChanged: (int? newValue) {
                                       if (newValue != null) {
-                                        homeCubit.updateCartQuantity(
-                                          cartItem.id,
-                                          newValue,
-                                        );
+                                        context
+                                            .read<CartCubit>()
+                                            .updateQuantity(
+                                              cartItem.id,
+                                              newValue,
+                                            );
                                       }
                                     },
                                   ),

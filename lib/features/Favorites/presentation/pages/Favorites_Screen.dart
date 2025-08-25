@@ -1,4 +1,5 @@
-import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
+import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,9 +28,7 @@ class FavoritesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final favorites = context.watch<HomeCubit>().state.favorites;
-    final homeCubit = context.read<HomeCubit>();
-
+    final favorites = context.watch<FavoritesCubit>().state.favorites;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: _buildAppBar(),
@@ -49,17 +48,19 @@ class FavoritesScreen extends StatelessWidget {
                   final product = favorites[index];
                   return Column(
                     children: [
-                      GridProductView(product: product, showSecondIcon: false),
-                      ElevatedButton(
-                        onPressed: () {
-                          homeCubit.addToCart(product);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('Added ${product.title} to cart'),
-                            ),
-                          );
-                        },
-                        child: const Text('Add to Cart'),
+                      Expanded(
+                        child: GridProductView(
+                          product: product,
+                          showSecondIcon: false,
+                        ),
+                      ),
+
+                      AddToCartButton(
+                        textColor: Colors.black,
+                        backgroundColor: Colors.white,
+                        product: product,
+                        isEnabled: true,
+                        popAfterAdd: false,
                       ),
                     ],
                   );

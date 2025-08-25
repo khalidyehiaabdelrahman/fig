@@ -46,7 +46,6 @@ class _HomePageState extends State<HomePage> {
       });
     });
 
-    // تحميل البيانات
     context.read<HomeCubit>().fetchCategories();
     context.read<HomeCubit>().fetchProducts();
   }

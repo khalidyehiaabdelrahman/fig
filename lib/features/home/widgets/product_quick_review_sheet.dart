@@ -1,100 +1,127 @@
+import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:fig/features/home/presentation/cubit/product_selection_cubit.dart';
+import 'package:fig/features/home/presentation/cubit/product_selection_state.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/colors_selector.dart';
 import 'package:fig/features/home/widgets/sizes_selector.dart';
+import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/pages/Product_detials_Page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ProductQuickReviewSheet extends StatefulWidget {
+class ProductQuickReviewSheet extends StatelessWidget {
   final ProductModel product;
   const ProductQuickReviewSheet({super.key, required this.product});
 
   @override
-  State<ProductQuickReviewSheet> createState() =>
-      _ProductQuickReviewSheetState();
-}
-
-class _ProductQuickReviewSheetState extends State<ProductQuickReviewSheet> {
-  String? selectedColor;
-  int? selectedSize;
-
-  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Container(
-            color: Colors.grey.shade300,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: _buildHeader(context),
+    return BlocProvider(
+      create: (_) => ProductSelectionCubit(),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.grey.shade300,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: _buildHeader(context),
+              ),
             ),
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(height: 5),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: _buildProductInfo(),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: SizesSelector(
-                  sizes: widget.product.availableSizes,
-                  selectedSize: selectedSize,
-                  onSizeSelected: (size) {
-                    setState(() => selectedSize = size);
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: ColorsSelector(
-                  colors: widget.product.availableColors,
-                  selectedColor: selectedColor,
-                  onColorSelected: (color) {
-                    setState(() => selectedColor = color);
-                  },
-                ),
-              ),
-              const SizedBox(height: 30),
-              _buildGoToDetails(context),
-              const SizedBox(height: 16),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: AddToCartButton(
-                  product: widget.product,
-                  isEnabled: selectedColor != null && selectedSize != null,
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
-          ),
-        ],
+            BlocBuilder<ProductSelectionCubit, ProductSelectionState>(
+              builder: (context, selection) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 5),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: _buildProductInfo(),
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: SizesSelector(
+                        sizes: product.availableSizes,
+                        selectedSize: selection.selectedSize,
+                        onSizeSelected:
+                            (size) => context
+                                .read<ProductSelectionCubit>()
+                                .selectSize(size),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: ColorsSelector(
+                        colors: product.availableColors,
+                        selectedColor: selection.selectedColor,
+                        onColorSelected:
+                            (color) => context
+                                .read<ProductSelectionCubit>()
+                                .selectColor(color),
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+                    _buildGoToDetails(context),
+                    const SizedBox(height: 16),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: AddToCartButton(
+                        product: product,
+                        isEnabled:
+                            selection.selectedColor != null &&
+                            selection.selectedSize != null,
+                        selectedColor: selection.selectedColor,
+                        selectedSize: selection.selectedSize,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                  ],
+                );
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) => Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: [
-      const Text(
-        "Quick Review",
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-      ),
-      TextButton(
-        onPressed: () => Navigator.pop(context),
-        child: Text(
-          "Cancel",
-          style: TextStyle(fontSize: 18, color: Colors.red[900]),
+  Widget _buildHeader(BuildContext context) {
+    final isFav = context.watch<FavoritesCubit>().isFavorite(product);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        const Text(
+          "Quick Review",
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-      ),
-    ],
-  );
+        IconButton(
+          icon: Icon(
+            isFav ? Icons.favorite : Icons.favorite_border,
+            color: isFav ? Colors.red : Colors.black,
+          ),
+          onPressed: () {
+            context.read<FavoritesCubit>().toggleFavorite(product);
+
+            TopSnackBar.show(
+              context,
+              message: isFav ? "Removed from favorites" : "Added to favorites",
+              icon: isFav ? Icons.favorite_border : Icons.favorite,
+            );
+          },
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: Text(
+            "Cancel",
+            style: TextStyle(fontSize: 18, color: Colors.red[900]),
+          ),
+        ),
+      ],
+    );
+  }
 
   Widget _buildProductInfo() => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,14 +129,13 @@ class _ProductQuickReviewSheetState extends State<ProductQuickReviewSheet> {
       ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.asset(
-          widget.product.imageUrls.first,
+          product.imageUrls.first,
           height: 120,
           width: 100,
           fit: BoxFit.cover,
         ),
       ),
-
-      SizedBox(width: 15),
+      const SizedBox(width: 15),
       Expanded(
         child: SizedBox(
           height: 120,
@@ -120,7 +146,7 @@ class _ProductQuickReviewSheetState extends State<ProductQuickReviewSheet> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.product.lapel ?? '',
+                  product.lapel ?? '',
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
@@ -129,7 +155,7 @@ class _ProductQuickReviewSheetState extends State<ProductQuickReviewSheet> {
                   overflow: TextOverflow.ellipsis,
                 ),
                 Text(
-                  '${widget.product.price} EGP',
+                  '${product.price} EGP',
                   style: const TextStyle(
                     fontSize: 18,
                     color: Colors.black,
@@ -151,7 +177,7 @@ class _ProductQuickReviewSheetState extends State<ProductQuickReviewSheet> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => ProductDetailsScreen(product: widget.product),
+            builder: (_) => ProductDetailsScreen(product: product),
           ),
         );
       },

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(const HomeState()) {
@@ -104,8 +103,6 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> loadInitialData() async {
-    final cartBox = Hive.box<CartItem>('cart');
-    final favoritesBox = Hive.box<ProductModel>('favorites');
     final productsBox = Hive.box<ProductModel>('products');
 
     // كل المنتجات
@@ -134,54 +131,11 @@ class HomeCubit extends Cubit<HomeState> {
     // تحديث الـ state
     emit(
       state.copyWith(
-        cart: cartBox.values.toList(),
-        favorites: favoritesBox.values.toList(),
         allProducts: allProducts,
         filteredProducts: filteredProducts,
         currentSortOption: savedSortOption,
         selectedCategoryId: savedCategoryId,
       ),
     );
-  }
-
-  void toggleFavorite(ProductModel product) async {
-    final box = Hive.box<ProductModel>('favorites');
-    final exists = box.values.any((p) => p.id == product.id);
-
-    if (exists) {
-      final key = box.keys.firstWhere((k) => box.get(k)!.id == product.id);
-      await box.delete(key);
-    } else {
-      await box.add(product);
-    }
-
-    emit(state.copyWith(favorites: box.values.toList()));
-  }
-
-  bool isFavorite(ProductModel product) {
-    final box = Hive.box<ProductModel>('favorites');
-    return box.values.any((p) => p.id == product.id);
-  }
-
-  void addToCart(ProductModel product) async {
-    final box = Hive.box<CartItem>('cart');
-    final newItem = CartItem(id: Uuid().v4(), product: product, quantity: 1);
-    await box.add(newItem);
-    emit(state.copyWith(cart: box.values.toList()));
-  }
-
-  void removeFromCartById(String cartItemId) async {
-    final box = Hive.box<CartItem>('cart');
-    final key = box.keys.firstWhere((k) => box.get(k)!.id == cartItemId);
-    await box.delete(key);
-    emit(state.copyWith(cart: box.values.toList()));
-  }
-
-  void updateCartQuantity(String cartItemId, int quantity) async {
-    final box = Hive.box<CartItem>('cart');
-    final key = box.keys.firstWhere((k) => box.get(k)!.id == cartItemId);
-    final item = box.get(key)!;
-    await box.put(key, item.copyWith(quantity: quantity));
-    emit(state.copyWith(cart: box.values.toList()));
   }
 }
