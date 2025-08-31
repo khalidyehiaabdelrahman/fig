@@ -62,7 +62,7 @@ class ProductInfoSection extends StatelessWidget {
 
         Text(lapel, style: const TextStyle(fontSize: 16, color: Colors.grey)),
         buildReusableDivider(),
-        // Sizes Selector
+        
         SizesSelector(
           sizes: sizes,
           selectedSize: selectedSize,
@@ -70,7 +70,7 @@ class ProductInfoSection extends StatelessWidget {
         ),
         const SizedBox(height: 20),
 
-        // Colors Selector
+        
         ColorsSelector(
           colors: colors,
           selectedColor: selectedColor,
@@ -106,7 +106,7 @@ class ProductInfoSection extends StatelessWidget {
           ),
         ),
 
-        // Return Section
+        
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -124,7 +124,7 @@ class ProductInfoSection extends StatelessWidget {
         ),
         const SizedBox(height: 18),
 
-        // Payment Options Section
+        
         const Text(
           "Payment Options",
           style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

@@ -1,35 +1,22 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  ProfileCubit() : super(ProfileState.initial());
+  ProfileCubit() : super(ProfileInitial());
 
   Future<void> login({
     required String username,
     required String email,
     required String password,
   }) async {
-    emit(state.copyWith(isLoading: true, errorMessage: null));
+    emit(ProfileLoading());
     await Future.delayed(const Duration(seconds: 2));
 
     if (email == "test@test.com" && password == "123456") {
-      emit(
-        state.copyWith(
-          status: ProfileStatus.loggedIn,
-          username: username,
-          email: email,
-          isLoading: false,
-        ),
-      );
+      emit(ProfileLoggedIn(username: username, email: email));
     } else {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          errorMessage: "error_email_password".tr(),
-        ),
-      );
+      emit(ProfileError("error_email_password".tr()));
     }
   }
 
@@ -39,101 +26,68 @@ class ProfileCubit extends Cubit<ProfileState> {
     required String password,
     required String confirmPassword,
   }) async {
-    emit(state.copyWith(isLoading: true, errorMessage: null));
+    emit(ProfileLoading());
     await Future.delayed(const Duration(seconds: 2));
 
     if (password != confirmPassword) {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          errorMessage: "error_password_mismatch".tr(),
-        ),
-      );
+      emit(ProfileError("error_password_mismatch".tr()));
       return;
     }
 
     if (email.endsWith("@test.com")) {
-      emit(
-        state.copyWith(
-          status: ProfileStatus.signedUp,
-          username: username,
-          email: email,
-          isLoading: false,
-        ),
-      );
+      emit(ProfileSignedUp(username: username, email: email));
     } else {
-      emit(
-        state.copyWith(
-          isLoading: false,
-          errorMessage: "error_email_not_allowed".tr(),
-        ),
-      );
+      emit(ProfileError("error_email_not_allowed".tr()));
     }
   }
 
-  void logout() => emit(ProfileState.initial());
+  void logout() => emit(ProfileLoggedOut());
 }
 
-class AuthTabCubit extends Cubit<int> {
-  AuthTabCubit() : super(0);
-  void changeTab(int index) => emit(index);
+class AuthTabCubit extends Cubit<AuthTabState> {
+  AuthTabCubit() : super(AuthTabInitial());
+
+  void changeTab(int index) => emit(AuthTabChanged(index));
 }
 
-class LocaleCubit extends Cubit<Locale> {
-  LocaleCubit() : super(const Locale('en'));
-  void changeLocale(Locale locale) => emit(locale);
-}
+class LoginVisibilityCubit extends Cubit<LoginVisibilityState> {
+  LoginVisibilityCubit() : super(LoginVisibilityHidden());
 
-class LoginVisibilityCubit extends Cubit<bool> {
-  LoginVisibilityCubit() : super(false);
-  void toggleVisibility() => emit(!state);
+  void toggleVisibility() {
+    if (state is LoginVisibilityHidden) {
+      emit(LoginVisibilityShown());
+    } else {
+      emit(LoginVisibilityHidden());
+    }
+  }
 }
 
 class SignUpVisibilityCubit extends Cubit<SignUpVisibilityState> {
-  SignUpVisibilityCubit()
-    : super(
-        const SignUpVisibilityState(
-          isPasswordVisible: false,
-          isConfirmPasswordVisible: false,
-        ),
-      );
+  SignUpVisibilityCubit() : super(const SignUpVisibilityInitial());
 
   void togglePasswordVisibility() {
-    emit(state.copyWith(isPasswordVisible: !state.isPasswordVisible));
+    emit(
+      SignUpVisibilityChanged(
+        isPasswordVisible: !state.isPasswordVisible,
+        isConfirmPasswordVisible: state.isConfirmPasswordVisible,
+      ),
+    );
   }
 
   void toggleConfirmPasswordVisibility() {
     emit(
-      state.copyWith(isConfirmPasswordVisible: !state.isConfirmPasswordVisible),
+      SignUpVisibilityChanged(
+        isPasswordVisible: state.isPasswordVisible,
+        isConfirmPasswordVisible: !state.isConfirmPasswordVisible,
+      ),
     );
   }
 }
 
-class SignUpVisibilityState {
-  final bool isPasswordVisible;
-  final bool isConfirmPasswordVisible;
+class LanguageCubit extends Cubit<LanguageState> {
+  LanguageCubit(String initialLang) : super(LanguageInitial(initialLang));
 
-  const SignUpVisibilityState({
-    required this.isPasswordVisible,
-    required this.isConfirmPasswordVisible,
-  });
-
-  SignUpVisibilityState copyWith({
-    bool? isPasswordVisible,
-    bool? isConfirmPasswordVisible,
-  }) {
-    return SignUpVisibilityState(
-      isPasswordVisible: isPasswordVisible ?? this.isPasswordVisible,
-      isConfirmPasswordVisible:
-          isConfirmPasswordVisible ?? this.isConfirmPasswordVisible,
-    );
-  }
-}
-
-class LanguageCubit extends Cubit<String> {
-  LanguageCubit(super.initialLang);
-
-  void selectLanguage(String languageCode) {
-    emit(languageCode);
+  void selectLanguage(String langCode) {
+    emit(LanguageChanged(langCode));
   }
 }

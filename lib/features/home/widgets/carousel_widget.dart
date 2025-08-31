@@ -51,12 +51,12 @@ class CarouselWidget extends StatelessWidget {
 class CarouselIndicator extends StatelessWidget {
   final int itemCount;
   final int currentPage;
-  final Axis direction; // horizontal أو vertical
-  final Alignment alignment; // مكان المؤشر
+  final Axis direction; 
+  final Alignment alignment; 
   final Color activeColor;
   final Color inactiveColor;
-  final double size; // حجم المؤشر
-  final double spacing; // المسافة بين المؤشرات
+  final double size; 
+  final double spacing; 
 
   const CarouselIndicator({
     super.key,

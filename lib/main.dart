@@ -1,8 +1,10 @@
 import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
+import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/Navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:fig/features/home/domain/model/category_model_adapter.dart';
-import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
+import 'package:fig/features/home/presentation/cubit/categories_cubit.dart';
+import 'package:fig/features/home/presentation/cubit/products_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,13 +23,13 @@ void main() async {
       supportedLocales: const [Locale('en'), Locale('ar')],
       path: 'assets/lang',
       fallbackLocale: const Locale('en'),
-      child: const MyApp(),
+      child: const FigApp(),
     ),
   );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class FigApp extends StatelessWidget {
+  const FigApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -35,17 +37,26 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => NavigationCubit()),
         BlocProvider(create: (_) => ProfileCubit()),
-        BlocProvider(create: (_) => LocaleCubit()),
+        BlocProvider(create: (_) => CategoriesCubit()..fetchCategories()),
         BlocProvider(
-          create:
-              (_) =>
-                  HomeCubit()
-                    ..fetchCategories()
-                    ..fetchProducts(),
+          create: (_) {
+            final cubit = ProductsCubit();
+            cubit.fetchProducts().then((_) {
+              cubit.loadSortOption();
+            });
+            return cubit;
+          },
         ),
 
         BlocProvider(create: (_) => CartCubit()),
         BlocProvider(create: (_) => FavoritesCubit()),
+        BlocProvider(
+          create: (_) {
+            final cubit = HomeCubit();
+            cubit.loadPreferences(); 
+            return cubit;
+          },
+        ),
       ],
       child: Builder(
         builder: (context) {

@@ -44,11 +44,11 @@ class LoadingIndicator extends StatelessWidget {
   final Widget? spinner;
 
   const LoadingIndicator({
-    Key? key,
+    super.key,
     this.size = 60.0,
     this.color = Colors.white,
     this.spinner,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

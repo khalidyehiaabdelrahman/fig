@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -8,8 +9,12 @@ class ToggleTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthTabCubit, int>(
-      builder: (context, selectedIndex) {
+    return BlocBuilder<AuthTabCubit, AuthTabState>(
+      builder: (context, state) {
+        int selectedIndex = 0;
+        if (state is AuthTabChanged) {
+          selectedIndex = state.index;
+        }
         return LayoutBuilder(
           builder: (context, constraints) {
             final containerWidth = constraints.maxWidth;

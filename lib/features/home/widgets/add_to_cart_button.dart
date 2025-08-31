@@ -13,6 +13,7 @@ class AddToCartButton extends StatelessWidget {
   final Color? textColor;
   final String? selectedColor;
   final int? selectedSize;
+  final VoidCallback? onPressed;
 
   const AddToCartButton({
     super.key,
@@ -21,9 +22,9 @@ class AddToCartButton extends StatelessWidget {
     this.popAfterAdd = true,
     this.backgroundColor,
     this.textColor,
-
     this.selectedColor,
     this.selectedSize,
+    this.onPressed,
   });
 
   @override
@@ -36,10 +37,15 @@ class AddToCartButton extends StatelessWidget {
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
+          if (onPressed != null) {
+            onPressed!();
+            return;
+          }
+
           if (!isEnabled) {
             TopSnackBar.show(
               context,
-              message: 'Choose Color And Size.',
+              message: 'Choose Color And Size',
               icon: Icons.error_outline,
             );
             return;
@@ -67,7 +73,7 @@ class AddToCartButton extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
         child: Text(
-          isEnabled ? "Add to Cart" : "Choose Color And Size.",
+          isEnabled ? "Add to Cart" : "Choose Color And Size",
           style: TextStyle(
             color: fgColor,
             fontSize: 18,

@@ -1,43 +1,74 @@
-enum ProfileStatus { loggedOut, loggedIn, signedUp }
+abstract class ProfileState {}
 
-class ProfileState {
-  final ProfileStatus status;
+class ProfileInitial extends ProfileState {}
+
+class ProfileLoading extends ProfileState {}
+
+class ProfileLoggedIn extends ProfileState {
   final String username;
   final String email;
-  final bool isLoading;
-  final String? errorMessage;
+  ProfileLoggedIn({required this.username, required this.email});
+}
 
-  ProfileState({
-    required this.status,
-    required this.username,
-    required this.email,
-    this.isLoading = false,
-    this.errorMessage,
+class ProfileSignedUp extends ProfileState {
+  final String username;
+  final String email;
+  ProfileSignedUp({required this.username, required this.email});
+}
+
+class ProfileLoggedOut extends ProfileState {}
+
+class ProfileError extends ProfileState {
+  final String message;
+  ProfileError(this.message);
+}
+
+abstract class AuthTabState {}
+
+class AuthTabInitial extends AuthTabState {}
+
+class AuthTabChanged extends AuthTabState {
+  final int index;
+  AuthTabChanged(this.index);
+}
+
+abstract class LoginVisibilityState {}
+
+class LoginVisibilityHidden extends LoginVisibilityState {}
+
+class LoginVisibilityShown extends LoginVisibilityState {}
+
+abstract class SignUpVisibilityState {
+  final bool isPasswordVisible;
+  final bool isConfirmPasswordVisible;
+
+  const SignUpVisibilityState({
+    required this.isPasswordVisible,
+    required this.isConfirmPasswordVisible,
   });
+}
 
-  factory ProfileState.initial() {
-    return ProfileState(
-      status: ProfileStatus.loggedOut,
-      username: '',
-      email: '',
-      isLoading: false,
-      errorMessage: null,
-    );
-  }
+class SignUpVisibilityInitial extends SignUpVisibilityState {
+  const SignUpVisibilityInitial()
+    : super(isPasswordVisible: false, isConfirmPasswordVisible: false);
+}
 
-  ProfileState copyWith({
-    ProfileStatus? status,
-    String? username,
-    String? email,
-    bool? isLoading,
-    String? errorMessage,
-  }) {
-    return ProfileState(
-      status: status ?? this.status,
-      username: username ?? this.username,
-      email: email ?? this.email,
-      isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage,
-    );
-  }
+class SignUpVisibilityChanged extends SignUpVisibilityState {
+  const SignUpVisibilityChanged({
+    required super.isPasswordVisible,
+    required super.isConfirmPasswordVisible,
+  });
+}
+
+abstract class LanguageState {
+  final String languageCode;
+  const LanguageState(this.languageCode);
+}
+
+class LanguageInitial extends LanguageState {
+  const LanguageInitial(super.languageCode);
+}
+
+class LanguageChanged extends LanguageState {
+  const LanguageChanged(super.languageCode);
 }

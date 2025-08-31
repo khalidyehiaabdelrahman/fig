@@ -64,7 +64,7 @@ class BuildTextField extends StatelessWidget {
           horizontal: responsiveWidth(context, 20),
           vertical: responsiveHeight(context, 15),
         ),
-        //border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
+        
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide(color: Colors.grey),
@@ -139,7 +139,7 @@ class PrimaryButton extends StatelessWidget {
                       label,
                       style: TextStyle(
                         fontSize: 16.rt(context),
-                        fontWeight: fontWeight, // ✅ تم التبديل هنا
+                        fontWeight: fontWeight, 
                       ),
                     ),
                   ]
@@ -149,7 +149,7 @@ class PrimaryButton extends StatelessWidget {
                       label,
                       style: TextStyle(
                         fontSize: 16.rt(context),
-                        fontWeight: fontWeight, // ✅
+                        fontWeight: fontWeight, 
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -170,7 +170,7 @@ class PrimaryButton extends StatelessWidget {
                       label,
                       style: TextStyle(
                         fontSize: 16.rt(context),
-                        fontWeight: fontWeight, // ✅
+                        fontWeight: fontWeight, 
                       ),
                     ),
                   ],
@@ -197,14 +197,14 @@ class TransparentTextButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        padding: EdgeInsets.zero, // تقليل الحشو الافتراضي
-        minimumSize: Size(0, 0), // يمنع استهلاك مساحة زائدة
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap, // ضغط منطقة التفاعل
+        padding: EdgeInsets.zero, 
+        minimumSize: Size(0, 0), 
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap, 
       ),
       child: Text(
         label,
-        overflow: TextOverflow.ellipsis, // لمنع overflow
-        softWrap: false, // منع النزول للسطر إذا أردت
+        overflow: TextOverflow.ellipsis, 
+        softWrap: false, 
         style: TextStyle(
           color: colorScheme.onSurface.withOpacity(0.6),
           fontSize: 14,
@@ -247,9 +247,9 @@ class SocialLoginButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, // يوسّط المحتوى أفقيًا
+          mainAxisAlignment: MainAxisAlignment.center, 
           crossAxisAlignment:
-              CrossAxisAlignment.center, // يوسّط المحتوى عموديًا
+              CrossAxisAlignment.center, 
           mainAxisSize: MainAxisSize.min,
           children: [
             if (iconWidget != null)

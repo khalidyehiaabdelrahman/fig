@@ -12,7 +12,7 @@ class CartCubit extends Cubit<CartState> {
     loadCart();
   }
 
-  /// تحميل الكارت من Hive عند بدء التطبيق
+  
   Future<void> loadCart() async {
     emit(
       state.copyWith(
@@ -22,7 +22,7 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  /// إضافة عنصر للكارت وحفظه في Hive
+  
   void addToCart(ProductModel product, {String? color, int? size}) async {
     final newItem = CartItem(
       id: const Uuid().v4(),
@@ -40,7 +40,7 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  /// إزالة عنصر من الكارت وحذفه من Hive
+  
   void removeFromCart(String id) async {
     final key = cartBox.keys.firstWhere((k) => cartBox.get(k)!.id == id);
     await cartBox.delete(key);
@@ -51,7 +51,7 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  /// تعديل كمية عنصر في الكارت وحفظه في Hive
+  
   void updateQuantity(String id, int qty) async {
     final key = cartBox.keys.firstWhere((k) => cartBox.get(k)!.id == id);
     final item = cartBox.get(key)!;
@@ -63,7 +63,7 @@ class CartCubit extends Cubit<CartState> {
     );
   }
 
-  /// حساب الإجمالي
+  
   double _calculateTotal(List<CartItem> cart) {
     return cart.fold(
       0,

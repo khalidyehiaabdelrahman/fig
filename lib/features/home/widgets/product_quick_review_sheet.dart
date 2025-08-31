@@ -9,82 +9,114 @@ import 'package:flutter/material.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/pages/Product_detials_Page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
 
 class ProductQuickReviewSheet extends StatelessWidget {
   final ProductModel product;
-  const ProductQuickReviewSheet({super.key, required this.product});
+  final bool quickAddMode;
+
+  const ProductQuickReviewSheet({
+    super.key,
+    required this.product,
+    this.quickAddMode = false,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ProductSelectionCubit(),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              color: Colors.grey.shade300,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: _buildHeader(context),
-              ),
-            ),
-            BlocBuilder<ProductSelectionCubit, ProductSelectionState>(
-              builder: (context, selection) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 5),
-                    Padding(
+      child: BlocBuilder<ProductSelectionCubit, ProductSelectionState>(
+        builder: (context, selection) {
+          return SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                if (!quickAddMode)
+                  Container(
+                    color: Colors.grey.shade300,
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: _buildProductInfo(),
+                      child: _buildHeader(context),
                     ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: SizesSelector(
-                        sizes: product.availableSizes,
-                        selectedSize: selection.selectedSize,
-                        onSizeSelected:
-                            (size) => context
-                                .read<ProductSelectionCubit>()
-                                .selectSize(size),
-                      ),
+                  ),
+
+                const SizedBox(height: 10),
+
+                if (!quickAddMode)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: _buildProductInfo(),
+                  ),
+
+                const SizedBox(height: 20),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: SizesSelector(
+                    sizes: product.availableSizes,
+                    selectedSize: selection.selectedSize,
+                    onSizeSelected: (size) {
+                      context.read<ProductSelectionCubit>().selectSize(size);
+                      if (quickAddMode) _tryCompleteSelection(context, product);
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: ColorsSelector(
+                    colors: product.availableColors,
+                    selectedColor: selection.selectedColor,
+                    onColorSelected: (color) {
+                      context.read<ProductSelectionCubit>().selectColor(color);
+                      if (quickAddMode) _tryCompleteSelection(context, product);
+                    },
+                  ),
+                ),
+
+                if (!quickAddMode) ...[
+                  const SizedBox(height: 30),
+                  _buildGoToDetails(context),
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: AddToCartButton(
+                      product: product,
+                      isEnabled:
+                          selection.selectedColor != null &&
+                          selection.selectedSize != null,
+                      selectedColor: selection.selectedColor,
+                      selectedSize: selection.selectedSize,
                     ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 15),
-                      child: ColorsSelector(
-                        colors: product.availableColors,
-                        selectedColor: selection.selectedColor,
-                        onColorSelected:
-                            (color) => context
-                                .read<ProductSelectionCubit>()
-                                .selectColor(color),
-                      ),
-                    ),
-                    const SizedBox(height: 30),
-                    _buildGoToDetails(context),
-                    const SizedBox(height: 16),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: AddToCartButton(
-                        product: product,
-                        isEnabled:
-                            selection.selectedColor != null &&
-                            selection.selectedSize != null,
-                        selectedColor: selection.selectedColor,
-                        selectedSize: selection.selectedSize,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                  ],
-                );
-              },
+                  ),
+                  const SizedBox(height: 16),
+                ],
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
+  }
+
+  void _tryCompleteSelection(BuildContext context, ProductModel product) {
+    final selection = context.read<ProductSelectionCubit>().state;
+
+    if (selection.selectedColor != null && selection.selectedSize != null) {
+      context.read<CartCubit>().addToCart(
+        product,
+        color: selection.selectedColor!,
+        size: selection.selectedSize!,
+      );
+      Navigator.pop(context);
+      TopSnackBar.show(
+        context,
+        message: "Added to cart successfully!",
+        icon: Icons.check_circle_outline,
+      );
+    }
   }
 
   Widget _buildHeader(BuildContext context) {

@@ -105,7 +105,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               ],
             ),
 
-            /// ✅ هنا خليت ProductInfoSection يتكلم مع Cubit مش متغير محلي
             DraggableScrollableSheet(
               controller: _draggableController,
               initialChildSize: 0.42,
@@ -202,7 +201,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
           ],
         ),
 
-        /// ✅ نفس الشيء هنا خليت AddToCartButton ياخد من Cubit
         bottomNavigationBar: BlocBuilder<
           ProductSelectionCubit,
           ProductSelectionState

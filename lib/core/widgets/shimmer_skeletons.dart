@@ -221,10 +221,10 @@ class ProductOrCategoryCardShimmer extends StatelessWidget {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(16)),
 
             child: Padding(
-              padding: const EdgeInsets.all(12.0), // padding داخلي للكارت
+              padding: const EdgeInsets.all(12.0), 
               child: Row(
                 children: [
-                  // صورة شيمر
+                  
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: _ShimmerBox(
@@ -236,7 +236,7 @@ class ProductOrCategoryCardShimmer extends StatelessWidget {
 
                   const SizedBox(width: 16),
 
-                  // نص شيمر
+                  
                   Expanded(
                     child: _ShimmerBox(
                       height: 16,

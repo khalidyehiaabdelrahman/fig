@@ -2,6 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/core/utils/responsive.dart';
 import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,8 +14,13 @@ class ExtraButtonsForLoginOnly extends StatelessWidget {
       builder: (context) {
         context.locale;
 
-        return BlocBuilder<AuthTabCubit, int>(
-          builder: (context, index) {
+        return BlocBuilder<AuthTabCubit, AuthTabState>(
+          builder: (context, state) {
+            int index = 0;
+            if (state is AuthTabChanged) {
+              index = state.index;
+            }
+
             if (index != 0) return const SizedBox();
 
             return Column(
@@ -22,18 +28,10 @@ class ExtraButtonsForLoginOnly extends StatelessWidget {
                 _buildRow(
                   context: context,
                   label: tr('order_tracking'),
-                  onTap: () {
-                    // TODO
-                  },
+                  onTap: () {},
                 ),
                 buildReusableDivider(),
-                _buildRow(
-                  context: context,
-                  label: tr('help'),
-                  onTap: () {
-                    // TODO
-                  },
-                ),
+                _buildRow(context: context, label: tr('help'), onTap: () {}),
                 buildReusableDivider(),
               ],
             );

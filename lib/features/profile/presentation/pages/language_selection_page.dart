@@ -2,6 +2,7 @@ import 'package:fig/core/utils/responsive.dart';
 import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/core/widgets/custom_button.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -43,8 +44,10 @@ class LanguageSelectionPage extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(16),
-              child: BlocBuilder<LanguageCubit, String>(
-                builder: (context, selectedLangCode) {
+              child: BlocBuilder<LanguageCubit, LanguageState>(
+                builder: (context, state) {
+                  final selectedLangCode = state.languageCode;
+
                   return PrimaryButton(
                     label: 'apply'.tr(),
                     backgroundColor: Colors.red[700],
@@ -68,8 +71,10 @@ class LanguageSelectionPage extends StatelessWidget {
     String languageCode,
     String label,
   ) {
-    return BlocBuilder<LanguageCubit, String>(
-      builder: (context, selectedLangCode) {
+    return BlocBuilder<LanguageCubit, LanguageState>(
+      builder: (context, state) {
+        final selectedLangCode = state.languageCode;
+
         final isSelected = selectedLangCode == languageCode;
 
         return InkWell(

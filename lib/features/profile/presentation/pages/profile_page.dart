@@ -36,17 +36,16 @@ class ProfilePage extends StatelessWidget {
 
                 BlocConsumer<ProfileCubit, ProfileState>(
                   listener: (context, state) {
-                    if (state.errorMessage != null) {
+                    if (state is ProfileError) {
                       TopSnackBar.show(
                         context,
-                        message: state.errorMessage!,
+                        message: state.message,
                         icon: Icons.error,
                         backgroundColor: Colors.red,
                       );
                     }
 
-                    if (state.status == ProfileStatus.loggedIn &&
-                        !state.isLoading) {
+                    if (state is ProfileLoggedIn) {
                       TopSnackBar.show(
                         context,
                         message: "login_success".tr(),
@@ -55,8 +54,7 @@ class ProfilePage extends StatelessWidget {
                       );
                     }
 
-                    if (state.status == ProfileStatus.signedUp &&
-                        !state.isLoading) {
+                    if (state is ProfileSignedUp) {
                       TopSnackBar.show(
                         context,
                         message: "signup_success".tr(),
@@ -65,8 +63,7 @@ class ProfilePage extends StatelessWidget {
                       );
                     }
 
-                    if (state.status == ProfileStatus.loggedOut &&
-                        !state.isLoading) {
+                    if (state is ProfileLoggedOut) {
                       TopSnackBar.show(
                         context,
                         message: "logout_success".tr(),
@@ -78,20 +75,21 @@ class ProfilePage extends StatelessWidget {
                   builder: (context, state) {
                     return Stack(
                       children: [
-                        state.status == ProfileStatus.loggedIn
-                            ? ProfileLoggedInView(
-                              username: state.username,
-                              email: state.email,
-                            )
-                            : const ProfileLoggedOutView(),
+                        if (state is ProfileLoggedIn)
+                          ProfileLoggedInView(
+                            username: state.username,
+                            email: state.email,
+                          )
+                        else
+                          const ProfileLoggedOutView(),
 
-                        if (state.isLoading)
+                        if (state is ProfileLoading)
                           Positioned.fill(
                             child: Container(
                               color: Colors.black.withAlpha(
                                 (0.3 * 255).round(),
                               ),
-                              child: Center(child: LoadingIndicator()),
+                              child: const Center(child: LoadingIndicator()),
                             ),
                           ),
                       ],
@@ -163,3 +161,169 @@ class ProfilePage extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
