@@ -1,15 +1,16 @@
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:equatable/equatable.dart';
 
-class FavoritesState extends Equatable {
+abstract class FavoritesState {
   final List<ProductModel> favorites;
 
   const FavoritesState({this.favorites = const []});
+}
 
-  FavoritesState copyWith({List<ProductModel>? favorites}) {
-    return FavoritesState(favorites: favorites ?? this.favorites);
-  }
+class FavoritesInitial extends FavoritesState {
+  const FavoritesInitial() : super(favorites: const []);
+}
 
-  @override
-  List<Object?> get props => [favorites];
+class FavoritesLoaded extends FavoritesState {
+  const FavoritesLoaded({required List<ProductModel> favorites})
+    : super(favorites: favorites);
 }

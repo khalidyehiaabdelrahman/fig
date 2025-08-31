@@ -6,9 +6,14 @@ import 'favorites_state.dart';
 class FavoritesCubit extends Cubit<FavoritesState> {
   late final Box<ProductModel> favoritesBox;
 
-  FavoritesCubit() : super(const FavoritesState()) {
+  FavoritesCubit() : super(const FavoritesInitial()) {
     favoritesBox = Hive.box<ProductModel>('favorites');
-    emit(FavoritesState(favorites: favoritesBox.values.toList()));
+    _loadFavorites();
+  }
+
+  void _loadFavorites() {
+    final favorites = favoritesBox.values.toList();
+    emit(FavoritesLoaded(favorites: favorites));
   }
 
   void toggleFavorite(ProductModel product) {
@@ -23,7 +28,7 @@ class FavoritesCubit extends Cubit<FavoritesState> {
       favoritesBox.add(product);
     }
 
-    emit(state.copyWith(favorites: favoritesBox.values.toList()));
+    emit(FavoritesLoaded(favorites: favoritesBox.values.toList()));
   }
 
   bool isFavorite(ProductModel product) {
