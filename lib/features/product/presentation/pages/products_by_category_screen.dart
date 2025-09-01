@@ -2,23 +2,24 @@ import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
-import 'package:fig/features/home/presentation/cubit/products_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/products_state.dart';
+import 'package:fig/features/product/presentation/cubit/products_cubit.dart';
+import 'package:fig/features/product/presentation/cubit/products_state.dart';
 import 'package:fig/features/home/widgets/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/core/widgets/shimmer_skeletons.dart';
 
-class CategoryProductsScreen extends StatefulWidget {
+class ProductsByCategoryScreen extends StatefulWidget {
   final CategoryModel category;
 
-  const CategoryProductsScreen({super.key, required this.category});
+  const ProductsByCategoryScreen({super.key, required this.category});
 
   @override
-  State<CategoryProductsScreen> createState() => _CategoryProductsScreenState();
+  State<ProductsByCategoryScreen> createState() =>
+      _CategoryProductsScreenState();
 }
 
-class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
+class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
   bool forceShowShimmer = true;
 
   @override

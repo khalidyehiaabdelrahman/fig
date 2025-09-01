@@ -1,6 +1,6 @@
 import 'package:fig/features/home/data/products_data.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:fig/features/home/presentation/cubit/products_state.dart';
+import 'package:fig/features/product/presentation/cubit/products_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +8,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit() : super(ProductsLoading());
   String? currentSortOption;
+
+  Future<void> initProducts() async {
+    await fetchProducts();
+    loadSortOption();
+  }
 
   Future<void> fetchProducts() async {
     emit(ProductsLoading());

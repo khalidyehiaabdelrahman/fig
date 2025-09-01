@@ -1,6 +1,6 @@
 import 'package:fig/features/home/domain/model/category_model.dart';
+import 'package:fig/features/product/presentation/pages/products_by_category_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fig/features/home/presentation/pages/category_products_page_Screen.dart';
 
 class CategoryListWidget extends StatelessWidget {
   final List<CategoryModel> categories;
@@ -24,7 +24,7 @@ class CategoryListWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder:
-                      (context) => CategoryProductsScreen(category: category),
+                      (context) => ProductsByCategoryScreen(category: category),
                 ),
               );
             },

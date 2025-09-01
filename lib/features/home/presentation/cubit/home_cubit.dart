@@ -27,4 +27,8 @@ class HomeCubit extends Cubit<HomeState> {
 
     emit(GridChanged(isGrid));
   }
+
+  Future<void> initHome() async {
+    await loadPreferences();
+  }
 }

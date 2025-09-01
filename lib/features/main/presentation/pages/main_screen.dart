@@ -1,9 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/features/Favorites/presentation/pages/favorites_Screen.dart';
-import 'package:fig/features/Navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:fig/features/cart/presentation/pages/basket_screen.dart';
-import 'package:fig/features/home/presentation/pages/categories_and_products_screen.dart';
+import 'package:fig/features/categories/presentation/pages/categories_and_products_screen.dart';
 import 'package:fig/features/home/presentation/pages/home_page.dart';
+import 'package:fig/features/main/presentation/cubit/main_cubit.dart';
 import 'package:fig/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,7 +21,7 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<NavigationCubit, int>(
+    return BlocBuilder<MainCubit, int>(
       builder: (context, currentIndex) {
         return Scaffold(
           body: _screens[currentIndex],
@@ -35,7 +35,7 @@ class MainScreen extends StatelessWidget {
                 selectedItemColor: Colors.red[900],
                 unselectedItemColor: Colors.black87,
                 onTap: (index) {
-                  context.read<NavigationCubit>().changeTab(index);
+                  context.read<MainCubit>().changeTab(index);
                 },
                 items: [
                   BottomNavigationBarItem(

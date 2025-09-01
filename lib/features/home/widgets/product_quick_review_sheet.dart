@@ -1,13 +1,13 @@
 import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/product_selection_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/product_selection_state.dart';
+import 'package:fig/features/product/presentation/cubit/product_selection_cubit.dart';
+import 'package:fig/features/product/presentation/cubit/product_selection_state.dart';
+import 'package:fig/features/product/presentation/pages/Product_detials_Page.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/colors_selector.dart';
 import 'package:fig/features/home/widgets/sizes_selector.dart';
 import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:fig/features/home/presentation/pages/Product_detials_Page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
 

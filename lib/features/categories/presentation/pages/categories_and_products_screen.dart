@@ -1,7 +1,7 @@
-import 'package:fig/features/home/presentation/cubit/categories_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/categories_state.dart';
-import 'package:fig/features/home/presentation/cubit/products_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/products_state.dart';
+import 'package:fig/features/categories/presentation/cubit/categories_cubit.dart';
+import 'package:fig/features/categories/presentation/cubit/categories_state.dart';
+import 'package:fig/features/product/presentation/cubit/products_cubit.dart';
+import 'package:fig/features/product/presentation/cubit/products_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/core/widgets/shimmer_skeletons.dart';

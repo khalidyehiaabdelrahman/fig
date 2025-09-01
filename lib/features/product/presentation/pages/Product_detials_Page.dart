@@ -1,7 +1,7 @@
 import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:fig/features/home/presentation/cubit/product_selection_cubit.dart';
-import 'package:fig/features/home/presentation/cubit/product_selection_state.dart';
+import 'package:fig/features/product/presentation/cubit/product_selection_cubit.dart';
+import 'package:fig/features/product/presentation/cubit/product_selection_state.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/carousel_widget.dart';
 import 'package:fig/features/home/widgets/product_info_section.dart';

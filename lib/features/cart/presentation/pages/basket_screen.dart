@@ -1,6 +1,6 @@
-import 'package:fig/features/Navigation/presentation/cubit/navigation_cubit.dart';
 import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:fig/features/cart/presentation/cubit/cart_state.dart';
+import 'package:fig/features/main/presentation/cubit/main_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -29,7 +29,7 @@ class CartScreen extends StatelessWidget {
                 IconButton(
                   icon: const Icon(Icons.close),
                   onPressed: () {
-                    context.read<NavigationCubit>().changeTab(0);
+                    context.read<MainCubit>().changeTab(0);
                   },
                 ),
               ],
