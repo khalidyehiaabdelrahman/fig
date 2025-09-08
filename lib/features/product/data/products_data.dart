@@ -1,0 +1,787 @@
+import 'package:fig/features/home/domain/model/category_model.dart';
+
+final List<ProductModel> allProducts = [
+  ProductModel(
+    id: '1',
+    categoryId: '1',
+    title: 'Slim Blazer',
+    imageUrls: [
+      'assets/images/1.jpg',
+      'assets/images/2.jpg',
+      'assets/images/3.jpg',
+
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+      'assets/images/12.jpg',
+    ],
+    description:
+        'Elegant navy blue slim blazer. Perfect for office or casual outings. Comfortable fit and stylish design.',
+    price: 1200.0,
+    availableColors: ['Black', 'Red', 'Navy', 'Green', 'Beige'],
+    availableSizes: [44, 36, 42, 46],
+    lapel: 'Slim Blazer with modern cut',
+  ),
+  ProductModel(
+    id: '2',
+    categoryId: '1',
+    title: 'Classic Black Blazer',
+    imageUrls: [
+      'assets/images/4.jpg',
+      'assets/images/5.jpg',
+      'assets/images/6.jpg',
+    ],
+    description:
+        'Timeless black blazer. Stylish and comfortable. Perfect for evening or formal occasions.',
+    price: 1300.0,
+    availableColors: ['Green', 'Navy', 'White', 'Black'],
+    availableSizes: [44, 46, 40, 48],
+    lapel: 'Classic notched lapel for elegance',
+  ),
+  ProductModel(
+    id: '3',
+    categoryId: '1',
+    title: 'Grey Blazer',
+    imageUrls: [
+      'assets/images/7.jpg',
+      'assets/images/8.jpg',
+      'assets/images/9.jpg',
+
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+      'assets/images/12.jpg',
+    ],
+    description:
+        'Modern grey blazer. Lightweight fabric. Can be paired with jeans or formal pants.',
+    price: 1100.0,
+    availableColors: ['Green', 'Grey', 'Navy', 'Black', 'Red'],
+    availableSizes: [46, 36, 48, 44, 40],
+    lapel: 'Notched lapel with simple design',
+  ),
+  ProductModel(
+    id: '4',
+    categoryId: '1',
+    title: 'Checked Blazer',
+    imageUrls: [
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+      'assets/images/12.jpg',
+    ],
+    description:
+        'Stylish checked pattern blazer. Ideal for office wear. Elegant and fashionable.',
+    price: 1250.0,
+    availableColors: ['Red', 'Grey', 'White', 'Beige'],
+    availableSizes: [36, 38, 44, 46],
+    lapel: 'Wide peak lapel with bold style',
+  ),
+  ProductModel(
+    id: '5',
+    categoryId: '1',
+    title: 'Double-breasted Blazer',
+    imageUrls: [
+      'assets/images/13.jpg',
+      'assets/images/14.jpg',
+      'assets/images/15.jpg',
+    ],
+    description:
+        'Elegant double-breasted design. Comfortable and chic. Perfect for formal events.',
+    price: 1400.0,
+    availableColors: ['Black', 'Beige', 'Navy'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Sharp peak lapel with formal edge',
+  ),
+  ProductModel(
+    id: '6',
+    categoryId: '1',
+    title: 'Linen Blazer',
+    imageUrls: [
+      'assets/images/16.jpg',
+      'assets/images/17.jpg',
+      'assets/images/18.jpg',
+    ],
+    description:
+        'Lightweight linen fabric. Breathable and stylish. Great for summer outings.',
+    price: 1150.0,
+    availableColors: ['Grey', 'Green', 'Red'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Casual shawl lapel for summer vibes',
+  ),
+
+  ProductModel(
+    id: '71',
+    categoryId: '1',
+    title: 'Silk Blouse',
+    imageUrls: [
+      'assets/images/19.jpg',
+      'assets/images/20.jpg',
+      'assets/images/21.jpg',
+    ],
+    description:
+        'Soft pink silk blouse. Comfortable and elegant. Perfect for casual and formal wear.',
+    price: 700.0,
+    availableColors: ['White', 'Red', 'Beige'],
+    availableSizes: [36, 40, 42, 44],
+    lapel: 'Delicate round lapel with soft finish',
+  ),
+  ProductModel(
+    id: '81',
+    categoryId: '1',
+    title: 'Floral Blouse',
+    imageUrls: [
+      'assets/images/22.jpg',
+      'assets/images/23.jpg',
+      'assets/images/24.jpg',
+    ],
+    description:
+        'Bright floral print blouse. Lightweight fabric. Ideal for spring and summer.',
+    price: 650.0,
+    availableColors: ['Green', 'Red', 'Navy', 'Beige'],
+    availableSizes: [38, 40, 42],
+    lapel: 'Wide collar lapel with floral touch',
+  ),
+  ProductModel(
+    id: '91',
+    categoryId: '1',
+    title: 'Sleeveless Blouse',
+    imageUrls: [
+      'assets/images/25.jpg',
+      'assets/images/26.jpg',
+      'assets/images/27.jpg',
+    ],
+    description:
+        'Light summer style sleeveless blouse. Elegant and airy. Perfect for hot weather.',
+    price: 550.0,
+    availableColors: ['White', 'Black', 'Grey'],
+    availableSizes: [36, 38, 42, 44, 46],
+    lapel: 'Minimal neckline lapel for casual comfort',
+  ),
+  ProductModel(
+    id: '101',
+    categoryId: '1',
+    title: 'Ruffled Blouse',
+    imageUrls: [
+      'assets/images/28.jpg',
+      'assets/images/29.jpg',
+      'assets/images/30.jpg',
+    ],
+    description:
+        'Elegant ruffles design. Soft and comfortable. Can be dressed up or down.',
+    price: 750.0,
+    availableColors: ['Navy', 'Red', 'Green', 'Black'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Soft lapel with layered ruffle design',
+  ),
+  ProductModel(
+    id: '111',
+    categoryId: '1',
+    title: 'Buttoned Blouse',
+    imageUrls: [
+      'assets/images/31.jpg',
+      'assets/images/1.jpg',
+      'assets/images/2.jpg',
+    ],
+    description:
+        'Casual buttoned blouse. Light and stylish. Great for everyday wear.',
+    price: 600.0,
+    availableColors: ['White', 'Beige', 'Grey'],
+    availableSizes: [36, 38, 40],
+    lapel: 'Casual shirt lapel with button finish',
+  ),
+  ProductModel(
+    id: '121',
+    categoryId: '1',
+    title: 'Chiffon Blouse',
+    imageUrls: [
+      'assets/images/3.jpg',
+      'assets/images/4.jpg',
+      'assets/images/5.jpg',
+    ],
+    description: 'Light chiffon fabric. Elegant drape. Perfect for layering.',
+    price: 680.0,
+    availableColors: ['Red', 'Navy', 'Green', 'White'],
+    availableSizes: [38, 40, 42, 44, 46],
+
+    lapel: 'Flowy lapel with chiffon-inspired elegance',
+  ),
+
+  ProductModel(
+    id: '7',
+    categoryId: '1',
+    title: 'Silk Blouse',
+    imageUrls: [
+      'assets/images/19.jpg',
+      'assets/images/20.jpg',
+      'assets/images/21.jpg',
+    ],
+    description:
+        'Soft pink silk blouse. Comfortable and elegant. Perfect for casual and formal wear.',
+    price: 700.0,
+    availableColors: ['White', 'Red', 'Beige'],
+    availableSizes: [36, 40, 42, 44],
+    lapel: 'Delicate round lapel with soft finish',
+  ),
+  ProductModel(
+    id: '8',
+    categoryId: '2',
+    title: 'Floral Blouse',
+    imageUrls: [
+      'assets/images/22.jpg',
+      'assets/images/23.jpg',
+      'assets/images/24.jpg',
+    ],
+    description:
+        'Bright floral print blouse. Lightweight fabric. Ideal for spring and summer.',
+    price: 650.0,
+    availableColors: ['Green', 'Red', 'Navy', 'Beige'],
+    availableSizes: [38, 40, 42],
+    lapel: 'Wide collar lapel with floral touch',
+  ),
+  ProductModel(
+    id: '9',
+    categoryId: '2',
+    title: 'Sleeveless Blouse',
+    imageUrls: [
+      'assets/images/25.jpg',
+      'assets/images/26.jpg',
+      'assets/images/27.jpg',
+    ],
+    description:
+        'Light summer style sleeveless blouse. Elegant and airy. Perfect for hot weather.',
+    price: 550.0,
+    availableColors: ['White', 'Black', 'Grey'],
+    availableSizes: [36, 38, 42, 44, 46],
+    lapel: 'Minimal neckline lapel for casual comfort',
+  ),
+  ProductModel(
+    id: '10',
+    categoryId: '2',
+    title: 'Ruffled Blouse',
+    imageUrls: [
+      'assets/images/28.jpg',
+      'assets/images/29.jpg',
+      'assets/images/30.jpg',
+    ],
+    description:
+        'Elegant ruffles design. Soft and comfortable. Can be dressed up or down.',
+    price: 750.0,
+    availableColors: ['Navy', 'Red', 'Green', 'Black'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Soft lapel with layered ruffle design',
+  ),
+  ProductModel(
+    id: '11',
+    categoryId: '2',
+    title: 'Buttoned Blouse',
+    imageUrls: [
+      'assets/images/31.jpg',
+      'assets/images/1.jpg',
+      'assets/images/2.jpg',
+    ],
+    description:
+        'Casual buttoned blouse. Light and stylish. Great for everyday wear.',
+    price: 600.0,
+    availableColors: ['White', 'Beige', 'Grey'],
+    availableSizes: [36, 38, 40],
+    lapel: 'Casual shirt lapel with button finish',
+  ),
+  ProductModel(
+    id: '12',
+    categoryId: '2',
+    title: 'Chiffon Blouse',
+    imageUrls: [
+      'assets/images/3.jpg',
+      'assets/images/4.jpg',
+      'assets/images/5.jpg',
+    ],
+    description: 'Light chiffon fabric. Elegant drape. Perfect for layering.',
+    price: 680.0,
+    availableColors: ['Red', 'Navy', 'Green', 'White'],
+    availableSizes: [38, 40, 42, 44, 46],
+
+    lapel: 'Flowy lapel with chiffon-inspired elegance',
+  ),
+
+  ProductModel(
+    id: '13',
+    categoryId: '3',
+    title: 'Black Bodysuit',
+    imageUrls: [
+      'assets/images/9.jpg',
+      'assets/images/7.jpg',
+      'assets/images/8.jpg',
+    ],
+    description:
+        'Comfortable black bodysuit. Slim fit design. Perfect for pairing with skirts or pants.',
+    price: 550.0,
+    availableColors: ['Black', 'Red', 'Beige'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Slim neckline lapel with minimal cut',
+  ),
+  ProductModel(
+    id: '14',
+    categoryId: '3',
+    title: 'White Bodysuit',
+    imageUrls: [
+      'assets/images/9.jpg',
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+    ],
+    description:
+        'Elegant white bodysuit. Stretchable fabric. Suitable for casual or formal occasions.',
+    price: 580.0,
+    availableColors: ['White', 'Grey', 'Navy'],
+    availableSizes: [36, 38, 40, 44],
+    lapel: 'Round lapel with stretch fabric detail',
+  ),
+  ProductModel(
+    id: '15',
+    categoryId: '3',
+    title: 'Lace Bodysuit',
+    imageUrls: [
+      'assets/images/12.jpg',
+      'assets/images/13.jpg',
+      'assets/images/14.jpg',
+    ],
+    description:
+        'Delicate lace design. Comfortable and chic. Perfect for evening wear.',
+    price: 620.0,
+    availableColors: ['Red', 'White', 'Beige'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Elegant lace lapel with chic style',
+  ),
+  ProductModel(
+    id: '16',
+    categoryId: '3',
+    title: 'Long Sleeve Bodysuit',
+    imageUrls: [
+      'assets/images/15.jpg',
+      'assets/images/16.jpg',
+      'assets/images/17.jpg',
+    ],
+    description:
+        'Perfect for layering. Comfortable fabric. Elegant design for everyday wear.',
+    price: 600.0,
+    availableColors: ['Black', 'Grey', 'White'],
+    availableSizes: [36, 38, 42, 44, 46],
+    lapel: 'High neckline lapel with long sleeves',
+  ),
+  ProductModel(
+    id: '17',
+    categoryId: '3',
+    title: 'Tank Bodysuit',
+    imageUrls: [
+      'assets/images/18.jpg',
+      'assets/images/19.jpg',
+      'assets/images/20.jpg',
+    ],
+    description: 'Casual tank style. Slim fit. Ideal for summer.',
+    price: 530.0,
+    availableColors: ['White', 'Navy', 'Beige'],
+    availableSizes: [36, 38, 40],
+    lapel: 'Tank-style lapel with relaxed fit',
+  ),
+  ProductModel(
+    id: '18',
+    categoryId: '3',
+    title: 'Striped Bodysuit',
+    imageUrls: [
+      'assets/images/21.jpg',
+      'assets/images/22.jpg',
+      'assets/images/23.jpg',
+    ],
+    description:
+        'Modern striped look. Comfortable and stylish. Can be worn casually or formally.',
+    price: 590.0,
+    availableColors: ['Red', 'Grey', 'Black', 'White'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Striped lapel design with casual edge',
+  ),
+
+  ProductModel(
+    id: '19',
+    categoryId: '4',
+    title: 'Knitted Cardigan',
+    imageUrls: [
+      'assets/images/24.jpg',
+      'assets/images/25.jpg',
+      'assets/images/26.jpg',
+    ],
+    description:
+        'Warm knitted cardigan. Cozy and stylish. Perfect for winter wear.',
+    price: 850.0,
+    availableColors: ['Grey', 'Beige', 'Navy'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Thick knitted lapel with cozy finish',
+  ),
+  ProductModel(
+    id: '20',
+    categoryId: '4',
+    title: 'Long Cardigan',
+    imageUrls: [
+      'assets/images/27.jpg',
+      'assets/images/28.jpg',
+      'assets/images/29.jpg',
+    ],
+    description:
+        'Elegant long cardigan. Lightweight material. Suitable for layering.',
+    price: 900.0,
+    availableColors: ['Black', 'White', 'Beige'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Flowy long lapel with open design',
+  ),
+  ProductModel(
+    id: '21',
+    categoryId: '4',
+    title: 'Buttoned Cardigan',
+    imageUrls: [
+      'assets/images/30.jpg',
+      'assets/images/31.jpg',
+      'assets/images/32.jpg',
+    ],
+    description:
+        'Casual buttoned design. Perfect for everyday wear. Comfortable and simple.',
+    price: 780.0,
+    availableColors: ['Red', 'Grey', 'Navy'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Casual lapel with buttoned closure',
+  ),
+
+  ProductModel(
+    id: '22',
+    categoryId: '4',
+    title: 'Oversized Cardigan',
+    imageUrls: [
+      'assets/images/1.jpg',
+      'assets/images/2.jpg',
+      'assets/images/3.jpg',
+    ],
+    description:
+        'Oversized fit cardigan. Modern style. Great for layering in cold weather.',
+    price: 950.0,
+    availableColors: ['Beige', 'Grey', 'Black'],
+    availableSizes: [38, 40, 42, 44, 46],
+    lapel: 'Loose lapel with oversized relaxed cut',
+  ),
+  ProductModel(
+    id: '23',
+    categoryId: '4',
+    title: 'Striped Cardigan',
+    imageUrls: [
+      'assets/images/4.jpg',
+      'assets/images/5.jpg',
+      'assets/images/6.jpg',
+    ],
+    description:
+        'Trendy striped pattern. Comfortable fit. Perfect for casual outings.',
+    price: 880.0,
+    availableColors: ['Navy', 'Red', 'White'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Striped lapel with modern casual vibe',
+  ),
+  ProductModel(
+    id: '24',
+    categoryId: '4',
+    title: 'Cropped Cardigan',
+    imageUrls: [
+      'assets/images/7.jpg',
+      'assets/images/8.jpg',
+      'assets/images/9.jpg',
+    ],
+    description:
+        'Short cropped design. Stylish and chic. Great for high-waist outfits.',
+    price: 820.0,
+    availableColors: ['Black', 'Grey', 'Beige'],
+    availableSizes: [36, 38, 40],
+    lapel: 'Short lapel with cropped trendy finish',
+  ),
+
+  ProductModel(
+    id: '25',
+    categoryId: '5',
+    title: 'Wool Coat',
+    imageUrls: [
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+      'assets/images/12.jpg',
+    ],
+    description:
+        'Classic wool coat. Warm and durable. Perfect for cold winter days.',
+    price: 1600.0,
+    availableColors: ['Grey', 'Black', 'Beige'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Wide wool lapel with timeless finish',
+  ),
+  ProductModel(
+    id: '26',
+    categoryId: '5',
+    title: 'Trench Coat',
+    imageUrls: [
+      'assets/images/13.jpg',
+      'assets/images/14.jpg',
+      'assets/images/15.jpg',
+    ],
+    description:
+        'Stylish trench coat. Lightweight and elegant. Great for mid-season wear.',
+    price: 1750.0,
+    availableColors: ['Beige', 'Navy', 'Black'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Classic trench lapel with belted style',
+  ),
+  ProductModel(
+    id: '27',
+    categoryId: '5',
+    title: 'Double-Breasted Coat',
+    imageUrls: [
+      'assets/images/16.jpg',
+      'assets/images/17.jpg',
+      'assets/images/18.jpg',
+    ],
+    description:
+        'Formal double-breasted coat. Perfect for business or evening wear.',
+    price: 1850.0,
+    availableColors: ['Black', 'Grey', 'Navy'],
+    availableSizes: [38, 40, 42, 44, 46],
+    lapel: 'Sharp lapel with double-breasted detail',
+  ),
+  ProductModel(
+    id: '28',
+    categoryId: '5',
+    title: 'Cape Coat',
+    imageUrls: [
+      'assets/images/19.jpg',
+      'assets/images/20.jpg',
+      'assets/images/23.jpg',
+    ],
+    description:
+        'Unique cape design. Modern and chic. Perfect for a statement look.',
+    price: 1900.0,
+    availableColors: ['Beige', 'Red', 'Black'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Flowy cape lapel with modern elegance',
+  ),
+  ProductModel(
+    id: '29',
+    categoryId: '5',
+    title: 'Puffer Coat',
+    imageUrls: [
+      'assets/images/24.jpg',
+      'assets/images/25.jpg',
+      'assets/images/26.jpg',
+    ],
+    description:
+        'Cozy padded puffer coat. Lightweight and very warm. Ideal for winter.',
+    price: 1500.0,
+    availableColors: ['Navy', 'Black', 'Grey'],
+    availableSizes: [38, 40, 42, 44, 46],
+    lapel: 'Casual lapel with padded winter cut',
+  ),
+  ProductModel(
+    id: '30',
+    categoryId: '5',
+    title: 'Belted Coat',
+    imageUrls: [
+      'assets/images/27.jpg',
+      'assets/images/28.jpg',
+      'assets/images/29.jpg',
+    ],
+    description:
+        'Stylish belted design. Elegant and feminine. Great for formal occasions.',
+    price: 1700.0,
+    availableColors: ['Beige', 'White', 'Black'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Feminine lapel with waist belt accent',
+  ),
+
+  ProductModel(
+    id: '31',
+    categoryId: '6',
+    title: 'Evening Dress',
+    imageUrls: [
+      'assets/images/30.jpg',
+      'assets/images/31.jpg',
+      'assets/images/32.jpg',
+    ],
+    description:
+        'Elegant evening dress. Perfect for parties or special occasions. Flowy and feminine.',
+    price: 1400.0,
+    availableColors: ['Black', 'Red', 'Navy'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Deep V-neck lapel with elegant finish',
+  ),
+  ProductModel(
+    id: '32',
+    categoryId: '6',
+    title: 'Casual Summer Dress',
+    imageUrls: [
+      'assets/images/1.jpg',
+      'assets/images/2.jpg',
+      'assets/images/3.jpg',
+    ],
+    description:
+        'Lightweight summer dress. Comfortable and colorful. Great for casual outings.',
+    price: 950.0,
+    availableColors: ['White', 'Yellow', 'Blue'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Round lapel with light summer fabric',
+  ),
+  ProductModel(
+    id: '33',
+    categoryId: '6',
+    title: 'Bodycon Dress',
+    imageUrls: [
+      'assets/images/4.jpg',
+      'assets/images/5.jpg',
+      'assets/images/6.jpg',
+    ],
+    description:
+        'Fitted bodycon style. Perfect for night out or special events.',
+    price: 1200.0,
+    availableColors: ['Red', 'Black', 'Beige'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Slim lapel with tight bodycon fit',
+  ),
+  ProductModel(
+    id: '34',
+    categoryId: '6',
+    title: 'Maxi Dress',
+    imageUrls: [
+      'assets/images/7.jpg',
+      'assets/images/8.jpg',
+      'assets/images/9.jpg',
+    ],
+    description:
+        'Flowy maxi dress. Elegant and comfortable. Perfect for beach or summer evenings.',
+    price: 1100.0,
+    availableColors: ['Blue', 'White', 'Pink'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Long flowy lapel with maxi length',
+  ),
+  ProductModel(
+    id: '35',
+    categoryId: '6',
+    title: 'Shirt Dress',
+    imageUrls: [
+      'assets/images/10.jpg',
+      'assets/images/11.jpg',
+      'assets/images/12.jpg',
+    ],
+    description:
+        'Casual shirt-inspired dress. Comfortable and practical. Perfect for daily wear.',
+    price: 1000.0,
+    availableColors: ['White', 'Beige', 'Green'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Collared lapel with shirt-style detail',
+  ),
+  ProductModel(
+    id: '36',
+    categoryId: '6',
+    title: 'Wrap Dress',
+    imageUrls: [
+      'assets/images/13.jpg',
+      'assets/images/14.jpg',
+      'assets/images/15.jpg',
+    ],
+    description:
+        'Flattering wrap design. Feminine and chic. Suitable for casual or formal wear.',
+    price: 1150.0,
+    availableColors: ['Red', 'Navy', 'Black'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Wrap-style lapel with tied waist design',
+  ),
+
+  ProductModel(
+    id: '37',
+    categoryId: '7',
+    title: 'Denim Jacket',
+    imageUrls: [
+      'assets/images/16.jpg',
+      'assets/images/17.jpg',
+      'assets/images/18.jpg',
+    ],
+    description:
+        'Classic denim jacket. Casual and timeless. Perfect for everyday wear.',
+    price: 950.0,
+    availableColors: ['Blue', 'Black', 'Grey'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Casual denim lapel with rugged finish',
+  ),
+  ProductModel(
+    id: '38',
+    categoryId: '7',
+    title: 'Leather Jacket',
+    imageUrls: [
+      'assets/images/19.jpg',
+      'assets/images/20.jpg',
+      'assets/images/21.jpg',
+    ],
+    description:
+        'Trendy leather jacket. Bold and stylish. Perfect for night outings.',
+    price: 1800.0,
+    availableColors: ['Black', 'Brown'],
+    availableSizes: [38, 40, 42, 44, 46],
+    lapel: 'Sharp leather lapel with edgy cut',
+  ),
+  ProductModel(
+    id: '39',
+    categoryId: '7',
+    title: 'Bomber Jacket',
+    imageUrls: [
+      'assets/images/22.jpg',
+      'assets/images/23.jpg',
+      'assets/images/24.jpg',
+    ],
+    description:
+        'Sporty bomber style. Comfortable and versatile. Great for casual outfits.',
+    price: 1200.0,
+    availableColors: ['Green', 'Navy', 'Black'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Ribbed bomber lapel with sporty edge',
+  ),
+  ProductModel(
+    id: '40',
+    categoryId: '7',
+    title: 'Cropped Jacket',
+    imageUrls: [
+      'assets/images/25.jpg',
+      'assets/images/26.jpg',
+      'assets/images/27.jpg',
+    ],
+    description:
+        'Trendy cropped jacket. Modern and chic. Perfect for high-waist looks.',
+    price: 1100.0,
+    availableColors: ['White', 'Black', 'Beige'],
+    availableSizes: [36, 38, 40, 42],
+    lapel: 'Short lapel with cropped modern fit',
+  ),
+  ProductModel(
+    id: '41',
+    categoryId: '7',
+    title: 'Puffer Jacket',
+    imageUrls: [
+      'assets/images/28.jpg',
+      'assets/images/29.jpg',
+      'assets/images/30.jpg',
+    ],
+    description:
+        'Warm puffer jacket. Lightweight and protective. Ideal for cold weather.',
+    price: 1350.0,
+    availableColors: ['Grey', 'Navy', 'Black'],
+    availableSizes: [38, 40, 42, 44],
+    lapel: 'Thick padded lapel with winter comfort',
+  ),
+  ProductModel(
+    id: '42',
+    categoryId: '7',
+    title: 'Blazer Jacket',
+    imageUrls: [
+      'assets/images/31.jpg',
+      'assets/images/32.jpg',
+      'assets/images/1.jpg',
+    ],
+    description:
+        'Stylish blazer-inspired jacket. Semi-formal look. Great for office or outings.',
+    price: 1450.0,
+    availableColors: ['Black', 'Beige', 'Navy'],
+    availableSizes: [36, 38, 40, 42, 44],
+    lapel: 'Tailored lapel with semi-formal structure',
+  ),
+];

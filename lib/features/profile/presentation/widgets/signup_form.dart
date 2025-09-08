@@ -10,12 +10,18 @@ class SignUpForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.locale; 
+    context.locale;
 
     final usernameController = TextEditingController();
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
     final confirmPasswordController = TextEditingController();
+
+    
+    final usernameFocus = FocusNode();
+    final emailFocus = FocusNode();
+    final passwordFocus = FocusNode();
+    final confirmPasswordFocus = FocusNode();
 
     return BlocProvider(
       create: (_) => SignUpVisibilityCubit(),
@@ -26,6 +32,10 @@ class SignUpForm extends StatelessWidget {
             BuildTextField(
               hint: 'username_hint'.tr(),
               controller: usernameController,
+              focusNode: usernameFocus,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted:
+                  (_) => FocusScope.of(context).requestFocus(emailFocus),
               validator:
                   (value) =>
                       value == null || value.isEmpty
@@ -38,9 +48,14 @@ class SignUpForm extends StatelessWidget {
             BuildTextField(
               hint: 'email_hint'.tr(),
               controller: emailController,
+              focusNode: emailFocus,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted:
+                  (_) => FocusScope.of(context).requestFocus(passwordFocus),
               validator: (value) {
-                if (value == null || value.isEmpty)
+                if (value == null || value.isEmpty) {
                   return 'email_required'.tr();
+                }
                 if (!value.contains('@')) return 'email_invalid'.tr();
                 return null;
               },
@@ -54,6 +69,12 @@ class SignUpForm extends StatelessWidget {
                 return BuildTextField(
                   hint: 'password_hint'.tr(),
                   controller: passwordController,
+                  focusNode: passwordFocus,
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted:
+                      (_) => FocusScope.of(
+                        context,
+                      ).requestFocus(confirmPasswordFocus),
                   obscureText: !state.isPasswordVisible,
                   showToggleIcon: true,
                   isPasswordVisible: state.isPasswordVisible,
@@ -73,6 +94,17 @@ class SignUpForm extends StatelessWidget {
                 return BuildTextField(
                   hint: 'confirm_password_hint'.tr(),
                   controller: confirmPasswordController,
+                  focusNode: confirmPasswordFocus,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) {
+                    
+                    context.read<ProfileCubit>().signUp(
+                      username: usernameController.text.trim(),
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                      confirmPassword: confirmPasswordController.text.trim(),
+                    );
+                  },
                   obscureText: !state.isConfirmPasswordVisible,
                   showToggleIcon: true,
                   isPasswordVisible: state.isConfirmPasswordVisible,

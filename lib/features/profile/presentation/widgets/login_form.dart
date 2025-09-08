@@ -14,6 +14,10 @@ class LoginForm extends StatelessWidget {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
 
+    
+    final emailFocus = FocusNode();
+    final passwordFocus = FocusNode();
+
     return BlocProvider(
       create: (_) => LoginVisibilityCubit(),
       child: Padding(
@@ -23,6 +27,10 @@ class LoginForm extends StatelessWidget {
             BuildTextField(
               hint: 'email_hint'.tr(),
               controller: emailController,
+              focusNode: emailFocus,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted:
+                  (_) => FocusScope.of(context).requestFocus(passwordFocus),
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'email_required'.tr();
@@ -42,6 +50,16 @@ class LoginForm extends StatelessWidget {
                 return BuildTextField(
                   hint: 'password_hint'.tr(),
                   controller: passwordController,
+                  focusNode: passwordFocus,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) {
+                    
+                    context.read<ProfileCubit>().login(
+                      username: "User",
+                      email: emailController.text.trim(),
+                      password: passwordController.text.trim(),
+                    );
+                  },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'password_required'.tr();
@@ -67,7 +85,7 @@ class LoginForm extends StatelessWidget {
               label: 'login'.tr(),
               onPressed: () {
                 context.read<ProfileCubit>().login(
-                  username: "User", 
+                  username: "User",
                   email: emailController.text.trim(),
                   password: passwordController.text.trim(),
                 );

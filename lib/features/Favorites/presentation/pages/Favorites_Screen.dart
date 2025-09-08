@@ -2,7 +2,7 @@ import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:fig/features/Favorites/presentation/cubit/favorites_state.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/home_widget.dart';
-import 'package:fig/features/home/widgets/product_quick_review_sheet.dart';
+import 'package:fig/features/product/widgets/product_quick_review_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

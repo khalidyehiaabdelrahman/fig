@@ -13,6 +13,7 @@ class BuildTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final TextInputAction textInputAction;
   final void Function(String)? onFieldSubmitted;
+  final FocusNode? focusNode; 
 
   const BuildTextField({
     super.key,
@@ -27,11 +28,13 @@ class BuildTextField extends StatelessWidget {
     this.prefixIcon,
     this.textInputAction = TextInputAction.next,
     this.onFieldSubmitted,
+    this.focusNode, 
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      focusNode: focusNode, 
       textInputAction: textInputAction,
       onFieldSubmitted: onFieldSubmitted,
       cursorColor: Colors.white,
@@ -64,7 +67,6 @@ class BuildTextField extends StatelessWidget {
           horizontal: responsiveWidth(context, 20),
           vertical: responsiveHeight(context, 15),
         ),
-        
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide(color: Colors.grey),
@@ -139,7 +141,7 @@ class PrimaryButton extends StatelessWidget {
                       label,
                       style: TextStyle(
                         fontSize: 16.rt(context),
-                        fontWeight: fontWeight, 
+                        fontWeight: fontWeight,
                       ),
                     ),
                   ]
@@ -149,7 +151,7 @@ class PrimaryButton extends StatelessWidget {
                       label,
                       style: TextStyle(
                         fontSize: 16.rt(context),
-                        fontWeight: fontWeight, 
+                        fontWeight: fontWeight,
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -170,7 +172,7 @@ class PrimaryButton extends StatelessWidget {
                       label,
                       style: TextStyle(
                         fontSize: 16.rt(context),
-                        fontWeight: fontWeight, 
+                        fontWeight: fontWeight,
                       ),
                     ),
                   ],
@@ -197,14 +199,14 @@ class TransparentTextButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: TextButton.styleFrom(
-        padding: EdgeInsets.zero, 
-        minimumSize: Size(0, 0), 
-        tapTargetSize: MaterialTapTargetSize.shrinkWrap, 
+        padding: EdgeInsets.zero,
+        minimumSize: Size(0, 0),
+        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
       ),
       child: Text(
         label,
-        overflow: TextOverflow.ellipsis, 
-        softWrap: false, 
+        overflow: TextOverflow.ellipsis,
+        softWrap: false,
         style: TextStyle(
           color: colorScheme.onSurface.withOpacity(0.6),
           fontSize: 14,
@@ -247,9 +249,8 @@ class SocialLoginButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(20),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center, 
-          crossAxisAlignment:
-              CrossAxisAlignment.center, 
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
             if (iconWidget != null)

@@ -4,7 +4,7 @@ import 'package:fig/features/product/presentation/cubit/product_selection_cubit.
 import 'package:fig/features/product/presentation/cubit/product_selection_state.dart';
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/carousel_widget.dart';
-import 'package:fig/features/home/widgets/product_info_section.dart';
+import 'package:fig/features/product/widgets/product_info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';

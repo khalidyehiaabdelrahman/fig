@@ -6,6 +6,7 @@ class TopSnackBar {
     required String message,
     IconData icon = Icons.info,
     Color backgroundColor = Colors.teal,
+    Color textColor = Colors.white, 
     Duration duration = const Duration(seconds: 2),
   }) {
     final overlay = Overlay.of(context);
@@ -17,6 +18,7 @@ class TopSnackBar {
           message: message,
           icon: icon,
           backgroundColor: backgroundColor,
+          textColor: textColor, 
           onDismiss: () => overlayEntry.remove(),
           duration: duration,
         );
@@ -31,6 +33,7 @@ class _TopSnackBarWidget extends StatefulWidget {
   final String message;
   final IconData icon;
   final Color backgroundColor;
+  final Color textColor; 
   final VoidCallback onDismiss;
   final Duration duration;
 
@@ -38,6 +41,7 @@ class _TopSnackBarWidget extends StatefulWidget {
     required this.message,
     required this.icon,
     required this.backgroundColor,
+    required this.textColor, 
     required this.onDismiss,
     required this.duration,
   });
@@ -113,21 +117,28 @@ class _TopSnackBarWidgetState extends State<_TopSnackBarWidget>
                 children: [
                   FadeTransition(
                     opacity: _blinkAnimation,
-                    child: Icon(widget.icon, color: Colors.white, size: 30),
+                    child: Icon(
+                      widget.icon,
+                      color: widget.textColor,
+                      size: 30,
+                    ), 
                   ),
                   const SizedBox(width: 20),
                   Expanded(
                     child: Text(
                       widget.message,
-                      style: const TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(
+                        color: widget.textColor,
+                        fontSize: 16,
+                      ), 
                     ),
                   ),
                   TextButton(
                     onPressed: dismiss,
-                    child: const Text(
+                    child: Text(
                       'Close',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: widget.textColor, 
                         fontWeight: FontWeight.bold,
                       ),
                     ),

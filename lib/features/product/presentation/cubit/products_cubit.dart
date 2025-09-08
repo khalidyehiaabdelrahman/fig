@@ -1,5 +1,5 @@
-import 'package:fig/features/home/data/products_data.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
+import 'package:fig/features/product/data/products_data.dart';
 import 'package:fig/features/product/presentation/cubit/products_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hive/hive.dart';

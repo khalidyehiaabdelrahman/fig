@@ -1,7 +1,7 @@
 import 'package:fig/features/Favorites/presentation/cubit/favorites_cubit.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/product/presentation/pages/Product_detials_Page.dart';
-import 'package:fig/features/home/widgets/product_quick_review_sheet.dart';
+import 'package:fig/features/product/widgets/product_quick_review_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';

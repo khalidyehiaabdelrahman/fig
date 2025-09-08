@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 Widget alignedText({
   required String text,
@@ -36,22 +35,4 @@ Widget buildReusableDivider({
   Color color = Colors.black,
 }) {
   return Divider(height: height, thickness: thickness, color: color);
-}
-
-class LoadingIndicator extends StatelessWidget {
-  final double size;
-  final Color color;
-  final Widget? spinner;
-
-  const LoadingIndicator({
-    super.key,
-    this.size = 60.0,
-    this.color = Colors.white,
-    this.spinner,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(child: SpinKitSpinningLines(size: size, color: color));
-  }
 }
