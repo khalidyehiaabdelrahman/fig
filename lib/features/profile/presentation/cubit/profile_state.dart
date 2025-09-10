@@ -5,15 +5,31 @@ class ProfileInitial extends ProfileState {}
 class ProfileLoading extends ProfileState {}
 
 class ProfileLoggedIn extends ProfileState {
-  final String username;
   final String email;
-  ProfileLoggedIn({required this.username, required this.email});
+  final String firstName;
+  final String lastName;
+  final int? phone;
+
+  ProfileLoggedIn({
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    this.phone,
+  });
 }
 
 class ProfileSignedUp extends ProfileState {
-  final String username;
   final String email;
-  ProfileSignedUp({required this.username, required this.email});
+  final String firstName;
+  final String lastName;
+  final int phone;
+
+  ProfileSignedUp({
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    required this.phone,
+  });
 }
 
 class ProfileLoggedOut extends ProfileState {}
@@ -29,7 +45,8 @@ class AuthTabInitial extends AuthTabState {}
 
 class AuthTabChanged extends AuthTabState {
   final int index;
-  AuthTabChanged(this.index);
+  final SharedUserData? sharedData;
+  AuthTabChanged(this.index, {this.sharedData});
 }
 
 abstract class LoginVisibilityState {}
@@ -55,9 +72,12 @@ class SignUpVisibilityInitial extends SignUpVisibilityState {
 
 class SignUpVisibilityChanged extends SignUpVisibilityState {
   const SignUpVisibilityChanged({
-    required super.isPasswordVisible,
-    required super.isConfirmPasswordVisible,
-  });
+    required bool isPasswordVisible,
+    required bool isConfirmPasswordVisible,
+  }) : super(
+         isPasswordVisible: isPasswordVisible,
+         isConfirmPasswordVisible: isConfirmPasswordVisible,
+       );
 }
 
 abstract class LanguageState {
@@ -71,4 +91,37 @@ class LanguageInitial extends LanguageState {
 
 class LanguageChanged extends LanguageState {
   const LanguageChanged(super.languageCode);
+}
+
+
+class SharedUserData {
+  final String? firstName;
+  final String? lastName;
+  final String? email;
+  final int? phone;
+  final String? password;
+
+  const SharedUserData({
+    this.firstName,
+    this.lastName,
+    this.email,
+    this.phone,
+    this.password,
+  });
+
+  SharedUserData copyWith({
+    String? firstName,
+    String? lastName,
+    String? email,
+    int? phone,
+    String? password,
+  }) {
+    return SharedUserData(
+      firstName: firstName ?? this.firstName,
+      lastName: lastName ?? this.lastName,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      password: password ?? this.password,
+    );
+  }
 }

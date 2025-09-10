@@ -10,19 +10,47 @@ class ProductsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProductsCubit, ProductsState>(
-      builder: (context, state) {
-        if (state is ProductsLoading) {
-          return const CategoryRowShimmer();
-        } else if (state is ProductsError) {
-          return Center(child: Text(state.error));
-        } else if (state is ProductsLoaded) {
-          return ProductListWidget(products: state.products);
-        } else if (state is ProductsFiltered) {
-          return ProductListWidget(products: state.filteredProducts);
-        }
-        return const SizedBox.shrink();
-      },
+    return BlocListener<ProductsCubit, ProductsState>(
+      listener: (context, state) {},
+      child: BlocBuilder<ProductsCubit, ProductsState>(
+        builder: (context, state) {
+          if (state is ProductsLoading) {
+            return const CategoryRowShimmer();
+          } else if (state is ProductsError) {
+            return Center(child: Text(state.error));
+          } else if (state is ProductsLoaded) {
+            return ProductListWidget(
+              products: state.products,
+              hasMore: false,
+              isLoading: false,
+              onLoadMore: null,
+            );
+          } else if (state is ProductsFiltered) {
+            return ProductListWidget(
+              products: state.filteredProducts,
+              hasMore: false,
+              isLoading: false,
+              onLoadMore: null,
+            );
+          } else if (state is ProductsPaginationLoaded) {
+            return ProductListWidget(
+              products: state.products,
+              hasMore: state.hasMore,
+              isLoading: state.isLoading,
+              onLoadMore:
+                  () => context.read<ProductsCubit>().loadMoreProducts(),
+            );
+          } else if (state is ProductsLoadingMore) {
+            return ProductListWidget(
+              products: state.products,
+              hasMore: true,
+              isLoading: true,
+              onLoadMore: null,
+            );
+          }
+          return const SizedBox.shrink();
+        },
+      ),
     );
   }
 }

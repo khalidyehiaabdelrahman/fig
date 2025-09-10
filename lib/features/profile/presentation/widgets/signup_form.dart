@@ -1,27 +1,71 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/core/widgets/custom_button.dart';
+import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SignUpForm extends StatelessWidget {
-  const SignUpForm({super.key});
+class SignUpForm extends StatefulWidget {
+  final SharedUserData? sharedData;
+
+  const SignUpForm({super.key, this.sharedData});
+
+  @override
+  State<SignUpForm> createState() => _SignUpFormState();
+}
+
+class _SignUpFormState extends State<SignUpForm> {
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late TextEditingController confirmPasswordController;
+  late TextEditingController phoneController;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    firstNameController = TextEditingController(
+      text: widget.sharedData?.firstName ?? '',
+    );
+    lastNameController = TextEditingController(
+      text: widget.sharedData?.lastName ?? '',
+    );
+    emailController = TextEditingController(
+      text: widget.sharedData?.email ?? '',
+    );
+    passwordController = TextEditingController(
+      text: widget.sharedData?.password ?? '',
+    );
+    confirmPasswordController = TextEditingController();
+    phoneController = TextEditingController(
+      text: widget.sharedData?.phone?.toString() ?? '',
+    );
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    confirmPasswordController.dispose();
+    phoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     context.locale;
 
-    final usernameController = TextEditingController();
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final confirmPasswordController = TextEditingController();
-
-    
-    final usernameFocus = FocusNode();
+    final firstNameFocus = FocusNode();
+    final lastNameFocus = FocusNode();
     final emailFocus = FocusNode();
     final passwordFocus = FocusNode();
     final confirmPasswordFocus = FocusNode();
+    final phoneFocus = FocusNode();
 
     return BlocProvider(
       create: (_) => SignUpVisibilityCubit(),
@@ -30,18 +74,24 @@ class SignUpForm extends StatelessWidget {
         child: Column(
           children: [
             BuildTextField(
-              hint: 'username_hint'.tr(),
-              controller: usernameController,
-              focusNode: usernameFocus,
+              hint: 'first_name_hint'.tr(),
+              controller: firstNameController,
+              focusNode: firstNameFocus,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted:
+                  (_) => FocusScope.of(context).requestFocus(lastNameFocus),
+              prefixIcon: Icons.person,
+            ),
+            const SizedBox(height: 12),
+
+            BuildTextField(
+              hint: 'last_name_hint'.tr(),
+              controller: lastNameController,
+              focusNode: lastNameFocus,
               textInputAction: TextInputAction.next,
               onFieldSubmitted:
                   (_) => FocusScope.of(context).requestFocus(emailFocus),
-              validator:
-                  (value) =>
-                      value == null || value.isEmpty
-                          ? 'username_required'.tr()
-                          : null,
-              prefixIcon: Icons.person,
+              prefixIcon: Icons.person_outline,
             ),
             const SizedBox(height: 12),
 
@@ -52,13 +102,6 @@ class SignUpForm extends StatelessWidget {
               textInputAction: TextInputAction.next,
               onFieldSubmitted:
                   (_) => FocusScope.of(context).requestFocus(passwordFocus),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'email_required'.tr();
-                }
-                if (!value.contains('@')) return 'email_invalid'.tr();
-                return null;
-              },
               prefixIcon: Icons.email,
               keyboardType: TextInputType.emailAddress,
             ),
@@ -95,16 +138,9 @@ class SignUpForm extends StatelessWidget {
                   hint: 'confirm_password_hint'.tr(),
                   controller: confirmPasswordController,
                   focusNode: confirmPasswordFocus,
-                  textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) {
-                    
-                    context.read<ProfileCubit>().signUp(
-                      username: usernameController.text.trim(),
-                      email: emailController.text.trim(),
-                      password: passwordController.text.trim(),
-                      confirmPassword: confirmPasswordController.text.trim(),
-                    );
-                  },
+                  textInputAction: TextInputAction.next,
+                  onFieldSubmitted:
+                      (_) => FocusScope.of(context).requestFocus(phoneFocus),
                   obscureText: !state.isConfirmPasswordVisible,
                   showToggleIcon: true,
                   isPasswordVisible: state.isConfirmPasswordVisible,
@@ -114,29 +150,115 @@ class SignUpForm extends StatelessWidget {
                               .read<SignUpVisibilityCubit>()
                               .toggleConfirmPasswordVisibility(),
                   prefixIcon: Icons.lock_outline,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'confirm_password_required'.tr();
-                    }
-                    if (value != passwordController.text) {
-                      return 'passwords_do_not_match'.tr();
-                    }
-                    return null;
-                  },
                 );
               },
             ),
 
-            const SizedBox(height: 24),
-            PrimaryButton(
-              label: 'create_account'.tr().toUpperCase(),
-              onPressed: () {
-                context.read<ProfileCubit>().signUp(
-                  username: usernameController.text.trim(),
+            const SizedBox(height: 12),
+
+            BuildTextField(
+              hint: 'phone_hint'.tr(),
+              controller: phoneController,
+              focusNode: phoneFocus,
+              textInputAction: TextInputAction.done,
+              keyboardType: TextInputType.phone,
+              prefixIcon: Icons.phone,
+              onFieldSubmitted: (_) async {
+                
+                final sharedData = SharedUserData(
+                  firstName: firstNameController.text.trim(),
+                  lastName: lastNameController.text.trim(),
                   email: emailController.text.trim(),
                   password: passwordController.text.trim(),
-                  confirmPassword: confirmPasswordController.text.trim(),
+                  phone: int.tryParse(phoneController.text.trim()) ?? 0,
                 );
+
+                
+                try {
+                  await context.read<ProfileCubit>().signUp(
+                    firstName: firstNameController.text.trim(),
+                    lastName: lastNameController.text.trim(),
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                    confirmPassword: confirmPasswordController.text.trim(),
+                    phone: int.tryParse(phoneController.text.trim()) ?? 0,
+                  );
+
+                  
+                  TopSnackBar.show(
+                    context,
+                    message: "signup_success".tr(),
+                    icon: Icons.check_circle,
+                    backgroundColor: Colors.green,
+                  );
+
+                  
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    context.read<AuthTabCubit>().changeTab(
+                      0,
+                      sharedData: sharedData,
+                    );
+                  });
+                } catch (e) {
+                  
+                  TopSnackBar.show(
+                    context,
+                    message: "حدث خطأ: $e",
+                    icon: Icons.error,
+                    backgroundColor: Colors.red,
+                  );
+                }
+              },
+            ),
+            const SizedBox(height: 24),
+
+            PrimaryButton(
+              label: 'create_account'.tr().toUpperCase(),
+              onPressed: () async {
+                
+                final sharedData = SharedUserData(
+                  firstName: firstNameController.text.trim(),
+                  lastName: lastNameController.text.trim(),
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                  phone: int.tryParse(phoneController.text.trim()) ?? 0,
+                );
+
+                
+                try {
+                  await context.read<ProfileCubit>().signUp(
+                    firstName: firstNameController.text.trim(),
+                    lastName: lastNameController.text.trim(),
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                    confirmPassword: confirmPasswordController.text.trim(),
+                    phone: int.tryParse(phoneController.text.trim()) ?? 0,
+                  );
+
+                  
+                  TopSnackBar.show(
+                    context,
+                    message: "signup_success".tr(),
+                    icon: Icons.check_circle,
+                    backgroundColor: Colors.green,
+                  );
+
+                  
+                  Future.delayed(const Duration(milliseconds: 500), () {
+                    context.read<AuthTabCubit>().changeTab(
+                      0,
+                      sharedData: sharedData,
+                    );
+                  });
+                } catch (e) {
+                  
+                  TopSnackBar.show(
+                    context,
+                    message: "حدث خطأ: $e",
+                    icon: Icons.error,
+                    backgroundColor: Colors.red,
+                  );
+                }
               },
               backgroundColor: Colors.red.shade700,
             ),
@@ -157,7 +279,20 @@ class SignUpForm extends StatelessWidget {
               label: 'login'.tr().toUpperCase(),
               foregroundColor: Colors.black,
               onPressed: () {
-                context.read<AuthTabCubit>().changeTab(0);
+                
+                final sharedData = SharedUserData(
+                  firstName: firstNameController.text.trim(),
+                  lastName: lastNameController.text.trim(),
+                  email: emailController.text.trim(),
+                  password: passwordController.text.trim(),
+                  phone: int.tryParse(phoneController.text.trim()) ?? 0,
+                );
+
+                
+                context.read<AuthTabCubit>().changeTab(
+                  0,
+                  sharedData: sharedData,
+                );
               },
             ),
           ],

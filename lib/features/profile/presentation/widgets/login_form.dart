@@ -1,22 +1,73 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/core/widgets/custom_button.dart';
+import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginForm extends StatelessWidget {
-  const LoginForm({super.key});
+class LoginForm extends StatefulWidget {
+  final SharedUserData? sharedData;
+
+  const LoginForm({super.key, this.sharedData});
+
+  @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  late TextEditingController emailController;
+  late TextEditingController passwordController;
+  late FocusNode emailFocus;
+  late FocusNode passwordFocus;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    emailController = TextEditingController(
+      text: widget.sharedData?.email ?? '',
+    );
+    passwordController = TextEditingController(
+      text: widget.sharedData?.password ?? '',
+    );
+    emailFocus = FocusNode();
+    passwordFocus = FocusNode();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    
+    if (widget.sharedData == null) {
+      _loadStoredData();
+    }
+  }
+
+  Future<void> _loadStoredData() async {
+    final profileCubit = context.read<ProfileCubit>();
+    final storedData = await profileCubit.getStoredUserData();
+
+    if (storedData != null) {
+      setState(() {
+        emailController.text = storedData.email ?? '';
+        passwordController.text = storedData.password ?? '';
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    emailFocus.dispose();
+    passwordFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     context.locale;
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-
-    
-    final emailFocus = FocusNode();
-    final passwordFocus = FocusNode();
 
     return BlocProvider(
       create: (_) => LoginVisibilityCubit(),
@@ -53,9 +104,7 @@ class LoginForm extends StatelessWidget {
                   focusNode: passwordFocus,
                   textInputAction: TextInputAction.done,
                   onFieldSubmitted: (_) {
-                    
                     context.read<ProfileCubit>().login(
-                      username: "User",
                       email: emailController.text.trim(),
                       password: passwordController.text.trim(),
                     );
@@ -83,12 +132,22 @@ class LoginForm extends StatelessWidget {
             PrimaryButton(
               backgroundColor: Colors.red.shade700,
               label: 'login'.tr(),
-              onPressed: () {
-                context.read<ProfileCubit>().login(
-                  username: "User",
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                );
+              onPressed: () async {
+                try {
+                  await context.read<ProfileCubit>().login(
+                    email: emailController.text.trim(),
+                    password: passwordController.text.trim(),
+                    sharedData: widget.sharedData,
+                  );
+                } catch (e) {
+                  
+                  TopSnackBar.show(
+                    context,
+                    message: "حدث خطأ: $e",
+                    icon: Icons.error,
+                    backgroundColor: Colors.red,
+                  );
+                }
               },
             ),
             const SizedBox(height: 20),
@@ -107,6 +166,7 @@ class LoginForm extends StatelessWidget {
               label: 'create_account'.tr(),
               foregroundColor: Colors.black,
               onPressed: () {
+                
                 context.read<AuthTabCubit>().changeTab(1);
               },
               borderColor: Colors.black26,

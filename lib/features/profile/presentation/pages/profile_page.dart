@@ -10,14 +10,34 @@ import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import '../widgets/profile_logged_in_view.dart';
 import '../widgets/profile_logged_out_view.dart';
+import 'user_profile_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  late ProfileCubit _profileCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    _profileCubit = ProfileCubit();
+  }
+
+  @override
+  void dispose() {
+    _profileCubit.close();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => ProfileCubit(),
+      create: (_) => _profileCubit,
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -53,6 +73,16 @@ class ProfilePage extends StatelessWidget {
                         icon: Icons.check_circle,
                         backgroundColor: Colors.green,
                       );
+
+                      
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const UserProfilePage(),
+                          ),
+                        );
+                      });
                     }
 
                     if (state is ProfileSignedUp) {
@@ -62,15 +92,16 @@ class ProfilePage extends StatelessWidget {
                         icon: Icons.person_add,
                         backgroundColor: Colors.green,
                       );
-                    }
 
-                    if (state is ProfileLoggedOut) {
-                      TopSnackBar.show(
-                        context,
-                        message: "logout_success".tr(),
-                        icon: Icons.exit_to_app,
-                        backgroundColor: Colors.blueGrey,
-                      );
+                      
+                      Future.delayed(const Duration(seconds: 1), () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const UserProfilePage(),
+                          ),
+                        );
+                      });
                     }
                   },
                   builder: (context, state) {
@@ -78,8 +109,17 @@ class ProfilePage extends StatelessWidget {
                       children: [
                         if (state is ProfileLoggedIn)
                           ProfileLoggedInView(
-                            username: state.username,
+                            firstName: state.firstName,
+                            lastName: state.lastName,
                             email: state.email,
+                            phone: state.phone ?? 0,
+                          )
+                        else if (state is ProfileSignedUp)
+                          ProfileLoggedInView(
+                            firstName: state.firstName,
+                            lastName: state.lastName,
+                            email: state.email,
+                            phone: state.phone,
                           )
                         else
                           const ProfileLoggedOutView(),

@@ -8,6 +8,7 @@ import 'package:fig/features/home/widgets/home_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/core/widgets/shimmer_skeletons.dart';
+import 'package:hive/hive.dart';
 
 class ProductsByCategoryScreen extends StatefulWidget {
   final CategoryModel category;
@@ -21,11 +22,15 @@ class ProductsByCategoryScreen extends StatefulWidget {
 
 class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
   bool forceShowShimmer = true;
+  List<ProductModel> _cachedProducts = [];
+  bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
+    context.read<ProductsCubit>().fetchProducts();
     context.read<ProductsCubit>().loadSortOption();
+    _loadProducts();
 
     Future.delayed(const Duration(seconds: 3), () {
       if (mounted) {
@@ -36,36 +41,46 @@ class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
     });
   }
 
+  Future<void> _loadProducts() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final box = await Hive.openBox<ProductModel>('products');
+    final products =
+        box.values.where((p) => p.categoryId == widget.category.id).toList();
+
+    if (mounted) {
+      setState(() {
+        _cachedProducts = products;
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
-        List<ProductModel> filtered = [];
-
-        if (state is ProductsError) {
-          return Scaffold(
-            appBar: AppBar(title: const Text('Error')),
-            body: Center(child: Text(state.error)),
-          );
+        
+        if (state is ProductsPaginationLoaded) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            _loadProducts();
+          });
         }
 
-        if (state is ProductsLoaded) {
-          filtered =
-              state.products
-                  .where((p) => p.categoryId == widget.category.id)
-                  .toList();
-        } else if (state is ProductsFiltered) {
-          filtered =
-              state.filteredProducts
-                  .where((p) => p.categoryId == widget.category.id)
-                  .toList();
+        if (_isLoading) {
+          return Scaffold(
+            appBar: AppBar(title: Text(widget.category.name)),
+            body: const Center(child: CircularProgressIndicator()),
+          );
         }
 
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
             title: Text(
-              'Product List (${filtered.length} products)',
+              'Product List (${_cachedProducts.length} products)',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             backgroundColor: Colors.white,
@@ -139,20 +154,20 @@ class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
                             ? homeState.isGrid
                             : context.read<HomeCubit>().isGrid;
 
-                    if (state is ProductsLoading || forceShowShimmer) {
+                    if (forceShowShimmer) {
                       return isGrid
                           ? const ProductGridShimmer()
                           : const ProductListShimmer();
                     }
 
-                    if (filtered.isEmpty) {
+                    if (_cachedProducts.isEmpty) {
                       return const Center(child: Text('No products found'));
                     }
 
                     return isGrid
                         ? GridView.builder(
                           padding: const EdgeInsets.all(5),
-                          itemCount: filtered.length,
+                          itemCount: _cachedProducts.length,
                           gridDelegate:
                               const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 2,
@@ -161,17 +176,17 @@ class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
                                 childAspectRatio: 0.5,
                               ),
                           itemBuilder: (context, index) {
-                            final product = filtered[index];
+                            final product = _cachedProducts[index];
                             return _buildGridProduct(product);
                           },
                         )
                         : ListView.separated(
                           padding: const EdgeInsets.all(6),
-                          itemCount: filtered.length,
+                          itemCount: _cachedProducts.length,
                           separatorBuilder:
                               (_, __) => const SizedBox(height: 12),
                           itemBuilder: (context, index) {
-                            final product = filtered[index];
+                            final product = _cachedProducts[index];
                             return _buildListProduct(product);
                           },
                         );

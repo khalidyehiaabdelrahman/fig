@@ -8,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'toggle_tab_bar.dart';
 
 class ProfileLoggedOutView extends StatelessWidget {
-  const ProfileLoggedOutView({super.key});
+  final SharedUserData? sharedData;
+
+  const ProfileLoggedOutView({super.key, this.sharedData});
 
   @override
   Widget build(BuildContext context) {
@@ -42,13 +44,17 @@ class ProfileLoggedOutView extends StatelessWidget {
                         BlocBuilder<AuthTabCubit, AuthTabState>(
                           builder: (context, state) {
                             int index = 0;
+                            SharedUserData? currentSharedData = sharedData;
+
                             if (state is AuthTabChanged) {
                               index = state.index;
+                              currentSharedData =
+                                  state.sharedData ?? sharedData;
                             }
 
                             return index == 0
-                                ? const LoginForm()
-                                : const SignUpForm();
+                                ? LoginForm(sharedData: currentSharedData)
+                                : SignUpForm(sharedData: currentSharedData);
                           },
                         ),
                       ],
