@@ -1,6 +1,7 @@
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/product/presentation/pages/products_by_category_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class CategoryListWidget extends StatelessWidget {
   final List<CategoryModel> categories;
@@ -10,12 +11,12 @@ class CategoryListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100,
+      height: 100.rh(context),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        padding: EdgeInsets.symmetric(horizontal: 12.rw(context)),
         itemCount: categories.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 12),
+        separatorBuilder: (_, __) => SizedBox(width: 12.rw(context)),
         itemBuilder: (context, index) {
           final category = categories[index];
           return GestureDetector(
@@ -33,13 +34,13 @@ class CategoryListWidget extends StatelessWidget {
                 ClipOval(
                   child: Image.asset(
                     category.imageUrl,
-                    width: 50,
-                    height: 50,
+                    width: 50.rw(context),
+                    height: 50.rh(context),
                     fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(height: 6),
-                Text(category.name, style: const TextStyle(fontSize: 12)),
+                SizedBox(height: 6.rh(context)),
+                Text(category.name, style: TextStyle(fontSize: 12.rt(context))),
               ],
             ),
           );

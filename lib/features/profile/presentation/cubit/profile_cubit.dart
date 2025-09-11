@@ -20,14 +20,12 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     await Future.delayed(const Duration(seconds: 2));
 
-    
     final storedEmail = await _storage.read(key: 'user_email');
     final storedPassword = await _storage.read(key: 'user_password');
     final storedFirstName = await _storage.read(key: 'user_first_name');
     final storedLastName = await _storage.read(key: 'user_last_name');
     final storedPhone = await _storage.read(key: 'user_phone');
 
-    
     if (email == storedEmail && password == storedPassword) {
       await _storage.write(key: 'user_is_logged_in', value: 'true');
 
@@ -63,9 +61,6 @@ class ProfileCubit extends Cubit<ProfileState> {
       return;
     }
 
-    
-
-    
     await _storage.write(key: 'user_first_name', value: firstName);
     await _storage.write(key: 'user_last_name', value: lastName);
     await _storage.write(key: 'user_email', value: email);
@@ -101,11 +96,33 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> logout() async {
-    
     await _storage.deleteAll();
 
-    
     emit(ProfileInitial());
+  }
+
+  Future<void> checkLoginStatus() async {
+    emit(ProfileLoading());
+
+    final isLoggedIn = await _storage.read(key: 'user_is_logged_in');
+
+    if (isLoggedIn == 'true') {
+      final storedEmail = await _storage.read(key: 'user_email');
+      final storedFirstName = await _storage.read(key: 'user_first_name');
+      final storedLastName = await _storage.read(key: 'user_last_name');
+      final storedPhone = await _storage.read(key: 'user_phone');
+
+      emit(
+        ProfileLoggedIn(
+          email: storedEmail ?? '',
+          firstName: storedFirstName ?? "Test",
+          lastName: storedLastName ?? "User",
+          phone: storedPhone != null ? int.tryParse(storedPhone) : null,
+        ),
+      );
+    } else {
+      emit(ProfileInitial());
+    }
   }
 }
 

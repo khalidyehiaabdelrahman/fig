@@ -28,7 +28,7 @@ class AppConstants {
   static const double minPrice = 0.01;
   static const double maxPrice = 999999.99;
 
-  // static const String baseUrl = 'https:
+  
   static const Duration apiTimeout = Duration(seconds: 30);
   static const int maxRetries = 3;
 

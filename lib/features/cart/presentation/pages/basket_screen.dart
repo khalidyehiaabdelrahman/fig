@@ -3,6 +3,7 @@ import 'package:fig/features/cart/presentation/cubit/cart_state.dart';
 import 'package:fig/features/main/presentation/cubit/main_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -42,10 +43,10 @@ class CartScreen extends StatelessWidget {
                       children: [
                         Container(
                           color: Colors.grey.shade200,
-                          padding: const EdgeInsets.all(12),
-                          child: const Text(
+                          padding: EdgeInsets.all(12.rw(context)),
+                          child: Text(
                             'Get extra 5% off at cart on app! Only for credit card payments!',
-                            style: TextStyle(fontSize: 14),
+                            style: TextStyle(fontSize: 14.rt(context)),
                           ),
                         ),
                         Expanded(
@@ -58,7 +59,7 @@ class CartScreen extends StatelessWidget {
                               final qty = cartItem.quantity;
 
                               return Container(
-                                padding: const EdgeInsets.symmetric(
+                                padding: EdgeInsets.symmetric(
                                   vertical: 15.0,
                                   horizontal: 16.0,
                                 ),
@@ -83,7 +84,7 @@ class CartScreen extends StatelessWidget {
                                         children: [
                                           Text(
                                             product.title,
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -98,7 +99,7 @@ class CartScreen extends StatelessWidget {
                                           const SizedBox(height: 10),
                                           Text(
                                             'EGP ${product.price.toStringAsFixed(0)}',
-                                            style: const TextStyle(
+                                            style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                             ),
                                           ),
@@ -177,7 +178,7 @@ class CartScreen extends StatelessWidget {
                               ),
                               Text(
                                 'EGP ${grandTotal.toStringAsFixed(2)}',
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   fontSize: 16,
                                 ),

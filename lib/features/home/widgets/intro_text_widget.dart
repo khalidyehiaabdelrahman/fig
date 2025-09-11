@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class IntroTextWidget extends StatelessWidget {
   final List<String> texts;
@@ -21,8 +22,8 @@ class IntroTextWidget extends StatelessWidget {
         child: Text(
           texts[currentIndex],
           key: ValueKey(currentIndex),
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: 16.rt(context),
             fontWeight: FontWeight.bold,
             color: Colors.black,
           ),

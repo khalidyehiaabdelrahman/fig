@@ -5,11 +5,21 @@ class ProductSelectionCubit extends Cubit<ProductSelectionState> {
   ProductSelectionCubit() : super(const ProductSelectionState());
 
   void selectColor(String color) {
-    emit(state.copyWith(selectedColor: color));
+    emit(
+      ProductSelectionState(
+        selectedColor: color,
+        selectedSize: state.selectedSize,
+      ),
+    );
   }
 
   void selectSize(int size) {
-    emit(state.copyWith(selectedSize: size));
+    emit(
+      ProductSelectionState(
+        selectedColor: state.selectedColor,
+        selectedSize: size,
+      ),
+    );
   }
 
   void clearSelection() {

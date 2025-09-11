@@ -6,6 +6,7 @@ import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class UserProfilePage extends StatefulWidget {
   final SharedUserData? userData;
@@ -31,7 +32,6 @@ class _UserProfilePageState extends State<UserProfilePage> {
         _userData = widget.userData;
       });
     } else {
-      
       final profileCubit = context.read<ProfileCubit>();
       final storedData = await profileCubit.getStoredUserData();
       setState(() {
@@ -74,14 +74,14 @@ class _UserProfilePageState extends State<UserProfilePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.rw(context)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.all(20.rw(context)),
                   decoration: BoxDecoration(
                     color: Colors.red.shade50,
                     borderRadius: BorderRadius.circular(16),
@@ -150,16 +150,10 @@ class _UserProfilePageState extends State<UserProfilePage> {
                 const SizedBox(height: 12),
 
                 
-                Row(
-                  children: [
-                    Expanded(
-                      child: _buildInfoCard(
-                        title: 'phone'.tr(),
-                        value: _userData!.phone?.toString() ?? 'No phone',
-                        icon: Icons.phone_outlined,
-                      ),
-                    ),
-                  ],
+                _buildInfoCard(
+                  title: 'phone'.tr(),
+                  value: _userData!.phone?.toString() ?? 'No phone',
+                  icon: Icons.phone_outlined,
                 ),
 
                 const SizedBox(height: 32),

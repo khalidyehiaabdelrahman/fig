@@ -3,6 +3,7 @@ import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class AddToCartButton extends StatelessWidget {
   final ProductModel product;
@@ -69,14 +70,16 @@ class AddToCartButton extends StatelessWidget {
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: bgColor,
-          padding: const EdgeInsets.symmetric(vertical: 14),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          padding: EdgeInsets.symmetric(vertical: 14.rh(context)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.rr(context)),
+          ),
         ),
         child: Text(
           isEnabled ? "Add to Cart" : "Choose Color And Size",
           style: TextStyle(
             color: fgColor,
-            fontSize: 18,
+            fontSize: 18.rt(context),
             fontWeight: FontWeight.bold,
           ),
         ),

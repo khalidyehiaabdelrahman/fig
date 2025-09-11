@@ -8,6 +8,7 @@ import 'package:fig/features/product/widgets/product_info_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
@@ -76,7 +77,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 CarouselWidget(
                   pageController: _pageController,
                   images: widget.product.imageUrls,
-                  height: 400,
+                  height: 400.rh(context),
                   scrollDirection: Axis.vertical,
                   onPageChanged:
                       (index) => setState(() => _selectedImage = index),
@@ -122,8 +123,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         Container(
                           decoration: BoxDecoration(
                             color: Colors.white,
-                            borderRadius: const BorderRadius.vertical(
-                              top: Radius.circular(20),
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20.rr(context)),
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -135,8 +136,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           ),
                           child: SingleChildScrollView(
                             controller: scrollController,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
+                            padding: EdgeInsets.symmetric(
+                              horizontal: 16.rw(context),
                               vertical: 12,
                             ),
                             child: ProductInfoSection(
@@ -168,7 +169,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             child: GestureDetector(
                               onTap: _togglePanel,
                               child: Container(
-                                width: 60,
+                                width: 60.rw(context),
                                 height: 20,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20.0),

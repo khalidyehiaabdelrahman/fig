@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class TopSnackBar {
   static void show(
@@ -6,7 +7,7 @@ class TopSnackBar {
     required String message,
     IconData icon = Icons.info,
     Color backgroundColor = Colors.teal,
-    Color textColor = Colors.white, 
+    Color textColor = Colors.white,
     Duration duration = const Duration(seconds: 2),
   }) {
     final overlay = Overlay.of(context);
@@ -18,7 +19,7 @@ class TopSnackBar {
           message: message,
           icon: icon,
           backgroundColor: backgroundColor,
-          textColor: textColor, 
+          textColor: textColor,
           onDismiss: () => overlayEntry.remove(),
           duration: duration,
         );
@@ -33,7 +34,7 @@ class _TopSnackBarWidget extends StatefulWidget {
   final String message;
   final IconData icon;
   final Color backgroundColor;
-  final Color textColor; 
+  final Color textColor;
   final VoidCallback onDismiss;
   final Duration duration;
 
@@ -41,7 +42,7 @@ class _TopSnackBarWidget extends StatefulWidget {
     required this.message,
     required this.icon,
     required this.backgroundColor,
-    required this.textColor, 
+    required this.textColor,
     required this.onDismiss,
     required this.duration,
   });
@@ -112,7 +113,10 @@ class _TopSnackBarWidgetState extends State<_TopSnackBarWidget>
           elevation: 4,
           child: SafeArea(
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.rw(context),
+                vertical: 12.rh(context),
+              ),
               child: Row(
                 children: [
                   FadeTransition(
@@ -120,17 +124,17 @@ class _TopSnackBarWidgetState extends State<_TopSnackBarWidget>
                     child: Icon(
                       widget.icon,
                       color: widget.textColor,
-                      size: 30,
-                    ), 
+                      size: 30.rt(context),
+                    ),
                   ),
-                  const SizedBox(width: 20),
+                  SizedBox(width: 20.rw(context)),
                   Expanded(
                     child: Text(
                       widget.message,
                       style: TextStyle(
                         color: widget.textColor,
-                        fontSize: 16,
-                      ), 
+                        fontSize: 16.rt(context),
+                      ),
                     ),
                   ),
                   TextButton(
@@ -138,7 +142,7 @@ class _TopSnackBarWidgetState extends State<_TopSnackBarWidget>
                     child: Text(
                       'Close',
                       style: TextStyle(
-                        color: widget.textColor, 
+                        color: widget.textColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),

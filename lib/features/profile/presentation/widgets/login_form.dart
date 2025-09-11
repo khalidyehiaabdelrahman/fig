@@ -5,6 +5,7 @@ import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class LoginForm extends StatefulWidget {
   final SharedUserData? sharedData;
@@ -24,7 +25,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void initState() {
     super.initState();
-    
+
     emailController = TextEditingController(
       text: widget.sharedData?.email ?? '',
     );
@@ -38,7 +39,7 @@ class _LoginFormState extends State<LoginForm> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    
+
     if (widget.sharedData == null) {
       _loadStoredData();
     }
@@ -72,7 +73,7 @@ class _LoginFormState extends State<LoginForm> {
     return BlocProvider(
       create: (_) => LoginVisibilityCubit(),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.rw(context)),
         child: Column(
           children: [
             BuildTextField(
@@ -92,7 +93,7 @@ class _LoginFormState extends State<LoginForm> {
               keyboardType: TextInputType.emailAddress,
             ),
 
-            const SizedBox(height: 16),
+            SizedBox(height: 16.rh(context)),
 
             BlocBuilder<LoginVisibilityCubit, LoginVisibilityState>(
               builder: (context, state) {
@@ -127,7 +128,7 @@ class _LoginFormState extends State<LoginForm> {
               },
             ),
 
-            const SizedBox(height: 24),
+            SizedBox(height: 24.rh(context)),
 
             PrimaryButton(
               backgroundColor: Colors.red.shade700,
@@ -140,7 +141,6 @@ class _LoginFormState extends State<LoginForm> {
                     sharedData: widget.sharedData,
                   );
                 } catch (e) {
-                  
                   TopSnackBar.show(
                     context,
                     message: "حدث خطأ: $e",
@@ -150,23 +150,22 @@ class _LoginFormState extends State<LoginForm> {
                 }
               },
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.rh(context)),
 
             Text(
               "no_account".tr(),
-              style: const TextStyle(
-                fontSize: 18,
+              style: TextStyle(
+                fontSize: 18.rt(context),
                 fontWeight: FontWeight.normal,
                 color: Colors.black54,
               ),
             ),
-            const SizedBox(height: 20),
+            SizedBox(height: 20.rh(context)),
 
             PrimaryButton(
               label: 'create_account'.tr(),
               foregroundColor: Colors.black,
               onPressed: () {
-                
                 context.read<AuthTabCubit>().changeTab(1);
               },
               borderColor: Colors.black26,

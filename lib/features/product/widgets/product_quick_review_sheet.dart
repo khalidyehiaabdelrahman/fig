@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ProductQuickReviewSheet extends StatelessWidget {
   final ProductModel product;
@@ -35,16 +36,16 @@ class ProductQuickReviewSheet extends StatelessWidget {
                   Container(
                     color: Colors.grey.shade300,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      padding: EdgeInsets.symmetric(horizontal: 10.rw(context)),
                       child: _buildHeader(context),
                     ),
                   ),
 
-                const SizedBox(height: 10),
+                SizedBox(height: 10.rh(context)),
 
                 if (!quickAddMode)
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 10.rw(context)),
                     child: _buildProductInfo(),
                   ),
 
@@ -81,7 +82,7 @@ class ProductQuickReviewSheet extends StatelessWidget {
                   _buildGoToDetails(context),
                   const SizedBox(height: 16),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: EdgeInsets.symmetric(horizontal: 10.rw(context)),
                     child: AddToCartButton(
                       product: product,
                       isEnabled:

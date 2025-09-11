@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../pages/user_profile_page.dart';
 import '../cubit/profile_state.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ProfileLoggedInView extends StatelessWidget {
   final String firstName;
@@ -21,33 +22,36 @@ class ProfileLoggedInView extends StatelessWidget {
     final fullName = "$firstName $lastName";
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.rw(context)),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             fullName,
-            style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 22.rt(context),
+              fontWeight: FontWeight.bold,
+            ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.rh(context)),
           Text(
             email,
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: 16.rt(context),
               color: Colors.grey,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 8),
+          SizedBox(height: 8.rh(context)),
           Text(
             phone.toString(),
-            style: const TextStyle(
-              fontSize: 16,
+            style: TextStyle(
+              fontSize: 16.rt(context),
               color: Colors.grey,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: 16.rh(context)),
           ElevatedButton(
             onPressed: () {
               final userData = SharedUserData(

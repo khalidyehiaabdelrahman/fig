@@ -6,6 +6,7 @@ import 'package:fig/features/profile/presentation/widgets/signup_form.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'toggle_tab_bar.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ProfileLoggedOutView extends StatelessWidget {
   final SharedUserData? sharedData;
@@ -19,21 +20,21 @@ class ProfileLoggedOutView extends StatelessWidget {
       child: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 8),
+            padding: EdgeInsets.only(top: 8.rh(context)),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(8.rw(context)),
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(16.rr(context)),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 4),
+                          blurRadius: 8.rw(context),
+                          offset: Offset(0, 4.rh(context)),
                         ),
                       ],
                     ),

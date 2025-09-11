@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 Widget alignedText({
   required String text,
   TextStyle? style,
   Alignment? alignment,
-  EdgeInsetsGeometry padding = const EdgeInsets.symmetric(horizontal: 8),
+  EdgeInsetsGeometry? padding,
   TextDirection? textDirection,
   bool isBold = false,
 }) {
@@ -15,7 +16,7 @@ Widget alignedText({
         alignment:
             alignment ?? (isRtl ? Alignment.centerRight : Alignment.centerLeft),
         child: Padding(
-          padding: padding,
+          padding: padding ?? EdgeInsets.symmetric(horizontal: 8.rw(context)),
           child: Text(
             text,
             textDirection: textDirection ?? Directionality.of(context),
@@ -30,9 +31,17 @@ Widget alignedText({
 }
 
 Widget buildReusableDivider({
-  double height = 3,
-  double thickness = 0.5,
+  double? height,
+  double? thickness,
   Color color = Colors.black,
 }) {
-  return Divider(height: height, thickness: thickness, color: color);
+  return Builder(
+    builder: (context) {
+      return Divider(
+        height: height ?? 3.rh(context),
+        thickness: thickness ?? 0.5.rw(context),
+        color: color,
+      );
+    },
+  );
 }

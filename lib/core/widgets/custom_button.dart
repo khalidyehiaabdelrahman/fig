@@ -13,7 +13,7 @@ class BuildTextField extends StatelessWidget {
   final IconData? prefixIcon;
   final TextInputAction textInputAction;
   final void Function(String)? onFieldSubmitted;
-  final FocusNode? focusNode; 
+  final FocusNode? focusNode;
 
   const BuildTextField({
     super.key,
@@ -28,13 +28,13 @@ class BuildTextField extends StatelessWidget {
     this.prefixIcon,
     this.textInputAction = TextInputAction.next,
     this.onFieldSubmitted,
-    this.focusNode, 
+    this.focusNode,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      focusNode: focusNode, 
+      focusNode: focusNode,
       textInputAction: textInputAction,
       onFieldSubmitted: onFieldSubmitted,
       cursorColor: Colors.white,
@@ -68,11 +68,11 @@ class BuildTextField extends StatelessWidget {
           vertical: responsiveHeight(context, 15),
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(5.rr(context)),
           borderSide: BorderSide(color: Colors.grey),
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(5),
+          borderRadius: BorderRadius.circular(5.rr(context)),
           borderSide: BorderSide(color: Colors.grey, width: 2),
         ),
         suffixIcon:
@@ -116,14 +116,14 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: EdgeInsets.symmetric(horizontal: 8.rw(context)),
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: backgroundColor ?? Colors.white,
           foregroundColor: foregroundColor ?? Colors.white,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(5),
+            borderRadius: BorderRadius.circular(5.rr(context)),
             side:
                 borderColor != null
                     ? BorderSide(color: borderColor!)
@@ -154,20 +154,20 @@ class PrimaryButton extends StatelessWidget {
                         fontWeight: fontWeight,
                       ),
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.rw(context)),
                     Icon(
                       icon,
-                      size: 20,
+                      size: 20.rt(context),
                       color: foregroundColor ?? Colors.white,
                     ),
                   ]
                   : [
                     Icon(
                       icon,
-                      size: 20,
+                      size: 20.rt(context),
                       color: foregroundColor ?? Colors.white,
                     ),
-                    const SizedBox(width: 8),
+                    SizedBox(width: 8.rw(context)),
                     Text(
                       label,
                       style: TextStyle(
@@ -209,7 +209,7 @@ class TransparentTextButton extends StatelessWidget {
         softWrap: false,
         style: TextStyle(
           color: colorScheme.onSurface.withOpacity(0.6),
-          fontSize: 14,
+          fontSize: 14.rt(context),
         ),
       ),
     );
@@ -240,13 +240,13 @@ class SocialLoginButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(20.rr(context)),
       child: Container(
         width: 135.rw(context),
         padding: EdgeInsets.symmetric(vertical: 12.rh(context)),
         decoration: BoxDecoration(
           color: color,
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.circular(20.rr(context)),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

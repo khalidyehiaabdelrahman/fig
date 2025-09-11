@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 Color parseColor(String color) {
   switch (color.toLowerCase()) {
@@ -38,24 +39,33 @@ class ColorsSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Colors:", style: TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 10),
+        Text(
+          "Colors:",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.rt(context),
+          ),
+        ),
+        SizedBox(height: 10.rh(context)),
         Wrap(
-          spacing: 8,
+          spacing: 8.rw(context),
           children:
               colors.map((color) {
                 final isSelected = selectedColor == color;
                 return GestureDetector(
                   onTap: () => onColorSelected(color),
                   child: Container(
-                    width: 32,
-                    height: 32,
+                    width: 32.rw(context),
+                    height: 32.rh(context),
                     decoration: BoxDecoration(
                       color: parseColor(color),
                       shape: BoxShape.circle,
                       border:
                           isSelected
-                              ? Border.all(color: Colors.black, width: 2)
+                              ? Border.all(
+                                color: Colors.black,
+                                width: 2.rw(context),
+                              )
                               : null,
                     ),
                   ),

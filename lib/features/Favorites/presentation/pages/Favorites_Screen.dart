@@ -5,11 +5,12 @@ import 'package:fig/features/home/widgets/home_widget.dart';
 import 'package:fig/features/product/widgets/product_quick_review_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
 
-  PreferredSizeWidget _buildAppBar() {
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 0,
@@ -20,8 +21,8 @@ class FavoritesScreen extends StatelessWidget {
       ),
       actions: [
         IconButton(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          icon: const Icon(Icons.search, size: 28, color: Colors.black),
+          padding: EdgeInsets.symmetric(horizontal: 16.rw(context)),
+          icon: Icon(Icons.search, size: 28.rt(context), color: Colors.black),
           onPressed: () {},
         ),
       ],
@@ -41,17 +42,17 @@ class FavoritesScreen extends StatelessWidget {
 
           return Scaffold(
             backgroundColor: Colors.white,
-            appBar: _buildAppBar(),
+            appBar: _buildAppBar(context),
             body:
                 favorites.isEmpty
                     ? const Center(child: Text('No favorite products yet'))
                     : GridView.builder(
-                      padding: const EdgeInsets.all(8),
+                      padding: EdgeInsets.all(8.rw(context)),
                       itemCount: favorites.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2,
-                            crossAxisSpacing: 8,
+                            crossAxisSpacing: 4,
                             mainAxisSpacing: 8,
                             childAspectRatio: 0.5,
                           ),

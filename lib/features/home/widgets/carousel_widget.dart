@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class CarouselWidget extends StatelessWidget {
   final PageController pageController;
@@ -23,7 +24,7 @@ class CarouselWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: height,
+      height: height.rh(context),
       child: PageView.builder(
         controller: pageController,
         scrollDirection: scrollDirection,
@@ -38,7 +39,7 @@ class CarouselWidget extends StatelessWidget {
 
           return showBorderRadius
               ? ClipRRect(
-                borderRadius: BorderRadius.circular(borderRadius),
+                borderRadius: BorderRadius.circular(borderRadius.rr(context)),
                 child: image,
               )
               : image;
@@ -51,12 +52,12 @@ class CarouselWidget extends StatelessWidget {
 class CarouselIndicator extends StatelessWidget {
   final int itemCount;
   final int currentPage;
-  final Axis direction; 
-  final Alignment alignment; 
+  final Axis direction;
+  final Alignment alignment;
   final Color activeColor;
   final Color inactiveColor;
-  final double size; 
-  final double spacing; 
+  final double size;
+  final double spacing;
 
   const CarouselIndicator({
     super.key,
@@ -78,13 +79,13 @@ class CarouselIndicator extends StatelessWidget {
         duration: const Duration(milliseconds: 300),
         margin:
             direction == Axis.horizontal
-                ? EdgeInsets.symmetric(horizontal: spacing)
-                : EdgeInsets.symmetric(vertical: spacing),
-        width: size,
-        height: size,
+                ? EdgeInsets.symmetric(horizontal: spacing.rw(context))
+                : EdgeInsets.symmetric(vertical: spacing.rh(context)),
+        width: size.rw(context),
+        height: size.rh(context),
         decoration: BoxDecoration(
           color: currentPage == index ? activeColor : inactiveColor,
-          borderRadius: BorderRadius.circular(size / 2),
+          borderRadius: BorderRadius.circular((size / 2).rr(context)),
         ),
       ),
     );

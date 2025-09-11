@@ -5,6 +5,7 @@ import 'package:fig/features/product/widgets/product_quick_review_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 abstract class ProductView extends StatefulWidget {
   final ProductModel product;
@@ -40,9 +41,9 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
       children: [
         Image.asset(imageUrl, fit: BoxFit.cover),
         Positioned(
-          top: 20,
-          right: 10,
-          bottom: 20,
+          top: 20.rh(context),
+          right: 10.rw(context),
+          bottom: 20.rh(context),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -67,9 +68,9 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
                     showModalBottomSheet(
                       context: context,
                       isScrollControlled: true,
-                      shape: const RoundedRectangleBorder(
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+                          top: Radius.circular(20.rr(context)),
                         ),
                       ),
                       builder:
@@ -101,10 +102,11 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
         );
       },
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           buildImages(),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.rh(context)),
           Center(
             child: SmoothPageIndicator(
               controller: pageController,
@@ -117,7 +119,7 @@ abstract class ProductViewState<T extends ProductView> extends State<T> {
               ),
             ),
           ),
-          const SizedBox(height: 6),
+          SizedBox(height: 6.rh(context)),
           buildProductInfo(),
         ],
       ),
@@ -142,7 +144,7 @@ class _GridProductViewState extends ProductViewState<GridProductView> {
   @override
   Widget buildImages() {
     return Container(
-      height: 240,
+      height: 220.rh(context),
       clipBehavior: Clip.antiAlias,
       decoration: const BoxDecoration(color: Colors.white),
       child: PageView.builder(
@@ -169,19 +171,23 @@ class _GridProductViewState extends ProductViewState<GridProductView> {
   @override
   Widget buildProductInfo() {
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           widget.product.title,
-          style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 13.rt(context),
+            fontWeight: FontWeight.bold,
+          ),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           textAlign: TextAlign.center,
         ),
-        const SizedBox(height: 4),
+        SizedBox(height: 4.rh(context)),
         Text(
           '${widget.product.price.toStringAsFixed(2)} EGP',
-          style: const TextStyle(
-            fontSize: 13,
+          style: TextStyle(
+            fontSize: 13.rt(context),
             color: Colors.black,
             fontWeight: FontWeight.w500,
           ),
@@ -216,27 +222,31 @@ class _ListProductViewState extends ProductViewState<ListProductView> {
   @override
   Widget buildProductInfo() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
+      padding: EdgeInsets.symmetric(horizontal: 12.rw(context)),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 8),
+          SizedBox(height: 8.rh(context)),
           Text(
             widget.product.title,
-            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 16.rt(context),
+              fontWeight: FontWeight.bold,
+            ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.rh(context)),
           Text(
             '${widget.product.price.toStringAsFixed(2)} EGP',
-            style: const TextStyle(
-              fontSize: 15,
+            style: TextStyle(
+              fontSize: 15.rt(context),
               fontWeight: FontWeight.w500,
               color: Colors.black87,
             ),
           ),
-          const SizedBox(height: 12),
+          SizedBox(height: 12.rh(context)),
         ],
       ),
     );

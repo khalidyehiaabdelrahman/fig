@@ -1,6 +1,7 @@
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fig/core/widgets/loading_indicator.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ProductListWidget extends StatelessWidget {
   final List<ProductModel> products;
@@ -19,7 +20,7 @@ class ProductListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100,
+      height: 100.rh(context),
       child: NotificationListener<ScrollNotification>(
         onNotification: (scrollInfo) {
           if (scrollInfo is ScrollEndNotification &&
@@ -27,9 +28,7 @@ class ProductListWidget extends StatelessWidget {
             if (hasMore && !isLoading && onLoadMore != null) {
               onLoadMore!();
             } else if (!hasMore && products.isNotEmpty) {
-              
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: const Text('No more products'),
@@ -44,12 +43,11 @@ class ProductListWidget extends StatelessWidget {
         },
         child: ListView.separated(
           scrollDirection: Axis.horizontal,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.symmetric(horizontal: 12.rw(context)),
           itemCount: products.length + (hasMore ? 1 : 0),
-          separatorBuilder: (_, __) => const SizedBox(width: 12),
+          separatorBuilder: (_, __) => SizedBox(width: 12.rw(context)),
           itemBuilder: (context, index) {
             if (index == products.length) {
-              
               return Container(
                 width: 60,
                 height: 100,

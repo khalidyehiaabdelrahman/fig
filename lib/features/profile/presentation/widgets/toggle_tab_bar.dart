@@ -3,6 +3,7 @@ import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ToggleTabBar extends StatelessWidget {
   const ToggleTabBar({super.key});
@@ -34,7 +35,7 @@ class ToggleTabBar extends StatelessWidget {
                   left: indicatorPosition,
                   child: Container(
                     width: tabWidth,
-                    height: 2,
+                    height: 2.rh(context),
                     color: Colors.red[900],
                   ),
                 ),
@@ -65,12 +66,12 @@ class ToggleTabBar extends StatelessWidget {
       onTap: () => context.read<AuthTabCubit>().changeTab(index),
       child: SizedBox(
         width: width,
-        height: 48,
+        height: 48.rh(context),
         child: Center(
           child: Text(
             labelKey.tr(),
             style: TextStyle(
-              fontSize: 16,
+              fontSize: 16.rt(context),
               fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
               color: isSelected ? Colors.red[900] : Colors.grey[600],
             ),

@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/core/widgets/shimmer_skeletons.dart';
 import 'package:hive/hive.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ProductsByCategoryScreen extends StatefulWidget {
   final CategoryModel category;
@@ -62,7 +63,6 @@ class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
   Widget build(BuildContext context) {
     return BlocBuilder<ProductsCubit, ProductsState>(
       builder: (context, state) {
-        
         if (state is ProductsPaginationLoaded) {
           WidgetsBinding.instance.addPostFrameCallback((_) {
             _loadProducts();
@@ -81,7 +81,10 @@ class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
           appBar: AppBar(
             title: Text(
               'Product List (${_cachedProducts.length} products)',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18.rt(context),
+                fontWeight: FontWeight.bold,
+              ),
             ),
             backgroundColor: Colors.white,
             elevation: 0,
@@ -91,7 +94,10 @@ class _CategoryProductsScreenState extends State<ProductsByCategoryScreen> {
             ],
             bottom: PreferredSize(
               preferredSize: const Size.fromHeight(1.0),
-              child: Container(color: Colors.grey.shade600, height: 1.0),
+              child: Container(
+                color: Colors.grey.shade600,
+                height: 1.rh(context),
+              ),
             ),
           ),
           body: Column(

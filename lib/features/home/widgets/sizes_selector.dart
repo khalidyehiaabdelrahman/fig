@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class SizesSelector extends StatelessWidget {
   final List<int> sizes;
@@ -17,31 +18,38 @@ class SizesSelector extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Sizes:", style: TextStyle(fontWeight: FontWeight.bold)),
-        const SizedBox(height: 10),
+        Text(
+          "Sizes:",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 16.rt(context),
+          ),
+        ),
+        SizedBox(height: 10.rh(context)),
         Wrap(
-          spacing: 8,
-          runSpacing: 8,
+          spacing: 8.rw(context),
+          runSpacing: 8.rh(context),
           children:
               sizes.map((size) {
                 final isSelected = selectedSize == size;
                 return GestureDetector(
                   onTap: () => onSizeSelected(size),
                   child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 8,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 12.rw(context),
+                      vertical: 8.rh(context),
                     ),
                     decoration: BoxDecoration(
                       color:
                           isSelected ? Colors.red[300] : Colors.grey.shade200,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(8.rr(context)),
                     ),
                     child: Text(
                       size.toString(),
                       style: TextStyle(
                         color: isSelected ? Colors.white : Colors.black,
                         fontWeight: FontWeight.bold,
+                        fontSize: 14.rt(context),
                       ),
                     ),
                   ),

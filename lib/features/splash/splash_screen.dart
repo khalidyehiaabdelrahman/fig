@@ -1,6 +1,7 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:fig/features/main/presentation/pages/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -55,12 +56,15 @@ class _SplashScreenState extends State<SplashScreen>
                   child: child,
                 );
               },
-              child: Image.asset('assets/images/appIcon/fig.png', width: 150),
+              child: Image.asset(
+                'assets/images/appIcon/fig.png',
+                width: 150.rw(context),
+              ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: 10.rh(context)),
             DefaultTextStyle(
               style: TextStyle(
-                fontSize: 24,
+                fontSize: 24.rt(context),
                 fontWeight: FontWeight.bold,
                 color: Colors.red[600],
               ),

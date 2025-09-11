@@ -93,7 +93,6 @@ class LanguageChanged extends LanguageState {
   const LanguageChanged(super.languageCode);
 }
 
-
 class SharedUserData {
   final String? firstName;
   final String? lastName;
@@ -108,20 +107,4 @@ class SharedUserData {
     this.phone,
     this.password,
   });
-
-  SharedUserData copyWith({
-    String? firstName,
-    String? lastName,
-    String? email,
-    int? phone,
-    String? password,
-  }) {
-    return SharedUserData(
-      firstName: firstName ?? this.firstName,
-      lastName: lastName ?? this.lastName,
-      email: email ?? this.email,
-      phone: phone ?? this.phone,
-      password: password ?? this.password,
-    );
-  }
 }

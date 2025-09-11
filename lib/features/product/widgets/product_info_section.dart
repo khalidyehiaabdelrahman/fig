@@ -2,6 +2,7 @@ import 'package:fig/core/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:fig/features/home/widgets/colors_selector.dart';
 import 'package:fig/features/home/widgets/sizes_selector.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class ProductInfoSection extends StatelessWidget {
   final List<int> sizes;
@@ -42,94 +43,110 @@ class ProductInfoSection extends StatelessWidget {
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 22,
+                style: TextStyle(
+                  fontSize: 22.rt(context),
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ),
             Text(
               '${price} EGP',
-              style: const TextStyle(
-                fontSize: 20,
+              style: TextStyle(
+                fontSize: 20.rt(context),
                 fontWeight: FontWeight.bold,
                 color: Colors.black,
               ),
             ),
           ],
         ),
-        const SizedBox(height: 6),
+        SizedBox(height: 6.rh(context)),
 
-        Text(lapel, style: const TextStyle(fontSize: 16, color: Colors.grey)),
+        Text(
+          lapel,
+          style: TextStyle(fontSize: 16.rt(context), color: Colors.grey),
+        ),
         buildReusableDivider(),
-        
+
         SizesSelector(
           sizes: sizes,
           selectedSize: selectedSize,
           onSizeSelected: onSizeSelected,
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: 20.rh(context)),
 
-        
         ColorsSelector(
           colors: colors,
           selectedColor: selectedColor,
           onColorSelected: onColorSelected,
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: 18.rh(context)),
 
-        const Text(
+        Text(
           "Product Short Description",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 18.rt(context),
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10.rh(context)),
         Text(
           shortDescription,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: 16.rt(context),
             color: Colors.black87,
             height: 1.4,
           ),
         ),
 
-        const Text(
+        Text(
           "Product Full Description",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 18.rt(context),
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: 10.rh(context)),
         Text(
           fullDescription,
-          style: const TextStyle(
-            fontSize: 16,
+          style: TextStyle(
+            fontSize: 16.rt(context),
             color: Colors.black87,
             height: 1.4,
           ),
         ),
 
-        
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
+            Text(
               "Return Within 30 Days",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                fontSize: 18.rt(context),
+                fontWeight: FontWeight.w500,
+              ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: 8.rw(context)),
             Transform(
               alignment: Alignment.center,
               transform: Matrix4.rotationY(3.1416),
-              child: const Icon(Icons.replay, color: Colors.black54, size: 24),
+              child: Icon(
+                Icons.replay,
+                color: Colors.black54,
+                size: 24.rt(context),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: 18.rh(context)),
 
-        
-        const Text(
+        Text(
           "Payment Options",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 18.rt(context),
+            fontWeight: FontWeight.bold,
+          ),
         ),
-        const SizedBox(height: 18),
+        SizedBox(height: 18.rh(context)),
 
         Row(
           children: const [

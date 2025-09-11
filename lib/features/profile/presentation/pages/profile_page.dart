@@ -26,6 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _profileCubit = ProfileCubit();
+    _profileCubit.checkLoginStatus();
   }
 
   @override
@@ -74,7 +75,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         backgroundColor: Colors.green,
                       );
 
-                      
                       Future.delayed(const Duration(seconds: 1), () {
                         Navigator.push(
                           context,
@@ -93,7 +93,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         backgroundColor: Colors.green,
                       );
 
-                      
                       Future.delayed(const Duration(seconds: 1), () {
                         Navigator.push(
                           context,

@@ -5,6 +5,7 @@ import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fig/core/utils/responsive.dart';
 
 class SignUpForm extends StatefulWidget {
   final SharedUserData? sharedData;
@@ -26,7 +27,7 @@ class _SignUpFormState extends State<SignUpForm> {
   @override
   void initState() {
     super.initState();
-    
+
     firstNameController = TextEditingController(
       text: widget.sharedData?.firstName ?? '',
     );
@@ -70,7 +71,7 @@ class _SignUpFormState extends State<SignUpForm> {
     return BlocProvider(
       create: (_) => SignUpVisibilityCubit(),
       child: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: EdgeInsets.all(24.rw(context)),
         child: Column(
           children: [
             BuildTextField(
@@ -82,7 +83,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   (_) => FocusScope.of(context).requestFocus(lastNameFocus),
               prefixIcon: Icons.person,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.rh(context)),
 
             BuildTextField(
               hint: 'last_name_hint'.tr(),
@@ -93,7 +94,7 @@ class _SignUpFormState extends State<SignUpForm> {
                   (_) => FocusScope.of(context).requestFocus(emailFocus),
               prefixIcon: Icons.person_outline,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.rh(context)),
 
             BuildTextField(
               hint: 'email_hint'.tr(),
@@ -105,7 +106,7 @@ class _SignUpFormState extends State<SignUpForm> {
               prefixIcon: Icons.email,
               keyboardType: TextInputType.emailAddress,
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.rh(context)),
 
             BlocBuilder<SignUpVisibilityCubit, SignUpVisibilityState>(
               builder: (context, state) {
@@ -130,7 +131,7 @@ class _SignUpFormState extends State<SignUpForm> {
                 );
               },
             ),
-            const SizedBox(height: 12),
+            SizedBox(height: 12.rh(context)),
 
             BlocBuilder<SignUpVisibilityCubit, SignUpVisibilityState>(
               builder: (context, state) {
@@ -154,7 +155,7 @@ class _SignUpFormState extends State<SignUpForm> {
               },
             ),
 
-            const SizedBox(height: 12),
+            SizedBox(height: 12.rh(context)),
 
             BuildTextField(
               hint: 'phone_hint'.tr(),
@@ -164,7 +165,6 @@ class _SignUpFormState extends State<SignUpForm> {
               keyboardType: TextInputType.phone,
               prefixIcon: Icons.phone,
               onFieldSubmitted: (_) async {
-                
                 final sharedData = SharedUserData(
                   firstName: firstNameController.text.trim(),
                   lastName: lastNameController.text.trim(),
@@ -173,7 +173,6 @@ class _SignUpFormState extends State<SignUpForm> {
                   phone: int.tryParse(phoneController.text.trim()) ?? 0,
                 );
 
-                
                 try {
                   await context.read<ProfileCubit>().signUp(
                     firstName: firstNameController.text.trim(),
@@ -184,7 +183,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     phone: int.tryParse(phoneController.text.trim()) ?? 0,
                   );
 
-                  
                   TopSnackBar.show(
                     context,
                     message: "signup_success".tr(),
@@ -192,7 +190,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     backgroundColor: Colors.green,
                   );
 
-                  
                   Future.delayed(const Duration(milliseconds: 500), () {
                     context.read<AuthTabCubit>().changeTab(
                       0,
@@ -200,7 +197,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     );
                   });
                 } catch (e) {
-                  
                   TopSnackBar.show(
                     context,
                     message: "حدث خطأ: $e",
@@ -215,7 +211,6 @@ class _SignUpFormState extends State<SignUpForm> {
             PrimaryButton(
               label: 'create_account'.tr().toUpperCase(),
               onPressed: () async {
-                
                 final sharedData = SharedUserData(
                   firstName: firstNameController.text.trim(),
                   lastName: lastNameController.text.trim(),
@@ -224,7 +219,6 @@ class _SignUpFormState extends State<SignUpForm> {
                   phone: int.tryParse(phoneController.text.trim()) ?? 0,
                 );
 
-                
                 try {
                   await context.read<ProfileCubit>().signUp(
                     firstName: firstNameController.text.trim(),
@@ -235,7 +229,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     phone: int.tryParse(phoneController.text.trim()) ?? 0,
                   );
 
-                  
                   TopSnackBar.show(
                     context,
                     message: "signup_success".tr(),
@@ -243,7 +236,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     backgroundColor: Colors.green,
                   );
 
-                  
                   Future.delayed(const Duration(milliseconds: 500), () {
                     context.read<AuthTabCubit>().changeTab(
                       0,
@@ -251,7 +243,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     );
                   });
                 } catch (e) {
-                  
                   TopSnackBar.show(
                     context,
                     message: "حدث خطأ: $e",
@@ -279,7 +270,6 @@ class _SignUpFormState extends State<SignUpForm> {
               label: 'login'.tr().toUpperCase(),
               foregroundColor: Colors.black,
               onPressed: () {
-                
                 final sharedData = SharedUserData(
                   firstName: firstNameController.text.trim(),
                   lastName: lastNameController.text.trim(),
@@ -288,7 +278,6 @@ class _SignUpFormState extends State<SignUpForm> {
                   phone: int.tryParse(phoneController.text.trim()) ?? 0,
                 );
 
-                
                 context.read<AuthTabCubit>().changeTab(
                   0,
                   sharedData: sharedData,
