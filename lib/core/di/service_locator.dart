@@ -22,11 +22,11 @@ import 'package:fig/features/main/presentation/cubit/main_cubit.dart';
 final getIt = GetIt.instance;
 
 void setupDependencies() {
-  // Services
+  
   getIt.registerLazySingleton<HiveService>(() => HiveService());
   getIt.registerLazySingleton<PreferencesService>(() => PreferencesService());
 
-  // Repositories
+  
   getIt.registerLazySingleton<ProductRepository>(
     () => ProductRepositoryImpl(getIt<HiveService>()),
   );
@@ -43,7 +43,7 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl());
 
-  // Cubits
+  
   getIt.registerFactory<ProductsCubit>(
     () => ProductsCubit(getIt<ProductRepository>()),
   );

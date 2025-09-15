@@ -10,7 +10,6 @@ import '../cubit/profile_cubit.dart';
 import '../cubit/profile_state.dart';
 import '../widgets/profile_logged_in_view.dart';
 import '../widgets/profile_logged_out_view.dart';
-import 'user_profile_page.dart';
 import 'package:fig/core/di/service_locator.dart' as di;
 
 class ProfilePage extends StatefulWidget {
@@ -75,15 +74,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         icon: Icons.check_circle,
                         backgroundColor: Colors.green,
                       );
-
-                      Future.delayed(const Duration(seconds: 1), () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const UserProfilePage(),
-                          ),
-                        );
-                      });
                     }
 
                     if (state is ProfileSignedUp) {
@@ -93,15 +83,6 @@ class _ProfilePageState extends State<ProfilePage> {
                         icon: Icons.person_add,
                         backgroundColor: Colors.green,
                       );
-
-                      Future.delayed(const Duration(seconds: 1), () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const UserProfilePage(),
-                          ),
-                        );
-                      });
                     }
                   },
                   builder: (context, state) {
