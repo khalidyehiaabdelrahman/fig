@@ -9,7 +9,6 @@ class ProductsCubit extends Cubit<ProductsState> {
   ProductsCubit() : super(ProductsLoading());
   String? currentSortOption;
 
-  
   List<ProductModel> allProducts = [];
   List<ProductModel> displayedProducts = [];
   int currentPage = 1;
@@ -28,13 +27,11 @@ class ProductsCubit extends Cubit<ProductsState> {
 
     final box = await Hive.openBox<ProductModel>('products');
     if (box.isEmpty) {
-      
       for (var p in data.allProducts) {
         box.add(p);
       }
     }
 
-    
     allProducts = box.values.toList();
     displayedProducts.clear();
     currentPage = 1;
@@ -101,27 +98,22 @@ class ProductsCubit extends Cubit<ProductsState> {
   Future<void> sortProducts(String sortOption) async {
     currentSortOption = sortOption;
 
-    
     final box = await Hive.openBox<ProductModel>('products');
     List<ProductModel> allProductsFromBox = box.values.toList();
 
-    
     if (sortOption == 'Lowest Price') {
       allProductsFromBox.sort((a, b) => a.price.compareTo(b.price));
     } else if (sortOption == 'Highest Price') {
       allProductsFromBox.sort((a, b) => b.price.compareTo(a.price));
     }
 
-    
     await box.clear();
     for (var p in allProductsFromBox) {
       box.add(p);
     }
 
-    
     allProducts = allProductsFromBox;
 
-    
     displayedProducts.clear();
     currentPage = 1;
     hasMore = true;
@@ -154,7 +146,7 @@ class ProductsCubit extends Cubit<ProductsState> {
           products: currentState.products,
           hasMore: currentState.hasMore,
           isLoading: currentState.isLoading,
-          message: null, 
+          message: null,
         ),
       );
     }

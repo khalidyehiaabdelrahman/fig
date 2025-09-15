@@ -6,10 +6,8 @@ class HomeCubit extends Cubit<HomeState> {
   bool isGrid = true;
   bool forceShowShimmer = false;
 
-  
   final List<String> allItems = List.generate(15, (i) => 'assets/images/1.jpg');
 
-  
   List<String> items = [];
   int page = 1;
   final int limit = 5;
@@ -39,7 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   Future<void> initHome() async {
     await loadPreferences();
-    fetchItems(); 
+    fetchItems();
   }
 
   Future<void> fetchItems() async {
@@ -48,7 +46,7 @@ class HomeCubit extends Cubit<HomeState> {
     isLoading = true;
     emit(PaginationLoaded(items: items, hasMore: hasMore, isLoading: true));
 
-    await Future.delayed(const Duration(milliseconds: 500)); 
+    await Future.delayed(const Duration(milliseconds: 500));
 
     final startIndex = (page - 1) * limit;
     final endIndex = startIndex + limit;

@@ -85,7 +85,6 @@ class CategoriesAndProductsScreen extends StatelessWidget {
                         if (hasMore && !isLoading) {
                           context.read<ProductsCubit>().loadMoreProducts();
                         } else if (!hasMore && products.isNotEmpty) {
-                          
                           WidgetsBinding.instance.addPostFrameCallback((_) {
                             TopSnackBar.show(
                               context,
@@ -104,7 +103,6 @@ class CategoriesAndProductsScreen extends StatelessWidget {
                       itemCount: allItems.length + (hasMore ? 1 : 0),
                       itemBuilder: (context, index) {
                         if (index == allItems.length) {
-                          
                           return Container(
                             height: 60,
                             margin: const EdgeInsets.symmetric(vertical: 8),
