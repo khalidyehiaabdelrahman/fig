@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:fig/core/repositories/auth_repository.dart';
 import 'profile_state.dart';
 
 class ProfileCubit extends Cubit<ProfileState> {
-  static const _storage = FlutterSecureStorage();
+  final AuthRepository _authRepository;
 
-  ProfileCubit() : super(ProfileInitial());
+  ProfileCubit(this._authRepository) : super(ProfileInitial());
 
   void showError(String message) {
     emit(ProfileError(message));
@@ -20,27 +20,24 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     await Future.delayed(const Duration(seconds: 2));
 
-    final storedEmail = await _storage.read(key: 'user_email');
-    final storedPassword = await _storage.read(key: 'user_password');
-    final storedFirstName = await _storage.read(key: 'user_first_name');
-    final storedLastName = await _storage.read(key: 'user_last_name');
-    final storedPhone = await _storage.read(key: 'user_phone');
+    try {
+      await _authRepository.login(
+        email: email,
+        password: password,
+        sharedData: sharedData,
+      );
 
-    if (email == storedEmail && password == storedPassword) {
-      await _storage.write(key: 'user_is_logged_in', value: 'true');
+      final storedData = await _authRepository.getStoredUserData();
 
       emit(
         ProfileLoggedIn(
           email: email,
-          firstName: storedFirstName ?? sharedData?.firstName ?? "Test",
-          lastName: storedLastName ?? sharedData?.lastName ?? "User",
-          phone:
-              storedPhone != null
-                  ? int.tryParse(storedPhone)
-                  : sharedData?.phone,
+          firstName: storedData?.firstName ?? sharedData?.firstName ?? "Test",
+          lastName: storedData?.lastName ?? sharedData?.lastName ?? "User",
+          phone: storedData?.phone ?? sharedData?.phone,
         ),
       );
-    } else {
+    } catch (e) {
       emit(ProfileError("error_email_password".tr()));
     }
   }
@@ -56,68 +53,52 @@ class ProfileCubit extends Cubit<ProfileState> {
     emit(ProfileLoading());
     await Future.delayed(const Duration(seconds: 2));
 
-    if (password != confirmPassword) {
-      emit(ProfileError("error_password_mismatch".tr()));
-      return;
-    }
-
-    await _storage.write(key: 'user_first_name', value: firstName);
-    await _storage.write(key: 'user_last_name', value: lastName);
-    await _storage.write(key: 'user_email', value: email);
-    await _storage.write(key: 'user_password', value: password);
-    await _storage.write(key: 'user_phone', value: phone.toString());
-    await _storage.write(key: 'user_is_logged_in', value: 'false');
-
-    emit(
-      ProfileSignedUp(
-        email: email,
+    try {
+      await _authRepository.signUp(
         firstName: firstName,
         lastName: lastName,
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
         phone: phone,
-      ),
-    );
+      );
+
+      emit(
+        ProfileSignedUp(
+          email: email,
+          firstName: firstName,
+          lastName: lastName,
+          phone: phone,
+        ),
+      );
+    } catch (e) {
+      emit(ProfileError("error_password_mismatch".tr()));
+    }
   }
 
   Future<SharedUserData?> getStoredUserData() async {
-    final firstName = await _storage.read(key: 'user_first_name');
-    final lastName = await _storage.read(key: 'user_last_name');
-    final email = await _storage.read(key: 'user_email');
-    final phone = await _storage.read(key: 'user_phone');
-
-    if (firstName != null && lastName != null && email != null) {
-      return SharedUserData(
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        phone: phone != null ? int.tryParse(phone) : null,
-      );
-    }
-    return null;
+    return await _authRepository.getStoredUserData();
   }
 
   Future<void> logout() async {
-    await _storage.deleteAll();
-
+    await _authRepository.logout();
     emit(ProfileInitial());
   }
 
   Future<void> checkLoginStatus() async {
     emit(ProfileLoading());
 
-    final isLoggedIn = await _storage.read(key: 'user_is_logged_in');
+    final isLoggedIn = await _authRepository.checkLoginStatus();
 
-    if (isLoggedIn == 'true') {
-      final storedEmail = await _storage.read(key: 'user_email');
-      final storedFirstName = await _storage.read(key: 'user_first_name');
-      final storedLastName = await _storage.read(key: 'user_last_name');
-      final storedPhone = await _storage.read(key: 'user_phone');
+    if (isLoggedIn) {
+      final storedData = await _authRepository.getStoredUserData();
 
       emit(
         ProfileLoggedIn(
-          email: storedEmail ?? '',
-          firstName: storedFirstName ?? "Test",
-          lastName: storedLastName ?? "User",
-          phone: storedPhone != null ? int.tryParse(storedPhone) : null,
+          email: storedData?.email ?? '',
+          firstName: storedData?.firstName ?? "Test",
+          lastName: storedData?.lastName ?? "User",
+          phone: storedData?.phone,
         ),
       );
     } else {

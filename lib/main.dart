@@ -11,12 +11,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:hive/hive.dart';
+import 'package:fig/core/di/service_locator.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await Hive.deleteFromDisk();
   await initHive();
+
+  setupDependencies();
 
   runApp(
     EasyLocalization(
@@ -35,13 +38,15 @@ class FigApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => MainCubit()),
-        BlocProvider(create: (_) => ProfileCubit()),
-        BlocProvider(create: (_) => CategoriesCubit()..fetchCategories()),
-        BlocProvider(create: (_) => ProductsCubit()..initProducts()),
-        BlocProvider(create: (_) => CartCubit()),
-        BlocProvider(create: (_) => FavoritesCubit()),
-        BlocProvider(create: (_) => HomeCubit()..initHome()),
+        BlocProvider(create: (_) => getIt<MainCubit>()),
+        BlocProvider(create: (_) => getIt<ProfileCubit>()),
+        BlocProvider(
+          create: (_) => getIt<CategoriesCubit>()..fetchCategories(),
+        ),
+        BlocProvider(create: (_) => getIt<ProductsCubit>()..initProducts()),
+        BlocProvider(create: (_) => getIt<CartCubit>()),
+        BlocProvider(create: (_) => getIt<FavoritesCubit>()),
+        BlocProvider(create: (_) => getIt<HomeCubit>()..initHome()),
       ],
       child: Builder(
         builder: (context) {

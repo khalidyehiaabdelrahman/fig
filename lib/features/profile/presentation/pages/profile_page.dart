@@ -11,6 +11,7 @@ import '../cubit/profile_state.dart';
 import '../widgets/profile_logged_in_view.dart';
 import '../widgets/profile_logged_out_view.dart';
 import 'user_profile_page.dart';
+import 'package:fig/core/di/service_locator.dart' as di;
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -25,7 +26,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _profileCubit = ProfileCubit();
+    _profileCubit = di.getIt<ProfileCubit>();
     _profileCubit.checkLoginStatus();
   }
 

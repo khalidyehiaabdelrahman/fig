@@ -1,8 +1,10 @@
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
+import 'package:fig/core/services/preferences_service.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeCubit extends Cubit<HomeState> {
+  final PreferencesService _preferencesService;
+
   bool isGrid = true;
   bool forceShowShimmer = false;
 
@@ -14,14 +16,13 @@ class HomeCubit extends Cubit<HomeState> {
   bool isLoading = false;
   bool hasMore = true;
 
-  HomeCubit() : super(HomeInitial());
+  HomeCubit(this._preferencesService) : super(HomeInitial());
 
   void toggleGrid() async {
     isGrid = !isGrid;
     emit(GridChanged(isGrid));
 
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isGrid', isGrid);
+    await _preferencesService.setIsGrid(isGrid);
   }
 
   void setShimmer(bool value) {
@@ -30,8 +31,7 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
   Future<void> loadPreferences() async {
-    final prefs = await SharedPreferences.getInstance();
-    isGrid = prefs.getBool('isGrid') ?? true;
+    isGrid = await _preferencesService.getIsGrid();
     emit(GridChanged(isGrid));
   }
 

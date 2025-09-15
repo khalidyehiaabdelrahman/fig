@@ -1,12 +1,12 @@
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:fig/features/product/data/products_data.dart' as data;
 import 'package:fig/features/product/presentation/cubit/products_state.dart';
+import 'package:fig/core/repositories/product_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductsCubit extends Cubit<ProductsState> {
-  ProductsCubit() : super(ProductsLoading());
+  final ProductRepository _repository;
+
+  ProductsCubit(this._repository) : super(ProductsLoading());
   String? currentSortOption;
 
   List<ProductModel> allProducts = [];
@@ -25,14 +25,7 @@ class ProductsCubit extends Cubit<ProductsState> {
     emit(ProductsLoading());
     await Future.delayed(const Duration(seconds: 2));
 
-    final box = await Hive.openBox<ProductModel>('products');
-    if (box.isEmpty) {
-      for (var p in data.allProducts) {
-        box.add(p);
-      }
-    }
-
-    allProducts = box.values.toList();
+    allProducts = await _repository.getProducts();
     displayedProducts.clear();
     currentPage = 1;
     hasMore = true;
@@ -84,35 +77,20 @@ class ProductsCubit extends Cubit<ProductsState> {
   }
 
   void filterProductsByCategory(String categoryId) async {
-    final box = await Hive.openBox<ProductModel>('products');
-    final filtered =
-        box.values.where((p) => p.categoryId == categoryId).toList();
+    final filtered = await _repository.getProductsByCategory(categoryId);
     emit(ProductsFiltered(filtered));
   }
 
   void showAllProducts() async {
-    final box = await Hive.openBox<ProductModel>('products');
-    emit(ProductsLoaded(box.values.toList()));
+    final products = await _repository.getProducts();
+    emit(ProductsLoaded(products));
   }
 
   Future<void> sortProducts(String sortOption) async {
     currentSortOption = sortOption;
 
-    final box = await Hive.openBox<ProductModel>('products');
-    List<ProductModel> allProductsFromBox = box.values.toList();
-
-    if (sortOption == 'Lowest Price') {
-      allProductsFromBox.sort((a, b) => a.price.compareTo(b.price));
-    } else if (sortOption == 'Highest Price') {
-      allProductsFromBox.sort((a, b) => b.price.compareTo(a.price));
-    }
-
-    await box.clear();
-    for (var p in allProductsFromBox) {
-      box.add(p);
-    }
-
-    allProducts = allProductsFromBox;
+    await _repository.sortProducts(sortOption);
+    allProducts = await _repository.getProducts();
 
     displayedProducts.clear();
     currentPage = 1;
@@ -122,8 +100,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   }
 
   Future<void> loadSortOption() async {
-    final prefs = await SharedPreferences.getInstance();
-    final savedOption = prefs.getString('currentSortOption');
+    final savedOption = await _repository.getSortOption();
 
     if (savedOption != null) {
       currentSortOption = savedOption;
@@ -132,9 +109,7 @@ class ProductsCubit extends Cubit<ProductsState> {
   }
 
   Future<void> changeSortOption(String option) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString('currentSortOption', option);
-
+    await _repository.saveSortOption(option);
     await sortProducts(option);
   }
 

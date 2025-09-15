@@ -13,6 +13,7 @@ import 'package:fig/features/home/presentation/cubit/home_state.dart';
 import 'package:fig/features/categories/presentation/cubit/categories_cubit.dart';
 import 'package:fig/features/product/presentation/cubit/products_cubit.dart';
 import 'package:fig/features/home/widgets/snack_bar_widget.dart';
+import 'package:fig/core/di/service_locator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -67,9 +68,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => CategoriesCubit()..fetchCategories()),
-        BlocProvider(create: (_) => ProductsCubit()..fetchProducts()),
-        BlocProvider(create: (_) => HomeCubit()..initHome()),
+        BlocProvider(
+          create: (_) => getIt<CategoriesCubit>()..fetchCategories(),
+        ),
+        BlocProvider(create: (_) => getIt<ProductsCubit>()..fetchProducts()),
+        BlocProvider(create: (_) => getIt<HomeCubit>()..initHome()),
       ],
       child: SafeArea(
         child: Scaffold(

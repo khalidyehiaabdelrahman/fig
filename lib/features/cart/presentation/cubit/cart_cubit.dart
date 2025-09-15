@@ -1,19 +1,18 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:hive/hive.dart';
+import 'package:fig/core/repositories/cart_repository.dart';
 import 'cart_state.dart';
 
 class CartCubit extends Cubit<CartState> {
-  late final Box<CartItem> cartBox;
+  final CartRepository _repository;
 
-  CartCubit() : super(const CartInitial()) {
-    cartBox = Hive.box<CartItem>('cart');
+  CartCubit(this._repository) : super(const CartInitial()) {
     _loadCart();
   }
 
-  void _loadCart() {
-    final cartItems = cartBox.values.toList();
+  void _loadCart() async {
+    final cartItems = await _repository.getCartItems();
     emit(CartLoaded(cart: cartItems, total: _calculateTotal(cartItems)));
   }
 
@@ -26,26 +25,27 @@ class CartCubit extends Cubit<CartState> {
       selectedSize: size,
     );
 
-    await cartBox.add(newItem);
+    await _repository.addToCart(newItem);
 
-    final updatedCart = cartBox.values.toList();
+    final updatedCart = await _repository.getCartItems();
     emit(CartLoaded(cart: updatedCart, total: _calculateTotal(updatedCart)));
   }
 
   void removeFromCart(String id) async {
-    final key = cartBox.keys.firstWhere((k) => cartBox.get(k)!.id == id);
-    await cartBox.delete(key);
+    await _repository.removeFromCart(id);
 
-    final updatedCart = cartBox.values.toList();
+    final updatedCart = await _repository.getCartItems();
     emit(CartLoaded(cart: updatedCart, total: _calculateTotal(updatedCart)));
   }
 
   void updateQuantity(String id, int qty) async {
-    final key = cartBox.keys.firstWhere((k) => cartBox.get(k)!.id == id);
-    final item = cartBox.get(key)!;
-    await cartBox.put(key, item.copyWith(quantity: qty));
+    final cartItems = await _repository.getCartItems();
+    final item = cartItems.firstWhere((item) => item.id == id);
+    final updatedItem = item.copyWith(quantity: qty);
 
-    final updatedCart = cartBox.values.toList();
+    await _repository.updateCartItem(id, updatedItem);
+
+    final updatedCart = await _repository.getCartItems();
     emit(CartLoaded(cart: updatedCart, total: _calculateTotal(updatedCart)));
   }
 

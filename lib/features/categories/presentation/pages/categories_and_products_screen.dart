@@ -8,6 +8,7 @@ import 'package:fig/core/widgets/shimmer_skeletons.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 import 'package:fig/core/widgets/loading_indicator.dart';
+import 'package:fig/core/di/service_locator.dart' as di;
 
 class CategoriesAndProductsScreen extends StatelessWidget {
   const CategoriesAndProductsScreen({super.key});
@@ -17,10 +18,10 @@ class CategoriesAndProductsScreen extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<CategoriesCubit>(
-          create: (_) => CategoriesCubit()..fetchCategories(),
+          create: (_) => di.getIt<CategoriesCubit>()..fetchCategories(),
         ),
         BlocProvider<ProductsCubit>(
-          create: (_) => ProductsCubit()..fetchProducts(),
+          create: (_) => di.getIt<ProductsCubit>()..fetchProducts(),
         ),
       ],
       child: Scaffold(

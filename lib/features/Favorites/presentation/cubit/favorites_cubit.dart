@@ -1,37 +1,34 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hive/hive.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
+import 'package:fig/core/repositories/favorites_repository.dart';
 import 'favorites_state.dart';
 
 class FavoritesCubit extends Cubit<FavoritesState> {
-  late final Box<ProductModel> favoritesBox;
+  final FavoritesRepository _repository;
 
-  FavoritesCubit() : super(const FavoritesInitial()) {
-    favoritesBox = Hive.box<ProductModel>('favorites');
+  FavoritesCubit(this._repository) : super(const FavoritesInitial()) {
     _loadFavorites();
   }
 
-  void _loadFavorites() {
-    final favorites = favoritesBox.values.toList();
+  void _loadFavorites() async {
+    final favorites = await _repository.getFavorites();
     emit(FavoritesLoaded(favorites: favorites));
   }
 
-  void toggleFavorite(ProductModel product) {
-    final exists = state.favorites.any((p) => p.id == product.id);
+  void toggleFavorite(ProductModel product) async {
+    final exists = await _repository.isFavorite(product.id);
 
     if (exists) {
-      final key = favoritesBox.keys.firstWhere(
-        (k) => favoritesBox.get(k)!.id == product.id,
-      );
-      favoritesBox.delete(key);
+      await _repository.removeFromFavorites(product.id);
     } else {
-      favoritesBox.add(product);
+      await _repository.addToFavorites(product);
     }
 
-    emit(FavoritesLoaded(favorites: favoritesBox.values.toList()));
+    final updatedFavorites = await _repository.getFavorites();
+    emit(FavoritesLoaded(favorites: updatedFavorites));
   }
 
   bool isFavorite(ProductModel product) {
-    return favoritesBox.values.any((p) => p.id == product.id);
+    return state.favorites.any((p) => p.id == product.id);
   }
 }
