@@ -5,7 +5,7 @@ import 'package:fig/features/product/presentation/pages/Product_detials_Page.dar
 import 'package:fig/features/home/widgets/add_to_cart_button.dart';
 import 'package:fig/features/home/widgets/colors_selector.dart';
 import 'package:fig/features/home/widgets/sizes_selector.dart';
-import 'package:fig/features/home/widgets/snack_bar_widget.dart';
+import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,11 +112,7 @@ class ProductQuickReviewSheet extends StatelessWidget {
         size: selection.selectedSize!,
       );
       Navigator.pop(context);
-      TopSnackBar.show(
-        context,
-        message: "Added to cart successfully!",
-        icon: Icons.check_circle_outline,
-      );
+      AppMessages.showSuccess(context, "Added to cart successfully!");
     }
   }
 
@@ -138,10 +134,9 @@ class ProductQuickReviewSheet extends StatelessWidget {
           onPressed: () {
             context.read<FavoritesCubit>().toggleFavorite(product);
 
-            TopSnackBar.show(
+            AppMessages.showInfo(
               context,
-              message: isFav ? "Removed from favorites" : "Added to favorites",
-              icon: isFav ? Icons.favorite_border : Icons.favorite,
+              isFav ? "Removed from favorites" : "Added to favorites",
             );
           },
         ),

@@ -42,6 +42,17 @@
     "error_email_password": "البريد الإلكتروني أو كلمة المرور غير صحيحة",
     "error_password_mismatch": "كلمة المرور وتأكيدها غير متطابقين",
     "error_email_not_allowed": "البريد الإلكتروني غير مسموح",
+    "password_too_short": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+    "password_needs_uppercase": "كلمة المرور يجب أن تحتوي على حرف كبير",
+    "password_needs_lowercase": "كلمة المرور يجب أن تحتوي على حرف صغير",
+    "password_needs_number": "كلمة المرور يجب أن تحتوي على رقم",
+    "phone_invalid_format": "رقم الهاتف يجب أن يبدأ بـ 01",
+    "first_name_too_short": "الاسم الأول يجب أن يكون حرفين على الأقل",
+    "first_name_too_long": "الاسم الأول يجب أن يكون أقل من 50 حرف",
+    "first_name_invalid_characters": "الاسم الأول يمكن أن يحتوي على أحرف فقط",
+    "last_name_too_short": "اسم العائلة يجب أن يكون حرفين على الأقل",
+    "last_name_too_long": "اسم العائلة يجب أن يكون أقل من 50 حرف",
+    "last_name_invalid_characters": "اسم العائلة يمكن أن يحتوي على أحرف فقط",
     "user_profile": "الملف الشخصي للمستخدم",
     "personal_information": "المعلومات الشخصية",
     "first_name": "الاسم الأول",
@@ -53,8 +64,5 @@
     "change_password": "تغيير كلمة المرور",
     "logout": "تسجيل الخروج",
     "edit_profile_coming_soon": "ميزة تعديل الملف الشخصي قادمة قريباً!",
-    "change_password_coming_soon": "ميزة تغيير كلمة المرور قادمة قريباً!",
-    "signup_success": "تم إنشاء الحساب بنجاح!",
-    "login_success": "تم تسجيل الدخول بنجاح!",
-    "logout_success": "تم تسجيل الخروج بنجاح!"
+    "change_password_coming_soon": "ميزة تغيير كلمة المرور قادمة قريباً!"
 }

@@ -1,6 +1,6 @@
 import 'package:fig/features/cart/presentation/cubit/cart_cubit.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:fig/features/home/widgets/snack_bar_widget.dart';
+import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/core/utils/responsive.dart';
@@ -44,11 +44,7 @@ class AddToCartButton extends StatelessWidget {
           }
 
           if (!isEnabled) {
-            TopSnackBar.show(
-              context,
-              message: 'Choose Color And Size',
-              icon: Icons.error_outline,
-            );
+            AppMessages.showWarning(context, 'Choose Color And Size');
             return;
           }
 
@@ -58,11 +54,7 @@ class AddToCartButton extends StatelessWidget {
             size: selectedSize!,
           );
 
-          TopSnackBar.show(
-            context,
-            message: 'Added to cart successfully!',
-            icon: Icons.check_circle_outline,
-          );
+          AppMessages.showSuccess(context, 'Added to cart successfully!');
 
           if (popAfterAdd) {
             Navigator.pop(context);

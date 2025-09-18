@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/core/widgets/custom_button.dart';
-import 'package:fig/features/home/widgets/snack_bar_widget.dart';
+import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +55,43 @@ class _SignUpFormState extends State<SignUpForm> {
     confirmPasswordController.dispose();
     phoneController.dispose();
     super.dispose();
+  }
+
+  Future<void> _handleSignUp() async {
+    final sharedData = SharedUserData(
+      firstName: firstNameController.text.trim(),
+      lastName: lastNameController.text.trim(),
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
+      phone: int.tryParse(phoneController.text.trim()) ?? 0,
+    );
+
+    try {
+      await context.read<ProfileCubit>().signUp(
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+        confirmPassword: confirmPasswordController.text.trim(),
+        phone: int.tryParse(phoneController.text.trim()) ?? 0,
+      );
+
+      _showSuccessAndNavigate(sharedData);
+    } catch (e) {
+      _showError(e);
+    }
+  }
+
+  void _showSuccessAndNavigate(SharedUserData sharedData) {
+    AppMessages.showSignUpSuccess(context, "signup_success".tr());
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      context.read<AuthTabCubit>().changeTab(0, sharedData: sharedData);
+    });
+  }
+
+  void _showError(dynamic error) {
+    AppMessages.showError(context, "حدث خطأ: $error");
   }
 
   @override
@@ -164,93 +201,13 @@ class _SignUpFormState extends State<SignUpForm> {
               textInputAction: TextInputAction.done,
               keyboardType: TextInputType.phone,
               prefixIcon: Icons.phone,
-              onFieldSubmitted: (_) async {
-                final sharedData = SharedUserData(
-                  firstName: firstNameController.text.trim(),
-                  lastName: lastNameController.text.trim(),
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                  phone: int.tryParse(phoneController.text.trim()) ?? 0,
-                );
-
-                try {
-                  await context.read<ProfileCubit>().signUp(
-                    firstName: firstNameController.text.trim(),
-                    lastName: lastNameController.text.trim(),
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                    confirmPassword: confirmPasswordController.text.trim(),
-                    phone: int.tryParse(phoneController.text.trim()) ?? 0,
-                  );
-
-                  TopSnackBar.show(
-                    context,
-                    message: "signup_success".tr(),
-                    icon: Icons.check_circle,
-                    backgroundColor: Colors.green,
-                  );
-
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    context.read<AuthTabCubit>().changeTab(
-                      0,
-                      sharedData: sharedData,
-                    );
-                  });
-                } catch (e) {
-                  TopSnackBar.show(
-                    context,
-                    message: "حدث خطأ: $e",
-                    icon: Icons.error,
-                    backgroundColor: Colors.red,
-                  );
-                }
-              },
+              onFieldSubmitted: (_) => _handleSignUp(),
             ),
             const SizedBox(height: 24),
 
             PrimaryButton(
               label: 'create_account'.tr().toUpperCase(),
-              onPressed: () async {
-                final sharedData = SharedUserData(
-                  firstName: firstNameController.text.trim(),
-                  lastName: lastNameController.text.trim(),
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                  phone: int.tryParse(phoneController.text.trim()) ?? 0,
-                );
-
-                try {
-                  await context.read<ProfileCubit>().signUp(
-                    firstName: firstNameController.text.trim(),
-                    lastName: lastNameController.text.trim(),
-                    email: emailController.text.trim(),
-                    password: passwordController.text.trim(),
-                    confirmPassword: confirmPasswordController.text.trim(),
-                    phone: int.tryParse(phoneController.text.trim()) ?? 0,
-                  );
-
-                  TopSnackBar.show(
-                    context,
-                    message: "signup_success".tr(),
-                    icon: Icons.check_circle,
-                    backgroundColor: Colors.green,
-                  );
-
-                  Future.delayed(const Duration(milliseconds: 500), () {
-                    context.read<AuthTabCubit>().changeTab(
-                      0,
-                      sharedData: sharedData,
-                    );
-                  });
-                } catch (e) {
-                  TopSnackBar.show(
-                    context,
-                    message: "حدث خطأ: $e",
-                    icon: Icons.error,
-                    backgroundColor: Colors.red,
-                  );
-                }
-              },
+              onPressed: _handleSignUp,
               backgroundColor: Colors.red.shade700,
             ),
             const SizedBox(height: 20),
@@ -270,18 +227,7 @@ class _SignUpFormState extends State<SignUpForm> {
               label: 'login'.tr().toUpperCase(),
               foregroundColor: Colors.black,
               onPressed: () {
-                final sharedData = SharedUserData(
-                  firstName: firstNameController.text.trim(),
-                  lastName: lastNameController.text.trim(),
-                  email: emailController.text.trim(),
-                  password: passwordController.text.trim(),
-                  phone: int.tryParse(phoneController.text.trim()) ?? 0,
-                );
-
-                context.read<AuthTabCubit>().changeTab(
-                  0,
-                  sharedData: sharedData,
-                );
+                context.read<AuthTabCubit>().changeTab(0);
               },
             ),
           ],

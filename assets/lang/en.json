@@ -42,6 +42,17 @@
     "error_email_password": "Email or password is incorrect",
     "error_password_mismatch": "The password and confirmation do not match.",
     "error_email_not_allowed": "Email is not allowed",
+    "password_too_short": "Password must be at least 6 characters",
+    "password_needs_uppercase": "Password must contain at least one uppercase letter",
+    "password_needs_lowercase": "Password must contain at least one lowercase letter",
+    "password_needs_number": "Password must contain at least one number",
+    "phone_invalid_format": "Phone number must start with 01",
+    "first_name_too_short": "First name must be at least 2 characters",
+    "first_name_too_long": "First name must be less than 50 characters",
+    "first_name_invalid_characters": "First name can only contain letters",
+    "last_name_too_short": "Last name must be at least 2 characters",
+    "last_name_too_long": "Last name must be less than 50 characters",
+    "last_name_invalid_characters": "Last name can only contain letters",
     "user_profile": "User Profile",
     "personal_information": "Personal Information",
     "first_name": "First Name",
@@ -53,8 +64,5 @@
     "change_password": "Change Password",
     "logout": "Logout",
     "edit_profile_coming_soon": "Edit Profile feature coming soon!",
-    "change_password_coming_soon": "Change Password feature coming soon!",
-    "signup_success": "Account created successfully!",
-    "login_success": "Login successful!",
-    "logout_success": "Logged out successfully!"
+    "change_password_coming_soon": "Change Password feature coming soon!"
 }

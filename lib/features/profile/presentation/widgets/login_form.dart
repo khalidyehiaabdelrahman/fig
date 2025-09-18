@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/core/widgets/custom_button.dart';
-import 'package:fig/features/home/widgets/snack_bar_widget.dart';
+import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:flutter/material.dart';
@@ -141,12 +141,7 @@ class _LoginFormState extends State<LoginForm> {
                     sharedData: widget.sharedData,
                   );
                 } catch (e) {
-                  TopSnackBar.show(
-                    context,
-                    message: "حدث خطأ: $e",
-                    icon: Icons.error,
-                    backgroundColor: Colors.red,
-                  );
+                  AppMessages.showError(context, "حدث خطأ: $e");
                 }
               },
             ),

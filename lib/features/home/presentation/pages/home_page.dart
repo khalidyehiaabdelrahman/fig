@@ -1,3 +1,4 @@
+import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:fig/features/home/widgets/carousel_manager.dart';
 import 'package:fig/features/home/widgets/carousel_section.dart';
 import 'package:fig/features/home/widgets/categories_section.dart';
@@ -12,7 +13,6 @@ import 'package:fig/features/home/presentation/cubit/home_cubit.dart';
 import 'package:fig/features/home/presentation/cubit/home_state.dart';
 import 'package:fig/features/categories/presentation/cubit/categories_cubit.dart';
 import 'package:fig/features/product/presentation/cubit/products_cubit.dart';
-import 'package:fig/features/home/widgets/snack_bar_widget.dart';
 import 'package:fig/core/di/service_locator.dart';
 
 class HomePage extends StatefulWidget {
@@ -149,13 +149,7 @@ class _HomePageState extends State<HomePage> {
         homeCubit.fetchItems();
       } else if (state.message != null) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          TopSnackBar.show(
-            context,
-            message: state.message!,
-            icon: Icons.info_outline,
-            backgroundColor: Colors.red,
-            duration: const Duration(seconds: 2),
-          );
+          AppMessages.showInfo(context, state.message!);
         });
       }
     }

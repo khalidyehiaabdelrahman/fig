@@ -156,3 +156,57 @@ class _TopSnackBarWidgetState extends State<_TopSnackBarWidget>
     );
   }
 }
+
+class AppMessages {
+  static void _showMessage(
+    BuildContext context,
+    String message,
+    IconData icon,
+    Color backgroundColor,
+  ) {
+    TopSnackBar.show(
+      context,
+      message: message,
+      icon: icon,
+      backgroundColor: backgroundColor,
+      textColor: Colors.white,
+    );
+  }
+
+  static void showError(BuildContext context, String message) {
+    _showMessage(context, message, Icons.error, Colors.red);
+  }
+
+  static void showSuccess(BuildContext context, String message) {
+    _showMessage(context, message, Icons.check_circle, Colors.green);
+  }
+
+  static void showInfo(BuildContext context, String message) {
+    _showMessage(context, message, Icons.info, Colors.blue);
+  }
+
+  static void showWarning(BuildContext context, String message) {
+    _showMessage(context, message, Icons.warning, Colors.orange);
+  }
+
+  static void showLogout(BuildContext context, String message) {
+    _showMessage(context, message, Icons.exit_to_app, Colors.blueGrey);
+  }
+
+  static void showSignUpSuccess(BuildContext context, String message) {
+    _showMessage(context, message, Icons.person_add, Colors.green);
+  }
+}
+
+extension AppMessagesExtension on BuildContext {
+  void showErrorMessage(String message) => AppMessages.showError(this, message);
+  void showSuccessMessage(String message) =>
+      AppMessages.showSuccess(this, message);
+  void showInfoMessage(String message) => AppMessages.showInfo(this, message);
+  void showWarningMessage(String message) =>
+      AppMessages.showWarning(this, message);
+  void showLogoutMessage(String message) =>
+      AppMessages.showLogout(this, message);
+  void showSignUpSuccessMessage(String message) =>
+      AppMessages.showSignUpSuccess(this, message);
+}

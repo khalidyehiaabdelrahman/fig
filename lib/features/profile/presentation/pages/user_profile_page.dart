@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/core/widgets/custom_button.dart';
-import 'package:fig/features/home/widgets/snack_bar_widget.dart';
+import 'package:fig/core/widgets/base_scaffold.dart';
+import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:fig/features/profile/presentation/pages/profile_page.dart';
@@ -43,150 +44,108 @@ class _UserProfilePageState extends State<UserProfilePage> {
   @override
   Widget build(BuildContext context) {
     if (_userData == null) {
-      return Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Text('user_profile'.tr()),
-          backgroundColor: Colors.white,
-          elevation: 0,
-          surfaceTintColor: Colors.transparent,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ),
+      return BaseScaffold(
+        title: 'user_profile'.tr(),
+        showBackButton: true,
         body: const Center(child: CircularProgressIndicator()),
       );
     }
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Text('user_profile'.tr()),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        surfaceTintColor: Colors.transparent,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16.rw(context)),
+    return BaseScaffold(
+      title: 'user_profile'.tr(),
+      showBackButton: true,
+      wrapWithSafeArea: true,
+      wrapWithScrollView: true,
+      padding: EdgeInsets.all(16.rw(context)),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(20.rw(context)),
+            decoration: BoxDecoration(
+              color: Colors.red.shade50,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: Colors.red.shade200),
+            ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                
-                Container(
-                  width: double.infinity,
-                  padding: EdgeInsets.all(20.rw(context)),
-                  decoration: BoxDecoration(
-                    color: Colors.red.shade50,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(color: Colors.red.shade200),
-                  ),
-                  child: Column(
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundColor: Colors.red.shade100,
-                        child: Icon(
-                          Icons.person,
-                          size: 50,
-                          color: Colors.red.shade700,
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Text(
-                        _userData!.email ?? '',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey.shade600,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                const SizedBox(height: 24),
-
-                
-                Text(
-                  'personal_information'.tr(),
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.red.shade100,
+                  child: Icon(
+                    Icons.person,
+                    size: 50,
+                    color: Colors.red.shade700,
                   ),
                 ),
                 const SizedBox(height: 16),
-
-                
-                _buildInfoCard(
-                  title: 'full_name'.tr(),
-                  value:
-                      '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
-                  icon: Icons.person_outline,
+                Text(
+                  '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
+                  style: const TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
                 ),
-
-                const SizedBox(height: 12),
-
-                _buildInfoCard(
-                  title: 'email'.tr(),
-                  value: _userData!.email ?? '',
-                  icon: Icons.email_outlined,
-                ),
-
-                const SizedBox(height: 12),
-
-                
-                _buildInfoCard(
-                  title: 'phone'.tr(),
-                  value: _userData!.phone?.toString() ?? 'No phone',
-                  icon: Icons.phone_outlined,
-                ),
-
-                const SizedBox(height: 32),
-
-                PrimaryButton(
-                  label: 'logout'.tr(),
-                  onPressed: () async {
-                    
-                    await context.read<ProfileCubit>().logout();
-
-                    
-                    TopSnackBar.show(
-                      context,
-                      message: "logout_success".tr(),
-                      icon: Icons.exit_to_app,
-                      backgroundColor: Colors.blueGrey,
-                    );
-
-                    
-                    if (!mounted) return;
-
-                    
-                    Navigator.of(context).pushAndRemoveUntil(
-                      MaterialPageRoute(builder: (_) => const ProfilePage()),
-                      (route) => false,
-                    );
-                  },
-                  backgroundColor: Colors.red.shade700,
+                const SizedBox(height: 8),
+                Text(
+                  _userData!.email ?? '',
+                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
                 ),
               ],
             ),
           ),
-        ),
+
+          const SizedBox(height: 24),
+
+          Text(
+            'personal_information'.tr(),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 16),
+
+          _buildInfoCard(
+            title: 'full_name'.tr(),
+            value: '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
+            icon: Icons.person_outline,
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildInfoCard(
+            title: 'email'.tr(),
+            value: _userData!.email ?? '',
+            icon: Icons.email_outlined,
+          ),
+
+          const SizedBox(height: 12),
+
+          _buildInfoCard(
+            title: 'phone'.tr(),
+            value: _userData!.phone?.toString() ?? 'No phone',
+            icon: Icons.phone_outlined,
+          ),
+
+          const SizedBox(height: 32),
+
+          PrimaryButton(
+            label: 'logout'.tr(),
+            onPressed: () async {
+              await context.read<ProfileCubit>().logout();
+
+              AppMessages.showLogout(context, "logout_success".tr());
+
+              if (!mounted) return;
+
+              Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (_) => const ProfilePage()),
+                (route) => false,
+              );
+            },
+            backgroundColor: Colors.red.shade700,
+          ),
+        ],
       ),
     );
   }

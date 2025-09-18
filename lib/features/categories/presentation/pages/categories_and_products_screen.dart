@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/core/widgets/shimmer_skeletons.dart';
 import 'package:fig/features/home/domain/model/category_model.dart';
-import 'package:fig/features/home/widgets/snack_bar_widget.dart';
+import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:fig/core/widgets/loading_indicator.dart';
 import 'package:fig/core/di/service_locator.dart' as di;
 
@@ -39,13 +39,7 @@ class CategoriesAndProductsScreen extends StatelessWidget {
                     !productState.hasMore &&
                     productState.products.isNotEmpty) {
                   WidgetsBinding.instance.addPostFrameCallback((_) {
-                    TopSnackBar.show(
-                      context,
-                      message: 'No more products',
-                      icon: Icons.info_outline,
-                      backgroundColor: Colors.red,
-                      duration: const Duration(seconds: 2),
-                    );
+                    AppMessages.showInfo(context, 'No more products');
                   });
                 }
               },
@@ -87,13 +81,7 @@ class CategoriesAndProductsScreen extends StatelessWidget {
                           context.read<ProductsCubit>().loadMoreProducts();
                         } else if (!hasMore && products.isNotEmpty) {
                           WidgetsBinding.instance.addPostFrameCallback((_) {
-                            TopSnackBar.show(
-                              context,
-                              message: 'No more products',
-                              icon: Icons.info_outline,
-                              backgroundColor: Colors.red,
-                              duration: const Duration(seconds: 2),
-                            );
+                            AppMessages.showInfo(context, 'No more products');
                           });
                         }
                       }

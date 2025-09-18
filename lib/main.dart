@@ -12,6 +12,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
 import 'package:hive/hive.dart';
 import 'package:fig/core/di/service_locator.dart';
+import 'package:fig/core/services/navigation_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,6 +54,7 @@ class FigApp extends StatelessWidget {
           return MaterialApp(
             title: 'FIG App',
             debugShowCheckedModeBanner: false,
+            navigatorKey: NavigationService.navigatorKey,
             theme: ThemeData(primarySwatch: Colors.grey, useMaterial3: true),
             localizationsDelegates: context.localizationDelegates,
             supportedLocales: context.supportedLocales,
