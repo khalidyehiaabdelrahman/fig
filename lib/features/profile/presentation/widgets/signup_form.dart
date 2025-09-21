@@ -75,7 +75,6 @@ class _SignUpFormState extends State<SignUpForm> {
         confirmPassword: confirmPasswordController.text.trim(),
         phone: int.tryParse(phoneController.text.trim()) ?? 0,
       );
-
       _showSuccessAndNavigate(sharedData);
     } catch (e) {
       _showError(e);

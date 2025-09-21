@@ -4,10 +4,11 @@ import 'package:fig/core/widgets/base_scaffold.dart';
 import 'package:fig/core/utils/top_snack_bar.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_state.dart';
 import 'package:fig/features/profile/presentation/cubit/profile_cubit.dart';
-import 'package:fig/features/profile/presentation/pages/profile_page.dart';
+import 'package:fig/features/main/presentation/pages/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fig/core/utils/responsive.dart';
+import 'package:fig/core/di/service_locator.dart' as di;
 
 class UserProfilePage extends StatefulWidget {
   final SharedUserData? userData;
@@ -20,11 +21,19 @@ class UserProfilePage extends StatefulWidget {
 
 class _UserProfilePageState extends State<UserProfilePage> {
   SharedUserData? _userData;
+  late ProfileCubit _profileCubit;
 
   @override
   void initState() {
     super.initState();
+    _profileCubit = di.getIt<ProfileCubit>();
     _loadUserData();
+  }
+
+  @override
+  void dispose() {
+    // لا نغلق ProfileCubit لأنه LazySingleton
+    super.dispose();
   }
 
   Future<void> _loadUserData() async {
@@ -51,101 +60,120 @@ class _UserProfilePageState extends State<UserProfilePage> {
       );
     }
 
-    return BaseScaffold(
-      title: 'user_profile'.tr(),
-      showBackButton: true,
-      wrapWithSafeArea: true,
-      wrapWithScrollView: true,
-      padding: EdgeInsets.all(16.rw(context)),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: double.infinity,
-            padding: EdgeInsets.all(20.rw(context)),
-            decoration: BoxDecoration(
-              color: Colors.red.shade50,
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.red.shade200),
-            ),
-            child: Column(
-              children: [
-                CircleAvatar(
-                  radius: 50,
-                  backgroundColor: Colors.red.shade100,
-                  child: Icon(
-                    Icons.person,
-                    size: 50,
-                    color: Colors.red.shade700,
-                  ),
+    return BlocProvider.value(
+      value: _profileCubit,
+      child: BlocListener<ProfileCubit, ProfileState>(
+        listener: (context, state) {
+          if (state is ProfileLoggedOut) {
+            Navigator.of(context).pushAndRemoveUntil(
+              MaterialPageRoute(builder: (_) => const MainScreen()),
+              (route) => false,
+            );
+          }
+        },
+        child: BaseScaffold(
+          title: 'user_profile'.tr(),
+          showBackButton: true,
+          wrapWithSafeArea: true,
+          wrapWithScrollView: true,
+          padding: EdgeInsets.all(16.rw(context)),
+          body: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: EdgeInsets.all(20.rw(context)),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: Colors.red.shade200),
                 ),
-                const SizedBox(height: 16),
-                Text(
-                  '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
+                child: Column(
+                  children: [
+                    CircleAvatar(
+                      radius: 50,
+                      backgroundColor: Colors.red.shade100,
+                      child: Icon(
+                        Icons.person,
+                        size: 50,
+                        color: Colors.red.shade700,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
+                      style: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      _userData!.email ?? '',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey.shade600,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 8),
-                Text(
-                  _userData!.email ?? '',
-                  style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
+              ),
+
+              const SizedBox(height: 24),
+
+              Text(
+                'personal_information'.tr(),
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 16),
+
+              _buildInfoCard(
+                title: 'full_name'.tr(),
+                value:
+                    '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
+                icon: Icons.person_outline,
+              ),
+
+              const SizedBox(height: 12),
+
+              _buildInfoCard(
+                title: 'email'.tr(),
+                value: _userData!.email ?? '',
+                icon: Icons.email_outlined,
+              ),
+
+              const SizedBox(height: 12),
+
+              _buildInfoCard(
+                title: 'phone'.tr(),
+                value:
+                    _userData!.phone == null || _userData!.phone == 0
+                        ? 'لا يوجد رقم هاتف'
+                        : '0${_userData!.phone}',
+                icon: Icons.phone_outlined,
+              ),
+
+              const SizedBox(height: 32),
+
+              PrimaryButton(
+                label: 'logout'.tr(),
+                onPressed: () async {
+                  try {
+                    await context.read<ProfileCubit>().logout();
+                    AppMessages.showLogout(context, "logout_success".tr());
+                  } catch (e) {
+                    AppMessages.showError(context, "Logout failed: $e");
+                  }
+                },
+                backgroundColor: Colors.red.shade700,
+              ),
+            ],
           ),
-
-          const SizedBox(height: 24),
-
-          Text(
-            'personal_information'.tr(),
-            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-
-          _buildInfoCard(
-            title: 'full_name'.tr(),
-            value: '${_userData!.firstName ?? ''} ${_userData!.lastName ?? ''}',
-            icon: Icons.person_outline,
-          ),
-
-          const SizedBox(height: 12),
-
-          _buildInfoCard(
-            title: 'email'.tr(),
-            value: _userData!.email ?? '',
-            icon: Icons.email_outlined,
-          ),
-
-          const SizedBox(height: 12),
-
-          _buildInfoCard(
-            title: 'phone'.tr(),
-            value: _userData!.phone?.toString() ?? 'No phone',
-            icon: Icons.phone_outlined,
-          ),
-
-          const SizedBox(height: 32),
-
-          PrimaryButton(
-            label: 'logout'.tr(),
-            onPressed: () async {
-              await context.read<ProfileCubit>().logout();
-
-              AppMessages.showLogout(context, "logout_success".tr());
-
-              if (!mounted) return;
-
-              Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (_) => const ProfilePage()),
-                (route) => false,
-              );
-            },
-            backgroundColor: Colors.red.shade700,
-          ),
-        ],
+        ),
       ),
     );
   }

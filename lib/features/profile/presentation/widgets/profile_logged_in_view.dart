@@ -44,7 +44,7 @@ class ProfileLoggedInView extends StatelessWidget {
           ),
           SizedBox(height: 8.rh(context)),
           Text(
-            phone.toString(),
+            phone == 0 ? 'لا يوجد رقم هاتف' : '0$phone',
             style: TextStyle(
               fontSize: 16.rt(context),
               color: Colors.grey,

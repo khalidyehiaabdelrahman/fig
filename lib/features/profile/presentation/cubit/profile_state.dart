@@ -32,6 +32,20 @@ class ProfileSignedUp extends ProfileState {
   });
 }
 
+class ProfileAlreadyLoggedIn extends ProfileState {
+  final String email;
+  final String firstName;
+  final String lastName;
+  final int? phone;
+
+  ProfileAlreadyLoggedIn({
+    required this.email,
+    required this.firstName,
+    required this.lastName,
+    this.phone,
+  });
+}
+
 class ProfileLoggedOut extends ProfileState {}
 
 class ProfileError extends ProfileState {

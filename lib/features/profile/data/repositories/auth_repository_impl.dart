@@ -62,7 +62,11 @@ class AuthRepositoryImpl implements AuthRepository {
 
   @override
   Future<void> logout() async {
-    await _storage.deleteAll();
+    try {
+      await _storage.deleteAll();
+    } catch (e) {
+      throw Exception('Failed to clear storage: $e');
+    }
   }
 
   @override

@@ -32,14 +32,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void dispose() {
-    _profileCubit.close();
+    // لا نغلق ProfileCubit لأنه LazySingleton
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => _profileCubit,
+    return BlocProvider.value(
+      value: _profileCubit,
       child: BaseScaffold(
         title: 'profile'.tr(),
         wrapWithSafeArea: true,
@@ -57,18 +57,31 @@ class _ProfilePageState extends State<ProfilePage> {
                   AppMessages.showError(context, state.message);
                 }
 
+                // فقط عند تسجيل الدخول الجديد
                 if (state is ProfileLoggedIn) {
-                  AppMessages.showSuccess(context, "login_success".tr());
+                  // لا نعرض رسالة النجاح هنا لأنها تظهر عند كل rebuild
+                  // AppMessages.showSuccess(context, "login_success".tr());
                 }
 
                 if (state is ProfileSignedUp) {
                   AppMessages.showSignUpSuccess(context, "signup_success".tr());
+                }
+
+                if (state is ProfileLoggedOut) {
+                  // Handle logout if needed
                 }
               },
               builder: (context, state) {
                 return Stack(
                   children: [
                     if (state is ProfileLoggedIn)
+                      ProfileLoggedInView(
+                        firstName: state.firstName,
+                        lastName: state.lastName,
+                        email: state.email,
+                        phone: state.phone ?? 0,
+                      )
+                    else if (state is ProfileAlreadyLoggedIn)
                       ProfileLoggedInView(
                         firstName: state.firstName,
                         lastName: state.lastName,

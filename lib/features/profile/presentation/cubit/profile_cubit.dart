@@ -8,6 +8,11 @@ class ProfileCubit extends Cubit<ProfileState> {
 
   ProfileCubit(this._authRepository) : super(ProfileInitial());
 
+  @override
+  Future<void> close() async {
+    await super.close();
+  }
+
   void showError(String message) {
     emit(ProfileError(message));
   }
@@ -81,28 +86,37 @@ class ProfileCubit extends Cubit<ProfileState> {
   }
 
   Future<void> logout() async {
-    await _authRepository.logout();
-    emit(ProfileInitial());
+    try {
+      await _authRepository.logout();
+      emit(ProfileLoggedOut());
+    } catch (e) {
+      emit(ProfileError('Logout failed: $e'));
+    }
   }
 
   Future<void> checkLoginStatus() async {
-    emit(ProfileLoading());
+    // فقط لو مفيش state محفوظ أو في ProfileInitial أو ProfileLoggedOut
+    if (state is! ProfileAlreadyLoggedIn &&
+        state is! ProfileLoggedIn &&
+        state is! ProfileSignedUp) {
+      emit(ProfileLoading());
 
-    final isLoggedIn = await _authRepository.checkLoginStatus();
+      final isLoggedIn = await _authRepository.checkLoginStatus();
 
-    if (isLoggedIn) {
-      final storedData = await _authRepository.getStoredUserData();
+      if (isLoggedIn) {
+        final storedData = await _authRepository.getStoredUserData();
 
-      emit(
-        ProfileLoggedIn(
-          email: storedData?.email ?? '',
-          firstName: storedData?.firstName ?? "Test",
-          lastName: storedData?.lastName ?? "User",
-          phone: storedData?.phone,
-        ),
-      );
-    } else {
-      emit(ProfileInitial());
+        emit(
+          ProfileAlreadyLoggedIn(
+            email: storedData?.email ?? '',
+            firstName: storedData?.firstName ?? "Test",
+            lastName: storedData?.lastName ?? "User",
+            phone: storedData?.phone,
+          ),
+        );
+      } else {
+        emit(ProfileInitial());
+      }
     }
   }
 }

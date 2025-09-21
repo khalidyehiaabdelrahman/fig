@@ -8,16 +8,27 @@ import 'package:fig/features/profile/presentation/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
-  static const List<Widget> _screens = [
-    HomePage(),
-    CategoriesAndProductsScreen(),
-    CartScreen(),
-    FavoritesScreen(),
-    ProfilePage(),
-  ];
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late final List<Widget> _screens;
+
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      HomePage(),
+      CategoriesAndProductsScreen(),
+      CartScreen(),
+      FavoritesScreen(),
+      ProfilePage(),
+    ];
+  }
 
   @override
   Widget build(BuildContext context) {
